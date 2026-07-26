@@ -1,4 +1,5 @@
 import { IMAGES } from "@/lib/images";
+import { withBasePath } from "@/lib/basePath";
 
 interface PicProps {
   imageKey: string;
@@ -14,14 +15,14 @@ export function Pic({ imageKey, alt, sizes = "100vw", priority = false, classNam
   const { widths, aspect } = entry;
   const max = widths[widths.length - 1];
   const srcSet = (fmt: string) =>
-    widths.map((w) => `/images/${imageKey}/${w}.${fmt} ${w}w`).join(", ");
+    widths.map((w) => `${withBasePath(`/images/${imageKey}/${w}.${fmt}`)} ${w}w`).join(", ");
 
   return (
     <picture>
       <source type="image/avif" srcSet={srcSet("avif")} sizes={sizes} />
       <source type="image/webp" srcSet={srcSet("webp")} sizes={sizes} />
       <img
-        src={`/images/${imageKey}/${max}.jpg`}
+        src={withBasePath(`/images/${imageKey}/${max}.jpg`)}
         srcSet={srcSet("jpg")}
         sizes={sizes}
         alt={alt}

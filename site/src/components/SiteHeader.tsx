@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { withBasePath } from "@/lib/basePath";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -20,7 +21,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 bg-paper/95 backdrop-blur border-b border-navy/10">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
         <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <img src="/images/brand-logo/480.webp" alt="Truth Care Group" width={48} height={48} />
+          <img src={withBasePath("/images/brand-logo/480.webp")} alt="Truth Care Group" width={48} height={48} />
           <span className="font-display text-lg font-semibold tracking-tight">Truth Care Group</span>
         </Link>
 

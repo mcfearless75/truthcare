@@ -5,6 +5,7 @@ import { SITE } from "@/lib/site";
 import { jsonLdScript, localBusinessJsonLd } from "@/lib/schema";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { withBasePath } from "@/lib/basePath";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Truth Care Group",
     locale: "en_GB",
-    images: [{ url: "/images/beaconsfield-house-exterior-front/1200.jpg", width: 1200, height: 900 }],
+    images: [{ url: withBasePath("/images/beaconsfield-house-exterior-front/1200.jpg"), width: 1200, height: 900 }],
   },
 };
 // Each page exports its own `metadata` with page-specific title + description;
