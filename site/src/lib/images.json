@@ -93,39 +93,6 @@
     ],
     "aspect": 1
   },
-  "brand-mark-head": {
-    "widths": [
-      232
-    ],
-    "aspect": 0.7581699346405228
-  },
-  "decorative-blob-dark": {
-    "widths": [
-      480,
-      768
-    ],
-    "aspect": 1.2622282608695652
-  },
-  "decorative-blob-orange-corner": {
-    "widths": [
-      152
-    ],
-    "aspect": 1.1428571428571428
-  },
-  "decorative-circle-orange": {
-    "widths": [
-      247
-    ],
-    "aspect": 0.9959677419354839
-  },
-  "graphic-conditions-overview": {
-    "widths": [
-      480,
-      768,
-      1200
-    ],
-    "aspect": 1.5
-  },
   "icon-caring": {
     "widths": [
       480,
@@ -145,12 +112,6 @@
       2000
     ],
     "aspect": 1
-  },
-  "icon-email": {
-    "widths": [
-      44
-    ],
-    "aspect": 1.3333333333333333
   },
   "icon-responsive": {
     "widths": [
@@ -182,22 +143,6 @@
     ],
     "aspect": 1
   },
-  "lifestyle-cooking": {
-    "widths": [
-      480,
-      768,
-      1200
-    ],
-    "aspect": 1.5
-  },
-  "lifestyle-dogwalk": {
-    "widths": [
-      480,
-      768,
-      1200
-    ],
-    "aspect": 1.5
-  },
   "lifestyle-group": {
     "widths": [
       480,
@@ -206,14 +151,6 @@
       1600
     ],
     "aspect": 1.499531396438613
-  },
-  "logo-cqc": {
-    "widths": [
-      480,
-      768,
-      1200
-    ],
-    "aspect": 3.1219512195121952
   },
   "team-alison-woods": {
     "widths": [
