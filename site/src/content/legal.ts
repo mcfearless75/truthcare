@@ -62,11 +62,20 @@ export const PRIVACY: LegalPage = {
       ],
     },
     {
+      // NEEDS CONFIRMATION: item 16 — the server access logs sentence below
+      // describes what is normal for web hosting in general, not a
+      // specific commitment about this site's logs, because the hosting
+      // provider is not yet fixed for this build (see item 11 below). It
+      // would be wrong to state as fact what an unchosen host does, does
+      // not, or shares. Once hosting is chosen, confirm what it actually
+      // logs, for how long, and whether logs are shared with any
+      // anti-abuse or security service, and tighten this paragraph (and
+      // the retention note under "Who else handles it") to match.
       heading: "What we collect, and when",
       paragraphs: [
         "There is one form on this website: the enquiry form on our contact page. If you complete it, we receive your name, your email address, your phone number if you choose to give one, the enquiry type you selected, and whatever you write in the message box.",
         "We do not ask for health information and we ask you not to put clinical detail into the message. A name and a number to call you back on is enough for us to get started, and a phone call is a better place for the rest of the conversation than a web form.",
-        "Beyond that, this website is a set of static files. There is no login, no account area and no database behind it. Our hosting provider keeps ordinary server access logs — which include the IP address a request came from — so that the site can be kept available and protected against abuse. We do not use those logs to identify or profile visitors, and we do not combine them with anything else.",
+        "Beyond that, this website is a set of static files. There is no login, no account area and no database behind it. Whoever hosts the site, it is normal for web hosting to keep ordinary server access logs — records that can include the IP address a request came from — so that the site stays available and is protected against abuse. Whatever those logs contain, we do not use them to identify or profile visitors, and we do not combine them with anything else.",
       ],
     },
     {
@@ -87,9 +96,13 @@ export const PRIVACY: LegalPage = {
       ],
     },
     {
-      // NEEDS CONFIRMATION: hosting provider and mailbox provider are not yet
-      // fixed for this build. Both are processors and should be named here
-      // once decided.
+      // NEEDS CONFIRMATION: item 11 — hosting provider and mailbox provider
+      // are not yet fixed for this build. Both are processors and should
+      // be named here once decided. Separately, no retention period is
+      // stated anywhere in this notice for server access logs (unlike the
+      // enquiry retention periods below) — once a host is chosen, get the
+      // log retention period from them and state it, either here or under
+      // "How long we keep it".
       heading: "Who else handles it",
       listIntro:
         "We keep the list of organisations touching your enquiry as short as we can. It is currently:",
