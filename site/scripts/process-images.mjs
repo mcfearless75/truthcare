@@ -11,10 +11,19 @@ const manifest = {};
 await mkdir(OUT, { recursive: true });
 for (const file of await readdir(SRC)) {
   const key = path.parse(file).name;
-  const img = sharp(path.join(SRC, file)).rotate(); // .rotate() bakes orientation, EXIF is dropped on output
-  const meta = await img.metadata();
-  const widths = WIDTHS.filter((w) => w <= (meta.width ?? 0));
-  if (widths.length === 0) widths.push(meta.width ?? 480);
+  const meta = await sharp(path.join(SRC, file)).metadata();
+  // sharp's metadata() always reports the *source* pixel dimensions, even on
+  // a pipeline with .rotate() queued — it reads the header, it doesn't run
+  // the pipeline. EXIF orientations 5-8 mean a 90°/270° rotation is applied
+  // on output, which swaps width and height. Without this swap, a photo with
+  // that EXIF tag gets the wrong `aspect` in the manifest, and <Pic> emits
+  // inverted width/height for a distorted render.
+  const isRotated90 = (meta.orientation ?? 1) >= 5 && (meta.orientation ?? 1) <= 8;
+  const width = isRotated90 ? meta.height : meta.width;
+  const height = isRotated90 ? meta.width : meta.height;
+  const img = sharp(path.join(SRC, file)).rotate(); // bakes orientation, EXIF is dropped on output
+  const widths = WIDTHS.filter((w) => w <= (width ?? 0));
+  if (widths.length === 0) widths.push(width ?? 480);
   await mkdir(path.join(OUT, key), { recursive: true });
   for (const w of widths) {
     const base = img.clone().resize({ width: w });
@@ -30,7 +39,7 @@ for (const file of await readdir(SRC)) {
       .jpeg({ quality: 78, mozjpeg: true })
       .toFile(path.join(OUT, key, `${w}.jpg`));
   }
-  manifest[key] = { widths, aspect: (meta.width ?? 1) / (meta.height ?? 1) };
+  manifest[key] = { widths, aspect: (width ?? 1) / (height ?? 1) };
   console.log(key, widths.join(","));
 }
 await writeFile("src/lib/images.json", JSON.stringify(manifest, null, 2));
