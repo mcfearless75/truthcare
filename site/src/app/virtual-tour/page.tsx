@@ -5,6 +5,7 @@ import { Pic } from "@/components/Pic";
 import { Reveal } from "@/components/Reveal";
 import { Gallery } from "@/components/Gallery";
 import { SectionHeading } from "@/components/SectionHeading";
+import { PageHeader } from "@/components/PageHeader";
 import { ButtonPrimary } from "@/components/Buttons";
 
 export const metadata: Metadata = {
@@ -25,48 +26,33 @@ export default function VirtualTourPage() {
           system. Deliberately not a second full-bleed photo hero: the homepage
           owns that move, and here the photographs are the content, not the
           backdrop. */}
-      <section className="pb-[var(--space-section)] pt-28 md:pt-36">
-        <div className="mx-auto max-w-6xl px-5">
-          <div className="grid gap-12 md:grid-cols-12 md:gap-10 lg:gap-16">
-            <div className="md:col-span-5">
-              <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-orange" />
-
-              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-orange-text">
-                {TOUR.eyebrow}
-              </p>
-
-              <h1 className="mt-3 font-display text-[length:var(--text-hero)] font-semibold leading-[1.03] tracking-[-0.02em] text-balance text-navy">
-                {TOUR.heading}
-              </h1>
-
-              <p className="mt-6 text-[length:var(--text-lede)] leading-relaxed text-muted">
-                {TOUR.lede}
-              </p>
-
-              <p className="mt-7 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-navy/70">
-                <span aria-hidden="true" className="h-px w-8 bg-navy/25" />
-                {SITE.address.street} &middot; {SITE.address.locality}
-              </p>
-            </div>
-
-            <div className="relative md:col-span-6 md:col-start-7 md:mt-12 lg:mt-16">
-              <span
-                aria-hidden="true"
-                className="absolute -bottom-4 -right-4 h-24 w-24 rounded-br-[1.75rem] border-b-4 border-r-4 border-orange md:-bottom-6 md:-right-6 md:h-36 md:w-36"
-              />
-              <div className="relative overflow-hidden rounded-[1.75rem] shadow-navy-lg">
-                <Pic
-                  imageKey={headerImage.key}
-                  alt={headerImage.alt}
-                  sizes="(min-width: 768px) 50vw, calc(100vw - 2.5rem)"
-                  priority
-                  className="w-full object-cover"
-                />
-              </div>
-            </div>
+      <PageHeader
+        eyebrow={TOUR.eyebrow}
+        title={TOUR.heading}
+        lede={TOUR.lede}
+        leftExtra={
+          <p className="mt-7 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-navy/70">
+            <span aria-hidden="true" className="h-px w-8 bg-navy/25" />
+            {SITE.address.street} &middot; {SITE.address.locality}
+          </p>
+        }
+      >
+        <div className="relative md:col-span-6 md:col-start-7 md:mt-12 lg:mt-16">
+          <span
+            aria-hidden="true"
+            className="absolute -bottom-4 -right-4 h-24 w-24 rounded-br-[1.75rem] border-b-4 border-r-4 border-orange md:-bottom-6 md:-right-6 md:h-36 md:w-36"
+          />
+          <div className="relative overflow-hidden rounded-[1.75rem] shadow-navy-lg">
+            <Pic
+              imageKey={headerImage.key}
+              alt={headerImage.alt}
+              sizes="(min-width: 768px) 50vw, calc(100vw - 2.5rem)"
+              priority
+              className="w-full object-cover"
+            />
           </div>
         </div>
-      </section>
+      </PageHeader>
 
       {/* ----------------------------------------------------- Features strip */}
       {/* The live tour page's own heading and four bullets, verbatim. Laid out

@@ -5,6 +5,7 @@ import { SITE } from "@/lib/site";
 import { Reveal } from "@/components/Reveal";
 import { Gallery } from "@/components/Gallery";
 import { SectionHeading } from "@/components/SectionHeading";
+import { PageHeader } from "@/components/PageHeader";
 import { ButtonPrimary, ButtonSecondary } from "@/components/Buttons";
 
 export const metadata: Metadata = {
@@ -20,41 +21,25 @@ export default function ServicesFacilitiesPage() {
       {/* ------------------------------------------------------------- Header */}
       {/* 12-col editorial split: the page title holds the left column on its
           own at hero scale, the house and its description take the right. */}
-      <section className="pb-[var(--space-section)] pt-28 md:pt-36">
-        <div className="mx-auto max-w-6xl px-5">
-          <div className="grid gap-12 md:grid-cols-12 md:gap-10 lg:gap-16">
-            <div className="md:col-span-5">
-              <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-orange" />
+      <PageHeader eyebrow={SITE.address.locality} title={SERVICES.heading}>
+        <div className="md:col-span-6 md:col-start-7 md:pt-4">
+          <h2 className="font-display text-[length:var(--text-h2)] font-semibold leading-[1.08] tracking-tight text-balance text-navy">
+            {SERVICES.beaconsfield.heading}
+          </h2>
 
-              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-orange-text">
-                {SITE.address.locality}
-              </p>
+          <p className="mt-6 text-[length:var(--text-lede)] leading-relaxed text-navy/90">
+            {SERVICES.beaconsfield.intro}
+          </p>
 
-              <h1 className="mt-3 font-display text-[length:var(--text-hero)] font-semibold leading-[1.03] tracking-[-0.02em] text-balance text-navy">
-                {SERVICES.heading}
-              </h1>
-            </div>
-
-            <div className="md:col-span-6 md:col-start-7 md:pt-4">
-              <h2 className="font-display text-[length:var(--text-h2)] font-semibold leading-[1.08] tracking-tight text-balance text-navy">
-                {SERVICES.beaconsfield.heading}
-              </h2>
-
-              <p className="mt-6 text-[length:var(--text-lede)] leading-relaxed text-navy/90">
-                {SERVICES.beaconsfield.intro}
-              </p>
-
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
-                <ButtonPrimary href={SERVICES.cta.href} label={SERVICES.cta.label} />
-                <ButtonSecondary
-                  href={SERVICES.gallery.cta.href}
-                  label={SERVICES.gallery.cta.label}
-                />
-              </div>
-            </div>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
+            <ButtonPrimary href={SERVICES.cta.href} label={SERVICES.cta.label} />
+            <ButtonSecondary
+              href={SERVICES.gallery.cta.href}
+              label={SERVICES.gallery.cta.label}
+            />
           </div>
         </div>
-      </section>
+      </PageHeader>
 
       {/* -------------------------------------------------------- At A Glance */}
       {/* Navy slab. Six items on hairline rules with orange index markers —
