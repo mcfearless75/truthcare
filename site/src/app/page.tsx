@@ -48,23 +48,25 @@ export default function HomePage() {
         </div>
 
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-16 pt-36 md:pb-24 md:pt-48">
-          <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-paper">
-            <span aria-hidden="true" className="h-px w-10 bg-orange" />
-            {SITE.address.name} &middot; {SITE.address.locality}
-          </p>
+          <Reveal>
+            <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-paper">
+              <span aria-hidden="true" className="h-px w-10 bg-orange" />
+              {SITE.address.name} &middot; {SITE.address.locality}
+            </p>
 
-          <h1 className="mt-6 max-w-[18ch] font-display text-[length:var(--text-hero)] font-semibold leading-[1.03] tracking-[-0.02em] text-balance text-paper">
-            {HOME.hero.title}
-          </h1>
+            <h1 className="mt-6 max-w-[18ch] font-display text-[length:var(--text-hero)] font-semibold leading-[1.03] tracking-[-0.02em] text-balance text-paper">
+              {HOME.hero.title}
+            </h1>
 
-          <p className="mt-6 max-w-xl text-[length:var(--text-lede)] leading-relaxed text-paper/90">
-            {HOME.hero.lede}
-          </p>
+            <p className="mt-6 max-w-xl text-[length:var(--text-lede)] leading-relaxed text-paper/90">
+              {HOME.hero.lede}
+            </p>
 
-          <div className={`mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4 ${DARK_FOCUS}`}>
-            <ButtonPrimary href={primaryCta.href} label={primaryCta.label} />
-            <ButtonSecondaryOnDark href={secondaryCta.href} label={secondaryCta.label} />
-          </div>
+            <div className={`mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4 ${DARK_FOCUS}`}>
+              <ButtonPrimary href={primaryCta.href} label={primaryCta.label} />
+              <ButtonSecondaryOnDark href={secondaryCta.href} label={secondaryCta.label} />
+            </div>
+          </Reveal>
         </div>
       </section>
 

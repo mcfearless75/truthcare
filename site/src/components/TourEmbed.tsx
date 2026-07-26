@@ -73,7 +73,7 @@ export function TourEmbed({
       tabIndex={-1}
       role="group"
       aria-label={iframeTitle}
-      className="relative isolate aspect-[4/3] min-h-[26rem] overflow-hidden rounded-[1.75rem] bg-navy shadow-navy-lg focus-visible:outline-paper! sm:aspect-[16/10] sm:min-h-0 lg:aspect-[16/9]"
+      className="relative isolate w-full aspect-[4/3] min-h-[26rem] overflow-hidden rounded-[1.75rem] bg-navy shadow-navy-lg focus-visible:outline-paper! sm:aspect-[16/10] sm:min-h-0 lg:aspect-[16/9]"
     >
       {isLoaded ? (
         <iframe

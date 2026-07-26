@@ -1,3 +1,5 @@
+import { Reveal } from "./Reveal";
+
 interface PageHeaderProps {
   eyebrow: string;
   title: string;
@@ -29,23 +31,25 @@ export function PageHeader({ eyebrow, title, lede, leftExtra, children }: PageHe
       <div className="mx-auto max-w-6xl px-5">
         <div className="grid gap-12 md:grid-cols-12 md:gap-10 lg:gap-16">
           <div className="md:col-span-5">
-            <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-orange" />
+            <Reveal>
+              <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-orange" />
 
-            <p className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-orange-text">
-              {eyebrow}
-            </p>
-
-            <h1 className="mt-3 font-display text-[length:var(--text-hero)] font-semibold leading-[1.03] tracking-[-0.02em] text-balance text-navy">
-              {title}
-            </h1>
-
-            {lede && (
-              <p className="mt-6 text-[length:var(--text-lede)] leading-relaxed text-muted">
-                {lede}
+              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-orange-text">
+                {eyebrow}
               </p>
-            )}
 
-            {leftExtra}
+              <h1 className="mt-3 font-display text-[length:var(--text-hero)] font-semibold leading-[1.03] tracking-[-0.02em] text-balance text-navy">
+                {title}
+              </h1>
+
+              {lede && (
+                <p className="mt-6 text-[length:var(--text-lede)] leading-relaxed text-muted">
+                  {lede}
+                </p>
+              )}
+
+              {leftExtra}
+            </Reveal>
           </div>
 
           {children}

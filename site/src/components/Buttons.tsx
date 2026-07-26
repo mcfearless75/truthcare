@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const base =
-  "inline-flex items-center justify-center rounded-full px-7 py-3.5 font-semibold text-base transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 min-h-12";
+  "inline-flex items-center justify-center rounded-full px-7 py-3.5 font-semibold text-base transition duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:shadow-navy-md active:translate-y-0 active:shadow-none min-h-12";
 
 interface ButtonProps {
   href: string;

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { withBasePath } from "@/lib/basePath";
 
 const NAV = [
@@ -15,14 +15,34 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
+  // Subtle depth cue once the page scrolls under the sticky header — the
+  // border alone reads flat against busy hero photography.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 bg-paper/95 backdrop-blur border-b border-navy/10">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
-        <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <img src={withBasePath("/images/brand-logo/480.webp")} alt="Truth Care Group" width={48} height={48} />
-          <span className="font-display text-lg font-semibold tracking-tight">Truth Care Group</span>
+    <header
+      className={`sticky top-0 z-50 border-b border-navy/10 bg-paper/95 backdrop-blur transition-shadow duration-300 ${
+        scrolled ? "shadow-sm" : "shadow-none"
+      }`}
+    >
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:py-5">
+        <Link href="/" className="group flex items-center gap-4" onClick={() => setOpen(false)}>
+          <img
+            src={withBasePath("/images/brand-logo/480.webp")}
+            alt="Truth Care Group"
+            width={64}
+            height={64}
+            className="h-12 w-12 shrink-0 transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover:scale-105 sm:h-14 sm:w-14 md:h-16 md:w-16"
+          />
+          <span className="font-display text-lg font-semibold tracking-tight sm:text-xl">Truth Care Group</span>
         </Link>
 
         <nav aria-label="Main navigation" className="hidden lg:block">
@@ -32,8 +52,8 @@ export function SiteHeader() {
                 <Link
                   href={item.href}
                   aria-current={pathname === item.href ? "page" : undefined}
-                  className={`rounded-full px-4 py-2.5 text-[0.95rem] font-medium transition-colors hover:bg-navy/5 ${
-                    pathname === item.href ? "text-orange-text" : "text-navy"
+                  className={`relative rounded-full px-4 py-2.5 text-[0.95rem] font-medium transition-colors duration-200 hover:bg-navy/5 after:absolute after:inset-x-4 after:-bottom-px after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-orange after:transition-transform after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:scale-x-100 ${
+                    pathname === item.href ? "text-orange-text after:scale-x-100" : "text-navy"
                   }`}
                 >
                   {item.label}
