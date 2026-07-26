@@ -16,5 +16,16 @@ export const SERVICES = {
       ],
     },
   },
+  /**
+   * New copy for this build. The live page repeats the same photo gallery three
+   * times with no heading at all; here it is rendered once, introduced, and the
+   * full set lives on /virtual-tour.
+   */
+  gallery: {
+    heading: "Inside Beaconsfield House",
+    hint: "Six photographs of the house. Select any one to open it full size, or see the full set on the tour page.",
+    label: "Photographs of Beaconsfield House",
+    cta: { label: "Take a Look Inside", href: "/virtual-tour" },
+  },
   cta: { label: "CONTACT US", href: "/contact-us" },
 } as const;
