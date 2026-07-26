@@ -27,7 +27,7 @@ interface PageHeaderProps {
  */
 export function PageHeader({ eyebrow, title, lede, leftExtra, children }: PageHeaderProps) {
   return (
-    <section className="pb-[var(--space-section)] pt-28 md:pt-36">
+    <section className="pb-[var(--space-section)] pt-10 md:pt-16">
       <div className="mx-auto max-w-6xl px-5">
         <div className="grid gap-12 md:grid-cols-12 md:gap-10 lg:gap-16">
           <div className="md:col-span-5">
