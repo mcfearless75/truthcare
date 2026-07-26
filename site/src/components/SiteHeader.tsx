@@ -56,26 +56,29 @@ export function SiteHeader() {
         </button>
       </div>
 
-      {open && (
-        <nav id="mobile-nav" aria-label="Main navigation" className="lg:hidden border-t border-navy/10 bg-paper">
-          <ul className="px-5 py-4 space-y-1">
-            {NAV.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  aria-current={pathname === item.href ? "page" : undefined}
-                  className={`block rounded-xl px-4 py-3.5 text-lg font-medium ${
-                    pathname === item.href ? "bg-navy/5 text-orange-text" : "text-navy"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
+      <nav
+        id="mobile-nav"
+        aria-label="Main navigation"
+        hidden={!open}
+        className="lg:hidden border-t border-navy/10 bg-paper"
+      >
+        <ul className="px-5 py-4 space-y-1">
+          {NAV.map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                onClick={() => setOpen(false)}
+                aria-current={pathname === item.href ? "page" : undefined}
+                className={`block rounded-xl px-4 py-3.5 text-lg font-medium ${
+                  pathname === item.href ? "bg-navy/5 text-orange-text" : "text-navy"
+                }`}
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 }

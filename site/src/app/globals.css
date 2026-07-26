@@ -48,13 +48,16 @@ body {
   }
 }
 
-/* scroll reveal (Task 3 wires the observer) */
-.reveal {
+/* scroll reveal (Task 3 wires the observer). Only hide .reveal content when
+   the `js` flag class is present on <html> (set by an inline beforeInteractive
+   script in the root layout) — with JS disabled or failed, content stays
+   visible by default. */
+.js .reveal {
   opacity: 0;
   transform: translateY(1.25rem);
   transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
 }
-.reveal.is-visible { opacity: 1; transform: none; }
+.js .reveal.is-visible { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
 }

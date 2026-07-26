@@ -8,7 +8,7 @@ export function SiteFooter() {
         <div>
           <p className="font-display text-xl font-semibold">Truth Care Group</p>
           <p className="mt-3 text-paper/80 max-w-xs">
-            Specialist residential brain injury rehabilitation at Beaconsfield House, Bristol.
+            Specialist residential brain injury rehabilitation at Beaconsfield House, Weston-super-Mare.
           </p>
         </div>
         <div>
