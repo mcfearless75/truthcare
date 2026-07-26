@@ -33,7 +33,7 @@ npm run test:e2e   # builds, then runs the full Playwright suite
 
 Target was Performance ≥95 and Accessibility 100. Both pages clear that comfortably, at maximum score.
 
-The Best Practices 96 is not a real issue. It comes from a Next.js 16 canary quirk where the client-side router prefetches other pages' data using a filename pattern (`page.__PAGE__.txt`) that doesn't quite match what the static export writes to disk, so hovering a nav link logs a harmless 404 in the console. It doesn't affect anything a visitor sees or does; full page navigation still works. Fixing it means patching Next.js router internals, which is out of scope for a content rebuild. Worth knowing about, not worth chasing.
+The Best Practices 96 is not a real issue. The site pins `next@16.2.12`, a stable release, not a canary — the prefetch 404 below is a genuine behaviour of that stable version, not a canary quirk. The client-side router prefetches other pages' data using a filename pattern (`page.__PAGE__.txt`) that doesn't quite match what the static export writes to disk, so hovering a nav link logs a harmless 404 in the console. It doesn't affect anything a visitor sees or does; full page navigation still works. Fixing it means patching Next.js router internals, which is out of scope for a content rebuild. Worth knowing about, not worth chasing.
 
 ### HTML weight per page (built output, `site/out/`)
 
@@ -104,7 +104,7 @@ Five image files in the build land on exactly 1536×1024 pixels, a dimension cha
 - `lifestyle-dogwalk`
 - `graphic-conditions-overview`
 
-Of these, **two are live on the site and captioned as real photographs of Beaconsfield House**: the lounge/piano shot and the sensory room shot, both in the virtual-tour gallery with captions ("Lounge and dining area", "The sensory room") that present them as the actual rooms. The other three (`lifestyle-cooking`, `lifestyle-dogwalk`, `graphic-conditions-overview`) aren't used anywhere on the site; they were excluded from the gallery deliberately and are just unused files sitting in the image pipeline.
+Of these, **two are live on the site and captioned as real photographs of Beaconsfield House**: the lounge/piano shot and the sensory room shot, both in the virtual-tour gallery with captions ("Lounge and dining area", "The sensory room") that present them as the actual rooms. The other three (`lifestyle-cooking`, `lifestyle-dogwalk`, `graphic-conditions-overview`) were never linked from any page, but they were not just unused files sitting harmlessly in the image pipeline: they still built into `site/out/images/` and were publicly fetchable by anyone who found or guessed the URL. That's now fixed — all three have been removed from `assets-src/` and no longer ship in the build. The lounge and sensory room images below are the only provenance question still open.
 
 If the lounge and sensory room images are AI-generated rather than real photographs of the premises, **they must be pulled before launch.** Misrepresenting what a CQC-regulated care home's rooms actually look like is a regulatory problem, not a cosmetic one: a prospective family or a CQC inspector has a reasonable expectation that a photo captioned "the sensory room" is the sensory room. Please confirm the provenance of these two images specifically. If they're AI-generated, send me real photographs of the lounge/dining area and the sensory room and I'll swap them in; that's a five-minute fix once I have the files.
 
@@ -124,12 +124,26 @@ The site's schema markup (the structured data that helps Google show a proper bu
 
 The site currently only has the mobile number (07966 284872), pulled from the live site and the CQC register. If there's a landline you'd rather list as the primary contact number, tell me and I'll add or swap it.
 
+### 8. Security headers need setting at the host
+
+A static export has no server of its own, so it cannot set its own HTTP response headers — whatever host you choose (Vercel, Netlify, or similar) needs these configured:
+
+- `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload`
+- `X-Content-Type-Options: nosniff`
+- `Referrer-Policy: strict-origin-when-cross-origin`
+- `X-Frame-Options: DENY`
+
+Vercel and Netlify both support this through a config file (`vercel.json` / `netlify.toml`); tell me which host you land on and I'll add it before cutover.
+
+**One warning if a strict Content-Security-Policy gets added later:** `site/src/app/layout.tsx` ships a small inline `<script>` in `<head>` (it sets a flag class on `<html>` so scroll-reveal content stays visible if JavaScript is unavailable — see globals.css). A strict CSP without `'unsafe-inline'` blocks inline scripts by default, so that script would need a nonce added. Miss this and every scroll-reveal animation on the site silently stops working, with nothing in the console to point at why. The four headers above don't touch this; only a future CSP addition would.
+
 ## A separate fix, not part of this rebuild: do this today
 
 **The current live Wix homepage's "Make a Referral" button points at `mailto:info@truthgroupcare.co.uk`.** That domain is transposed; it should be `truthcaregroup.co.uk`. Every referral anyone has sent by clicking that button has bounced, silently, with no error shown to the sender. This has nothing to do with the rebuild and doesn't need to wait for DNS cutover. Go into Wix today and fix that link. I'd treat this as the most urgent item in this whole document.
 
 ## Decisions made during the build you should know about
 
+- **Every public URL is unchanged.** All six live URLs — the homepage plus `/services-facilities`, `/virtual-tour`, `/who-we-support`, `/our-team` and `/contact-us` — carry over to the rebuild exactly as they are now. That means no redirect map is needed and no ranking risk from the migration itself: search engines see the same URLs before and after cutover, just with new content behind them. You're approving a DNS cutover, not a URL migration, and that's the single biggest risk in a rebuild like this, so it's worth stating plainly rather than leaving you to assume it.
 - **Weston-super-Mare, not Bristol, used throughout.** The live site's page titles say Bristol, but Beaconsfield House's actual CQC-registered address is in Weston-super-Mare. I've used the real address everywhere except the team bios, where "Bristol" correctly refers to hospitals staff previously worked at (Frenchay, Southmead); that's accurate and stays.
 - **No cookie consent banner.** This build sets zero cookies and writes nothing to local or session storage, verified by an automated test that runs on every page. The virtual tour is click-to-load specifically so this stays true. Under UK PECR, a consent banner is only required when you're storing something on a visitor's device; since nothing is stored, a banner would just be a box people dismiss for no reason. If you ever add analytics, a booking widget, or anything else that sets a cookie, this decision needs revisiting and a real consent banner needs to go in before that ships.
 - **The contact form no longer asks for a postal address.** The old Wix form collected first name, last name, email, address, phone and a message. The new form drops the postal address: a name, email and phone number is enough to start a conversation, and collecting a full postal address up front doesn't serve any real purpose for a first enquiry. This is data minimisation, done deliberately, not an oversight.
