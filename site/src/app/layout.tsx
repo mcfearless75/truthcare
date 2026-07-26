@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Fraunces, Figtree } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/site";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -37,7 +39,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GB" className={`${fraunces.variable} ${figtree.variable}`}>
-      <body>{children}</body>
+      <body>
+        <SiteHeader />
+        <main>{children}</main>
+        <SiteFooter />
+      </body>
     </html>
   );
 }
