@@ -7,8 +7,11 @@ import type { LegalPage } from "./types";
  *
  * Everything here is written to describe what this build actually does:
  * a static export with no cookies, no analytics and no third-party requests
- * on page load, and a single enquiry form posting to Formspree. If the site
- * gains analytics, an embed, a booking widget or a login, both of these
+ * on page load, an enquiry form posting to Formspree, and a Giraffe360
+ * virtual tour behind a click-to-load facade (src/components/TourEmbed.tsx)
+ * that requests nothing from Giraffe360 until the visitor presses play. If
+ * the site gains analytics, a booking widget, a login, or a second embed —
+ * or if the tour is ever changed to load on page view — both of these
  * documents are wrong until they are updated.
  *
  * Items still needing client sign-off are marked NEEDS CONFIRMATION in the
@@ -191,7 +194,7 @@ export const COOKIES: LegalPage = {
   eyebrow: "Legal",
   heading: "Cookie policy",
   intro:
-    "This website does not set any cookies. Not analytics, not advertising, not preferences. This page explains what that means and why you have not been asked to accept anything.",
+    "This website does not set any cookies. Not analytics, not advertising, not preferences. This page explains what that means, why you have not been asked to accept anything, and the one thing on the site — our virtual tour — that only loads if you ask it to.",
   updated: UPDATED,
   updatedIso: UPDATED_ISO,
   sections: [
@@ -205,14 +208,15 @@ export const COOKIES: LegalPage = {
       // NEEDS CONFIRMATION: item 15 — "no analytics" (and the rest of this
       // list) is true of this build as shipped, but it is a statement
       // about current fact, not a permanent guarantee. It becomes false
-      // the moment analytics, an embed, or any tracking is added, and this
-      // page (and the privacy notice) must be updated at that point.
+      // the moment analytics, or any tracking, is added, and this page (and
+      // the privacy notice) must be updated at that point. The virtual tour
+      // is the one embed on the site and is covered separately below.
       heading: "What that means in practice",
       listIntro: "Specifically, this site has:",
       list: [
         "no analytics — no Google Analytics, no Meta pixel, no heat-mapping, no visitor counter of any kind",
         "no advertising or retargeting tags, so nothing follows you to another site after you leave",
-        "no embedded third-party content on page load — no YouTube player, no Google Map, no social feed, no chat widget",
+        "nothing third-party that loads on page view — no YouTube player, no Google Map, no social feed, no chat widget, and the virtual tour stays unloaded until you press play",
         "no local storage or session storage, which are the other two places a site can leave data on your device",
         "self-hosted fonts, served from our own domain, so loading a page does not make a request to Google or anyone else",
       ],
@@ -224,14 +228,36 @@ export const COOKIES: LegalPage = {
       heading: "Why there is no cookie banner",
       paragraphs: [
         "UK law — the Privacy and Electronic Communications Regulations — requires your consent before a site stores anything on your device that is not strictly necessary. We do not store anything on your device at all, so there is nothing to ask you about.",
-        "Putting a consent banner on a site that sets no cookies would mean making you dismiss a box for no reason, and it would teach you to click through banners that do matter elsewhere. We would rather not do that. If we ever add something that genuinely needs consent, you will be asked properly, before it loads, with a real choice to decline.",
+        "Putting a consent banner on a site that sets no cookies would mean making you dismiss a box for no reason, and it would teach you to click through banners that do matter elsewhere. We would rather not do that.",
+        "The virtual tour is the one thing here that could involve another company's cookies, and it is handled the way we would want it handled: it does not load at all unless you press play, so pressing play is the choice. That is described under \"The virtual tour\" below.",
       ],
     },
     {
-      heading: "The one time information leaves this site",
+      heading: "Sending us an enquiry",
       paragraphs: [
         "If you fill in the enquiry form on our contact page and press send, your browser makes a single request to Formspree, the service that delivers the form to our mailbox. That happens only when you submit — never on page load, and never if you simply read the page and leave.",
         "We do not set or read any cookie as part of that submission, and nothing about it is used to track you. What Formspree receives, how long it is kept and where it goes are all covered in our privacy notice.",
+      ],
+    },
+    {
+      // NEEDS CONFIRMATION: item 17 — Giraffe360's own cookie and storage
+      // behaviour has NOT been verified against their documentation, their
+      // cookie notice, or a real loaded tour in a clean browser profile.
+      // Nothing below states what they set, only that they may set
+      // something, because that is genuinely all we know. Before launch:
+      // check Giraffe360's published cookie/privacy documentation, and
+      // either name what a loaded tour sets and link their notice here, or
+      // confirm it sets nothing and say so. Whatever the answer, the
+      // click-to-load control described below is what makes this lawful
+      // without a consent banner and must not be removed — the tour must
+      // never be changed to load on page view without a consent mechanism
+      // being built first.
+      heading: "The virtual tour",
+      paragraphs: [
+        "Our virtual tour page carries a 360° tour of Beaconsfield House. We did not build it and we do not host it: it is made and hosted by Giraffe360, a separate company, and it plays from their computers rather than ours.",
+        "So the tour does not start on its own. What you see when the page opens is a photograph of the house with a play button on it, and until you press that button your browser does not contact Giraffe360 at all. You can read the page, look through the photographs and leave again without anything of yours reaching them.",
+        "If you do press play, the tour loads and your browser connects to Giraffe360 directly. From that moment they may set their own cookies or store data on your device under their own policies, and that is outside our control. It applies to that visit only — reload the page or come back later and the tour is a photograph and a button again until you choose otherwise.",
+        "If you would rather not connect to them, simply do not press play. The photographs further down that page show the same rooms, and you are always welcome to come and see the house in person instead.",
       ],
     },
     {
