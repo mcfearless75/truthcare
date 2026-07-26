@@ -84,7 +84,7 @@ Pipeline per scope §4:
 - Client-side validation with clear inline errors; server rejection handled gracefully with the phone number shown as fallback
 - Honeypot field for spam; no CAPTCHA
 - Success state confirms delivery and sets response expectations
-- Posts to Formspree endpoint (placeholder `FORMSPREE_ENDPOINT` constant until account exists)
+- Posts to Formspree endpoint: `https://formspree.io/f/xzdnklod` (confirmed 26 July 2026)
 - Privacy notice linked adjacent to the submit button
 
 ## 7. SEO & schema
@@ -124,7 +124,7 @@ Everything in scope doc §8 (group pages, dashboards, careers, blog, CMS, chatbo
 ## 11. Open questions (carried from scope §10)
 
 1. Landline — add alongside mobile, or mobile-only?
-2. Formspree endpoint — pending Paul's account setup
+2. ~~Formspree endpoint~~ — resolved: `https://formspree.io/f/xzdnklod`
 3. Image provenance — four flagged files need client confirmation
 4. Better headshots for Kumi and Alison — or ship with constraints above
 5. Confirmed hours/geo for `LocalBusiness` schema
