@@ -2,6 +2,18 @@ import { SITE } from "./site";
 import type { Faq } from "@/content/types";
 
 /**
+ * Serialise a JSON-LD object for safe embedding inside a script tag via
+ * dangerouslySetInnerHTML. Escaping the angle bracket prevents a closing
+ * script-tag substring appearing anywhere in the data (e.g. a future FAQ
+ * answer) from closing the script tag early and breaking the page. The
+ * unicode escape used here is a valid JSON escape for that character, so
+ * the output still parses identically as JSON.
+ */
+export function jsonLdScript(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
+/**
  * Build-time serialisation of our own FAQ content into schema.org FAQPage
  * JSON-LD. Always derive this from `SUPPORT.faqs` at render time — never
  * hand-duplicate the question/answer text here, or the structured data and
@@ -34,8 +46,10 @@ export function localBusinessJsonLd() {
     address: {
       "@type": "PostalAddress",
       name: SITE.address.name,
+      streetAddress: SITE.address.street,
       addressLocality: SITE.address.locality,
       addressRegion: SITE.address.region,
+      postalCode: SITE.address.postcode,
       addressCountry: SITE.address.country,
     },
     // geo + openingHours added when client confirms (spec open question 5)

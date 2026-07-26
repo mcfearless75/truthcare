@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SUPPORT } from "@/content/support";
 import { SITE } from "@/lib/site";
-import { faqPageJsonLd } from "@/lib/schema";
+import { faqPageJsonLd, jsonLdScript } from "@/lib/schema";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { PageHeader } from "@/components/PageHeader";
@@ -209,7 +209,7 @@ export default function WhoWeSupportPage() {
       {/* Build-time serialisation of SUPPORT.faqs — no user input, XSS-safe. */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(SUPPORT.faqs)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(faqPageJsonLd(SUPPORT.faqs)) }}
       />
     </>
   );

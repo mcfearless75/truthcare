@@ -20,8 +20,8 @@ export function FaqAccordion({ faqs }: { faqs: Faq[] }) {
               +
             </span>
           </summary>
-          {faq.answer.split("\n\n").map((paragraph) => (
-            <p key={paragraph.slice(0, 32)} className="mt-3 max-w-prose leading-relaxed text-muted">
+          {faq.answer.split("\n\n").map((paragraph, index) => (
+            <p key={`${faq.question}-${index}`} className="mt-3 max-w-prose leading-relaxed text-muted">
               {paragraph}
             </p>
           ))}
