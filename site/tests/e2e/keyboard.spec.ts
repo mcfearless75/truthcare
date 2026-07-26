@@ -57,17 +57,23 @@ test.describe("keyboard activation", () => {
   }) => {
     await page.goto("/virtual-tour");
 
-    // The last focusable element before the gallery grid in document order is
-    // the header's own "Contact Us" nav link (nothing else on this page is
-    // interactive before the thumbnails) — one real Tab press should land
-    // exactly on the first thumbnail.
+    // The last focusable element before the page's own content is the
+    // header's "Contact Us" nav link. Since the virtual tour became a real
+    // Giraffe360 embed there is exactly one interactive element between it
+    // and the gallery — the tour's click-to-load button — so it takes two
+    // real Tab presses to reach the first thumbnail, not one. Asserting the
+    // intermediate stop keeps this honest: if another control is added
+    // above the gallery, this fails rather than silently drifting.
     const lastNavLink = page
       .getByRole("navigation", { name: "Main navigation" })
       .getByRole("link", { name: "Contact Us" })
       .first();
     await lastNavLink.focus();
-    await page.keyboard.press("Tab");
 
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("button", { name: "Start the virtual tour" })).toBeFocused();
+
+    await page.keyboard.press("Tab");
     const firstThumbnail = page.getByRole("button", { name: /View larger photo\.$/ }).first();
     await expect(firstThumbnail).toBeFocused();
 
@@ -90,6 +96,27 @@ test.describe("keyboard activation", () => {
     // The open question this project could never verify with a synthetic
     // browser: does focus actually return to the thumbnail that opened it?
     await expect(firstThumbnail).toBeFocused();
+  });
+
+  test("virtual tour loads via Enter on its click-to-load button", async ({ page }) => {
+    // Never reach Giraffe360 from a test run — the point of this test is that
+    // our button works, not that their tour renders.
+    await page.route("**://*.giraffe360.com/**", (route) => route.abort());
+    await page.goto("/virtual-tour");
+
+    await expect(page.locator("iframe")).toHaveCount(0);
+
+    const activate = page.getByRole("button", { name: "Start the virtual tour" });
+    await activate.focus();
+    await expect(activate).toBeFocused();
+
+    await page.keyboard.press("Enter");
+    await expect(page.locator("iframe")).toHaveCount(1);
+
+    // Activation destroys the button that was focused. If nothing catches
+    // focus it falls to <body> and the visitor's next Tab restarts at the top
+    // of the page — so focus must land on the tour frame instead.
+    await expect(page.locator("iframe").locator("xpath=..")).toBeFocused();
   });
 
   test("FAQ entries toggle open and closed via Enter on the summary", async ({ page }) => {
