@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Fraunces, Figtree } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import { SITE } from "@/lib/site";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -39,11 +38,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" className={`${fraunces.variable} ${figtree.variable}`}>
+    <html
+      lang="en-GB"
+      className={`${fraunces.variable} ${figtree.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
+      </head>
       <body>
-        <Script id="js-flag" strategy="beforeInteractive">
-          {`document.documentElement.classList.add('js')`}
-        </Script>
         <SiteHeader />
         <main>{children}</main>
         <SiteFooter />
