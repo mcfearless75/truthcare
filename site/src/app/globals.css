@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #0f2c3f;
+  --color-orange: #f5921e;
+  --color-orange-text: #ad5a10;
+  --color-orange-text-lg: #c4661a;
+  --color-ink: #1a1a1a;
+  --color-paper: #ffffff;
+  --color-muted: #5a6570;
+
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-figtree);
+
+  --text-hero: clamp(2.5rem, 1.4rem + 4.5vw, 4.5rem);
+  --text-h2: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem);
+  --text-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-lede: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+
+  --space-section: clamp(4rem, 3rem + 5vw, 8rem);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-paper text-navy font-body antialiased;
+}
+
+::selection {
+  background: var(--color-orange);
+  color: var(--color-navy);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-orange-text);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* scroll reveal (Task 3 wires the observer) */
+.reveal {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
