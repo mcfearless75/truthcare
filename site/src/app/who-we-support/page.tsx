@@ -193,7 +193,7 @@ export default function WhoWeSupportPage() {
                   ))}
                   <li>
                     <a
-                      href={`tel:${SUPPORT.referrals.phone.replace(/\s/g, "")}`}
+                      href={SUPPORT.referrals.phoneHref}
                       className="text-[length:var(--text-lede)] font-semibold text-navy underline decoration-navy/30 underline-offset-4 hover:text-orange-text hover:decoration-orange-text"
                     >
                       {SUPPORT.referrals.phone}
