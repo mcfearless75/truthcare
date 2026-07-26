@@ -1,0 +1,20 @@
+export const SERVICES = {
+  heading: "Our Services",
+  beaconsfield: {
+    heading: "Beaconsfield House, Weston-Super-Mare",
+    intro:
+      "A six bed transitional and residential ABI service designed to foster independence and provide a supportive, empowering environment that enables effective neurorehabilitation. Ideally located within walking distance of the seafront, shops, cafés, cinema, and leisure facilities.",
+    atAGlance: {
+      heading: "At A Glance",
+      items: [
+        "Spacious, well-furnished ensuite bedrooms",
+        "Fully equipped kitchen/diner",
+        "Utility with laundry facilities",
+        "Large lounge and dining room, with a piano and TV",
+        "Dedicated sensory and therapy room",
+        "Secure garden, with outdoor dining, raised beds for gardening and a sensory area",
+      ],
+    },
+  },
+  cta: { label: "CONTACT US", href: "/contact-us" },
+} as const;
