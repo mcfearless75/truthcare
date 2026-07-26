@@ -13,14 +13,13 @@ export const CONTACT = {
   },
   form: {
     heading: "Contact information",
-    fields: [
-      "First name",
-      "Last name",
-      "Email",
-      "Address",
-      "Phone",
-      "Additional information",
-    ],
+    // The live Wix site's field set (first name, last name, email,
+    // address, phone, additional information) is deliberately NOT
+    // reproduced here. `ContactForm.tsx` defines its own, data-minimised
+    // field set (name, email, phone, enquiry type, message) and
+    // intentionally omits the postal address the old site collected —
+    // there is no need for it to answer an enquiry. Do not re-add a
+    // `fields` array here to "match" the old site.
     submitLabel: "Submit",
   },
 } as const;

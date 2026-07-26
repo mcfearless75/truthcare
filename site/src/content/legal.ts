@@ -16,6 +16,9 @@ import type { LegalPage } from "./types";
  * defensible standard positions, not invented facts.
  */
 
+// NEEDS CONFIRMATION: item 14 — UPDATED / UPDATED_ISO are placeholder
+// values set for this build, not a real publication date. Change both to
+// the date this notice is actually reviewed and published before launch.
 const UPDATED = "26 July 2026";
 const UPDATED_ISO = "2026-07-26";
 
@@ -28,10 +31,15 @@ export const PRIVACY: LegalPage = {
   updatedIso: UPDATED_ISO,
   sections: [
     {
-      // NEEDS CONFIRMATION: registered company number, ICO data protection
-      // fee registration number, and whether a Data Protection Officer has
-      // been appointed (a small provider is unlikely to be required to, but
-      // the named responsible person should be stated).
+      // NEEDS CONFIRMATION: item 1 — "Truth Care Group Ltd" is the exact
+      // registered legal name to use as data controller; it was sourced
+      // from the CQC-register comment in lib/site.ts, not confirmed by the
+      // client. Also: item 2, registered company number (currently
+      // omitted, should be stated); item 3, ICO data protection fee
+      // registration number, or confirmation of exemption (currently
+      // omitted); and item 4, whether a Data Protection Officer has been
+      // appointed (a small provider is unlikely to be required to, but the
+      // named responsible person should be stated).
       heading: "Who we are",
       paragraphs: [
         "Truth Care Group Ltd is the data controller for the personal information described in this notice. That means we decide why it is collected and what happens to it.",
@@ -39,10 +47,18 @@ export const PRIVACY: LegalPage = {
       ],
     },
     {
+      // NEEDS CONFIRMATION: item 5 — this paragraph used to assert that a
+      // separate privacy document already exists and is "given to
+      // residents and their representatives when a placement begins".
+      // That was never confirmed and has been rewritten below so it only
+      // scopes what this web notice covers, without claiming any specific
+      // document exists. If a separate care-records privacy notice does
+      // exist (or is created), this section should be updated to name and
+      // link it.
       heading: "What this notice covers",
       paragraphs: [
         "This notice covers truthcaregroup.co.uk only — the enquiries you send us through this website and the records our web hosting keeps.",
-        "It does not cover the care records we hold about the people living at Beaconsfield House. Those are far more detailed, are held under different rules, and are explained in the separate privacy information given to residents and their representatives when a placement begins. If you are already working with us and want that document, ask us and we will send it.",
+        "It does not cover the care records we hold about the people living at Beaconsfield House. Those are far more detailed and are held under separate rules that reflect our duties as a CQC-registered care provider. If you are a resident or a representative and would like to know more about how those records are handled, please ask us.",
       ],
     },
     {
@@ -54,11 +70,15 @@ export const PRIVACY: LegalPage = {
       ],
     },
     {
-      // NEEDS CONFIRMATION: the Article 9(2)(h) / DPA 2018 Sch 1 Pt 1 para 2
-      // route below is the right one for a CQC-registered provider handling
-      // health information in the course of arranging care, but the client's
-      // own DPO or solicitor should confirm it against their appropriate
-      // policy document.
+      // NEEDS CONFIRMATION: item 6 — the legitimate-interests balancing
+      // asserted below ("we have weighed that against your rights and are
+      // satisfied it is fair") is a standard and defensible position, but
+      // it is not backed by a documented Legitimate Interests Assessment;
+      // one should exist before this goes live. Also item 7 — the Article
+      // 9(2)(h) / DPA 2018 Sch 1 Pt 1 para 2 route below is the right one
+      // for a CQC-registered provider handling health information in the
+      // course of arranging care, but the client's own DPO or solicitor
+      // should confirm it against their appropriate policy document.
       heading: "Why we use it, and our lawful basis",
       paragraphs: [
         "We use what you send us to reply to you: to answer a question, arrange a visit, or start the conversation about a possible referral or placement. We do not use it to send you marketing, we do not add you to a mailing list, and we never sell or rent it.",
@@ -103,6 +123,14 @@ export const PRIVACY: LegalPage = {
       ],
     },
     {
+      // NEEDS CONFIRMATION: item 13 — "access to the enquiry mailbox and
+      // the Formspree account is limited to the staff who need it" is
+      // stated as fact; confirm that mailbox and Formspree account access
+      // is actually restricted before this goes live. Also item 12 — "we
+      // will tell the Information Commissioner's Office within 72 hours"
+      // is the statutory deadline and safe to state, but assumes an
+      // incident/breach-notification process actually exists to deliver
+      // it; confirm one is in place.
       heading: "Keeping it safe",
       paragraphs: [
         "The whole site, including the form, is served over an encrypted connection, and the submission is encrypted in transit. Access to the enquiry mailbox and the Formspree account is limited to the staff who need it to do their job.",
@@ -161,6 +189,11 @@ export const COOKIES: LegalPage = {
       ],
     },
     {
+      // NEEDS CONFIRMATION: item 15 — "no analytics" (and the rest of this
+      // list) is true of this build as shipped, but it is a statement
+      // about current fact, not a permanent guarantee. It becomes false
+      // the moment analytics, an embed, or any tracking is added, and this
+      // page (and the privacy notice) must be updated at that point.
       heading: "What that means in practice",
       listIntro: "Specifically, this site has:",
       list: [
