@@ -23,3 +23,19 @@ export function ButtonSecondary({ href, label }: ButtonProps) {
     </Link>
   );
 }
+
+/**
+ * Outline variant for navy / photographic backgrounds. The default global
+ * focus ring (orange-text on navy) is too low-contrast on dark surfaces, so
+ * this variant switches the focus outline to paper white.
+ */
+export function ButtonSecondaryOnDark({ href, label }: ButtonProps) {
+  return (
+    <Link
+      href={href}
+      className={`${base} border-2 border-paper/70 text-paper hover:border-paper hover:bg-paper hover:text-navy focus-visible:outline-paper!`}
+    >
+      {label}
+    </Link>
+  );
+}
