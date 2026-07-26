@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# image pipeline originals (fetched from Wix, not committed)
+/assets-src/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

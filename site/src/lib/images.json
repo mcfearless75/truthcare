@@ -1,0 +1,259 @@
+{
+  "beaconsfield-house-ensuite-bedroom-01": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1.3333333333333333
+  },
+  "beaconsfield-house-ensuite-bedroom-02": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1.3333333333333333
+  },
+  "beaconsfield-house-exterior-front": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1.3333333333333333
+  },
+  "beaconsfield-house-exterior-side": {
+    "widths": [
+      480,
+      768,
+      1200
+    ],
+    "aspect": 1.5
+  },
+  "beaconsfield-house-garden-patio": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1.3333333333333333
+  },
+  "beaconsfield-house-interior-living-sloped": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1.3333333333333333
+  },
+  "beaconsfield-house-interior-lounge-piano": {
+    "widths": [
+      480,
+      768,
+      1200
+    ],
+    "aspect": 1.5
+  },
+  "beaconsfield-house-interior-lounge-wide": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1.3333333333333333
+  },
+  "beaconsfield-house-interior-sensory-room": {
+    "widths": [
+      480,
+      768,
+      1200
+    ],
+    "aspect": 1.5
+  },
+  "brand-logo": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1
+  },
+  "brand-mark-head": {
+    "widths": [
+      232
+    ],
+    "aspect": 0.7581699346405228
+  },
+  "decorative-blob-dark": {
+    "widths": [
+      480,
+      768
+    ],
+    "aspect": 1.2622282608695652
+  },
+  "decorative-blob-orange-corner": {
+    "widths": [
+      152
+    ],
+    "aspect": 1.1428571428571428
+  },
+  "decorative-circle-orange": {
+    "widths": [
+      247
+    ],
+    "aspect": 0.9959677419354839
+  },
+  "graphic-conditions-overview": {
+    "widths": [
+      480,
+      768,
+      1200
+    ],
+    "aspect": 1.5
+  },
+  "icon-caring": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1
+  },
+  "icon-effective": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1
+  },
+  "icon-email": {
+    "widths": [
+      44
+    ],
+    "aspect": 1.3333333333333333
+  },
+  "icon-responsive": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1
+  },
+  "icon-safe": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1
+  },
+  "icon-well-led": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600,
+      2000
+    ],
+    "aspect": 1
+  },
+  "lifestyle-cooking": {
+    "widths": [
+      480,
+      768,
+      1200
+    ],
+    "aspect": 1.5
+  },
+  "lifestyle-dogwalk": {
+    "widths": [
+      480,
+      768,
+      1200
+    ],
+    "aspect": 1.5
+  },
+  "lifestyle-group": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1600
+    ],
+    "aspect": 1.499531396438613
+  },
+  "logo-cqc": {
+    "widths": [
+      480,
+      768,
+      1200
+    ],
+    "aspect": 3.1219512195121952
+  },
+  "team-alison-woods": {
+    "widths": [
+      480
+    ],
+    "aspect": 0.9609375
+  },
+  "team-caz-icke": {
+    "widths": [
+      480,
+      768,
+      1200
+    ],
+    "aspect": 0.7838405036726128
+  },
+  "team-emily-kerr": {
+    "widths": [
+      480,
+      768
+    ],
+    "aspect": 0.6666666666666666
+  },
+  "team-gerry-roxburgh": {
+    "widths": [
+      480,
+      768
+    ],
+    "aspect": 0.6822157434402333
+  },
+  "team-henk-swanepoel": {
+    "widths": [
+      480,
+      768
+    ],
+    "aspect": 0.64625
+  },
+  "team-kumi-pillay": {
+    "widths": [
+      480
+    ],
+    "aspect": 0.75
+  }
+}
