@@ -20,6 +20,12 @@
   --space-section: clamp(4rem, 3rem + 5vw, 8rem);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Shared navy drop-shadows (rgba(15,44,63,…) is --color-navy as a raw
+     tuple — box-shadow can't reference a var() inside rgba(), so the tuple
+     is repeated here once instead of at every call site). */
+  --shadow-navy-md: 0 24px 60px -28px rgba(15, 44, 63, 0.55);
+  --shadow-navy-lg: 0 30px 70px -40px rgba(15, 44, 63, 0.6);
 }
 
 html {

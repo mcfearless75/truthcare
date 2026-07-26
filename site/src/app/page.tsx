@@ -72,7 +72,7 @@ export default function HomePage() {
       {/* Floats up over the hero's bottom edge for depth rather than sitting in
           its own padded band. */}
       <div className="relative z-10 mx-auto -mt-8 w-full max-w-6xl px-5 md:-mt-12">
-        <ul className="flex flex-col divide-y divide-navy/10 rounded-2xl bg-paper shadow-[0_24px_60px_-28px_rgba(15,44,63,0.55)] ring-1 ring-navy/5 sm:flex-row sm:divide-x sm:divide-y-0">
+        <ul className="flex flex-col divide-y divide-navy/10 rounded-2xl bg-paper shadow-navy-md ring-1 ring-navy/5 sm:flex-row sm:divide-x sm:divide-y-0">
           {HOME.strips.map((strip) => (
             <li key={strip} className="flex flex-1 items-center gap-3 px-6 py-5">
               <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-orange" />
@@ -109,7 +109,7 @@ export default function HomePage() {
                   aria-hidden="true"
                   className="absolute -left-3 -top-3 h-20 w-20 rounded-tl-[1.75rem] border-l-4 border-t-4 border-orange md:-left-6 md:-top-6 md:h-32 md:w-32"
                 />
-                <div className="relative overflow-hidden rounded-[1.75rem] shadow-[0_30px_70px_-40px_rgba(15,44,63,0.6)]">
+                <div className="relative overflow-hidden rounded-[1.75rem] shadow-navy-lg">
                   <Pic
                     imageKey="beaconsfield-house-interior-lounge-wide"
                     alt="The main lounge at Beaconsfield House, with a large corner sofa, an upright piano and a dining table set in the bay window."
@@ -127,9 +127,9 @@ export default function HomePage() {
       <section className="pb-[var(--space-section)]">
         <Reveal>
           <div className="mx-auto max-w-6xl px-5">
-            {/* "Our Services Are" is the live site's own lead-in heading; the
+            {/* HOME.valuesHeading is the live site's own lead-in heading; the
                 five cards complete the sentence. */}
-            <SectionHeading title="Our Services Are" align="center" />
+            <SectionHeading title={HOME.valuesHeading} align="center" />
 
             <ul className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-6 lg:gap-6">
               {HOME.values.map((value, index) => (
@@ -157,10 +157,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-6xl px-5 py-[var(--space-section)]">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div>
-                <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-orange" />
-                <h2 className="mt-6 font-display text-[length:var(--text-h2)] font-semibold leading-[1.08] tracking-tight text-balance">
-                  {HOME.beaconsfield.heading}
-                </h2>
+                <SectionHeading title={HOME.beaconsfield.heading} onDark />
 
                 <ul className="mt-8 space-y-4">
                   {HOME.beaconsfield.bullets.map((bullet) => (
@@ -222,7 +219,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-6xl px-5">
             <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
               <div className="lg:col-span-6">
-                <div className="overflow-hidden rounded-[1.75rem] shadow-[0_30px_70px_-40px_rgba(15,44,63,0.6)]">
+                <div className="overflow-hidden rounded-[1.75rem] shadow-navy-lg">
                   <Pic
                     imageKey="lifestyle-group"
                     alt="A mixed group of adults, including a wheelchair user, talking and laughing together during a group session."

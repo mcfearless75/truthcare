@@ -22,6 +22,7 @@ export const HOME = {
       "Our values - Integrity, Respect, Kindness, and Optimism - guide every aspect of our work.",
     ],
   },
+  valuesHeading: "Our Services Are",
   values: [
     {
       title: "WELL LED",
