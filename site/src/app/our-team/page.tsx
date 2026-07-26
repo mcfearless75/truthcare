@@ -53,25 +53,25 @@ export default function OurTeamPage() {
       </PageHeader>
 
       {/* --------------------------------------------------------- Team grid */}
-      {/* Not wrapped in <Reveal>: with six full bios the section is far
-          taller than the viewport, so the scroll-reveal's 15% intersection
-          threshold would rarely fire (matches the gallery sections on
-          /services-facilities and /virtual-tour, which are left unwrapped
-          for the same reason). */}
+      {/* Reveal now fires on threshold: 0 with a negative rootMargin (see
+          Reveal.tsx), so it triggers off the element's top edge rather than
+          a ratio of its total height — safe even for a tall six-card grid. */}
       <section className="py-[var(--space-section)]">
-        <div className="mx-auto max-w-6xl px-5">
-          <SectionHeading
-            eyebrow={TEAM_PAGE.grid.eyebrow}
-            title={TEAM_PAGE.grid.heading}
-            lede={TEAM_PAGE.grid.lede}
-          />
+        <Reveal>
+          <div className="mx-auto max-w-6xl px-5">
+            <SectionHeading
+              eyebrow={TEAM_PAGE.grid.eyebrow}
+              title={TEAM_PAGE.grid.heading}
+              lede={TEAM_PAGE.grid.lede}
+            />
 
-          <div className="mt-14 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-            {TEAM.map((member) => (
-              <TeamCard key={member.name} member={member} />
-            ))}
+            <div className="mt-14 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+              {TEAM.map((member) => (
+                <TeamCard key={member.name} member={member} />
+              ))}
+            </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ------------------------------------------------------------ Closing */}

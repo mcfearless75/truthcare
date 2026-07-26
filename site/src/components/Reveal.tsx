@@ -12,6 +12,11 @@ export function Reveal({ children, className = "" }: RevealProps) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // threshold: 0 + a negative bottom rootMargin fires as soon as the
+    // element's top edge crosses ~90% down the viewport, regardless of how
+    // tall the element is. A ratio-based threshold (e.g. 0.15) never fires
+    // for elements taller than ~6.7x the viewport height, leaving them
+    // permanently at opacity: 0 for JS-enabled users.
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -19,7 +24,7 @@ export function Reveal({ children, className = "" }: RevealProps) {
           io.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0, rootMargin: "0px 0px -10% 0px" }
     );
     io.observe(el);
     return () => io.disconnect();

@@ -18,7 +18,11 @@ function boxAspectClass(imageKey: string): string {
 
 export function TeamCard({ member }: { member: TeamMember }) {
   return (
-    <article className="flex flex-col">
+    // Capped and centred below `sm` only: single-column cards otherwise grow
+    // with the viewport (up to ~599px at 639px wide) and upscale the two
+    // headshots that only ship a 480w render. From `sm` up the grid tracks
+    // are already narrower than 480px, so the cap is a no-op there.
+    <article className="mx-auto flex max-w-[480px] flex-col sm:max-w-none">
       <div className={`overflow-hidden rounded-2xl bg-navy/5 ${boxAspectClass(member.image)}`}>
         <Pic
           imageKey={member.image}
