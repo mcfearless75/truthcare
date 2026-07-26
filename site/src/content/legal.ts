@@ -82,6 +82,24 @@ export const PRIVACY: LegalPage = {
       ],
     },
     {
+      // NEEDS CONFIRMATION: item 18 — as with item 17 in the cookie policy,
+      // Giraffe360's own data handling once the tour is loaded has not been
+      // verified against their documentation. The paragraph below is
+      // deliberately limited to what is certainly true from how the
+      // click-to-load facade works (src/components/TourEmbed.tsx): loading
+      // the tour connects the visitor's browser directly to Giraffe360's
+      // servers, and any direct connection necessarily discloses the
+      // visitor's IP address to the party at the other end. It does not
+      // assert what Giraffe360 does with that address beyond that. Before
+      // launch, check Giraffe360's documentation and, if there is more to
+      // say about their processing, add it here to match the cookie policy.
+      heading: "The virtual tour",
+      paragraphs: [
+        "Our virtual tour page carries a 360° tour of Beaconsfield House, made and hosted by Giraffe360, a separate company. It does not load automatically — the page shows a photograph with a play button until you choose to press it.",
+        "If you do press play, your browser connects directly to Giraffe360's servers to load the tour. That connection necessarily discloses your IP address to them, in the same way any request to any website does. It happens only if you choose to load the tour; simply reading the page does not. See our cookie policy for what we know about how Giraffe360 handles this once the tour is running.",
+      ],
+    },
+    {
       // NEEDS CONFIRMATION: item 6 — the legitimate-interests balancing
       // asserted below ("we have weighed that against your rights and are
       // satisfied it is fair") is a standard and defensible position, but

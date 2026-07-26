@@ -67,6 +67,8 @@ export function TourEmbed({
     <div
       ref={frame}
       tabIndex={-1}
+      role="group"
+      aria-label={iframeTitle}
       className="relative isolate aspect-[4/3] min-h-[26rem] overflow-hidden rounded-[1.75rem] bg-navy shadow-navy-lg focus-visible:outline-paper! sm:aspect-[16/10] sm:min-h-0 lg:aspect-[16/9]"
     >
       {isLoaded ? (
@@ -86,6 +88,7 @@ export function TourEmbed({
             imageKey={posterImageKey}
             alt=""
             sizes="(min-width: 1152px) 1120px, calc(100vw - 2.5rem)"
+            priority
             className="absolute inset-0 h-full w-full object-cover"
           />
           {/* Even wash plus a bottom-weighted gradient — the same two-part
