@@ -1,0 +1,204 @@
+import type { LegalPage } from "./types";
+
+/**
+ * The legal pages are the one place on this site where the copy is *ours*,
+ * not the client's — the live site has no privacy notice at all, and a UK
+ * contact form on a health service's site without one is an ICO exposure.
+ *
+ * Everything here is written to describe what this build actually does:
+ * a static export with no cookies, no analytics and no third-party requests
+ * on page load, and a single enquiry form posting to Formspree. If the site
+ * gains analytics, an embed, a booking widget or a login, both of these
+ * documents are wrong until they are updated.
+ *
+ * Items still needing client sign-off are marked NEEDS CONFIRMATION in the
+ * comments below and listed in the task report. They are written as
+ * defensible standard positions, not invented facts.
+ */
+
+const UPDATED = "26 July 2026";
+const UPDATED_ISO = "2026-07-26";
+
+export const PRIVACY: LegalPage = {
+  eyebrow: "Legal",
+  heading: "Privacy notice",
+  intro:
+    "This notice explains what happens to the personal information you give us through this website, why we use it, and what you can ask us to do about it.",
+  updated: UPDATED,
+  updatedIso: UPDATED_ISO,
+  sections: [
+    {
+      // NEEDS CONFIRMATION: registered company number, ICO data protection
+      // fee registration number, and whether a Data Protection Officer has
+      // been appointed (a small provider is unlikely to be required to, but
+      // the named responsible person should be stated).
+      heading: "Who we are",
+      paragraphs: [
+        "Truth Care Group Ltd is the data controller for the personal information described in this notice. That means we decide why it is collected and what happens to it.",
+        "You can reach us at Beaconsfield House, 11 Beaconsfield Rd, Weston-super-Mare, BS23 1YE, by email at info@truthcaregroup.co.uk, or by phone on 07966 284872. If you have a question about your information, use the same details and mark it for the attention of the registered manager.",
+      ],
+    },
+    {
+      heading: "What this notice covers",
+      paragraphs: [
+        "This notice covers truthcaregroup.co.uk only — the enquiries you send us through this website and the records our web hosting keeps.",
+        "It does not cover the care records we hold about the people living at Beaconsfield House. Those are far more detailed, are held under different rules, and are explained in the separate privacy information given to residents and their representatives when a placement begins. If you are already working with us and want that document, ask us and we will send it.",
+      ],
+    },
+    {
+      heading: "What we collect, and when",
+      paragraphs: [
+        "There is one form on this website: the enquiry form on our contact page. If you complete it, we receive your name, your email address, your phone number if you choose to give one, the enquiry type you selected, and whatever you write in the message box.",
+        "We do not ask for health information and we ask you not to put clinical detail into the message. A name and a number to call you back on is enough for us to get started, and a phone call is a better place for the rest of the conversation than a web form.",
+        "Beyond that, this website is a set of static files. There is no login, no account area and no database behind it. Our hosting provider keeps ordinary server access logs — which include the IP address a request came from — so that the site can be kept available and protected against abuse. We do not use those logs to identify or profile visitors, and we do not combine them with anything else.",
+      ],
+    },
+    {
+      // NEEDS CONFIRMATION: the Article 9(2)(h) / DPA 2018 Sch 1 Pt 1 para 2
+      // route below is the right one for a CQC-registered provider handling
+      // health information in the course of arranging care, but the client's
+      // own DPO or solicitor should confirm it against their appropriate
+      // policy document.
+      heading: "Why we use it, and our lawful basis",
+      paragraphs: [
+        "We use what you send us to reply to you: to answer a question, arrange a visit, or start the conversation about a possible referral or placement. We do not use it to send you marketing, we do not add you to a mailing list, and we never sell or rent it.",
+        "Our lawful basis is Article 6(1)(f) of the UK GDPR — legitimate interests. The interest is a plain one: you have asked us something and we need to be able to answer. We have weighed that against your rights and are satisfied it is fair — you chose to contact us, we use your details only to reply, and you can object at any time.",
+        "If a message does contain information about someone's health, that is special category data and needs a second basis. There we rely on Article 9(2)(h) of the UK GDPR — processing for the provision of health or social care — together with paragraph 2 of Schedule 1, Part 1 of the Data Protection Act 2018. As a CQC-registered provider we work under a professional duty of confidentiality. Where health information turns out not to be needed to answer the enquiry, we remove it.",
+      ],
+    },
+    {
+      // NEEDS CONFIRMATION: hosting provider and mailbox provider are not yet
+      // fixed for this build. Both are processors and should be named here
+      // once decided.
+      heading: "Who else handles it",
+      listIntro:
+        "We keep the list of organisations touching your enquiry as short as we can. It is currently:",
+      list: [
+        "Formspree (Formspree, Inc.) — receives the form submission, forwards it to our mailbox and holds a copy in our account.",
+        "Our email provider — delivers and stores the message in the info@truthcaregroup.co.uk mailbox.",
+        "Our web hosting provider — serves the website and keeps the server access logs described above.",
+      ],
+      outro: [
+        "Each of these acts as our processor and may only handle your information on our instructions, under a written contract. We may also disclose information where the law requires it, or where we have a safeguarding duty to do so — for example if something you tell us suggests an adult is at risk of harm.",
+      ],
+    },
+    {
+      // NEEDS CONFIRMATION: verify Formspree's current data processing
+      // agreement and transfer mechanism before launch, and sign the DPA.
+      heading: "Sending information outside the UK",
+      paragraphs: [
+        "Formspree is based in the United States, so submitting the enquiry form transfers your details outside the UK. That transfer is made under the UK International Data Transfer Addendum to the European Commission's standard contractual clauses, which forms part of Formspree's data processing agreement, together with the technical measures Formspree applies to submissions.",
+        "If you would rather your details did not leave the UK, do not use the form — email or phone us instead, using the details at the top of this notice.",
+      ],
+    },
+    {
+      // NEEDS CONFIRMATION: retention periods below are a proposed standard
+      // position, not the client's existing policy. The 12-month figure and
+      // the point at which an enquiry becomes part of a care record both need
+      // signing off against the provider's records management schedule.
+      heading: "How long we keep it",
+      paragraphs: [
+        "If your enquiry does not lead to a referral or a placement, we delete it — from the mailbox and from the Formspree account — within 12 months of the last time we were in touch about it. Twelve months is long enough for a family to come back to us after thinking it over, and no longer.",
+        "If your enquiry does lead to a referral or a placement, it stops being a website enquiry and becomes part of the care record for that person. From that point it is kept under our records retention schedule, which follows the Records Management Code of Practice for health and social care.",
+      ],
+    },
+    {
+      heading: "Keeping it safe",
+      paragraphs: [
+        "The whole site, including the form, is served over an encrypted connection, and the submission is encrypted in transit. Access to the enquiry mailbox and the Formspree account is limited to the staff who need it to do their job.",
+        "No system is perfect. If something goes wrong and there is a risk to your rights, we will tell the Information Commissioner's Office within 72 hours and tell you directly where we are required to.",
+      ],
+    },
+    {
+      heading: "Your rights",
+      listIntro: "You can ask us to:",
+      list: [
+        "give you a copy of the personal information we hold about you",
+        "correct it, if it is wrong or incomplete",
+        "delete it",
+        "restrict what we do with it while a question about it is being sorted out",
+        "stop using it altogether — you have a right to object, because we rely on legitimate interests",
+      ],
+      outro: [
+        "The right to data portability does not apply to this information, because it only covers data we process with your consent or under a contract with you. We do not make automated decisions about you and we do not profile you.",
+        "There is no charge for making a request, and we will respond within one month. Email info@truthcaregroup.co.uk and tell us what you want us to do. We may ask you to confirm who you are before we act, so that we are not handing someone else's information to the wrong person.",
+      ],
+    },
+    {
+      heading: "If you are not happy",
+      paragraphs: [
+        "Please tell us first — email info@truthcaregroup.co.uk or call 07966 284872. Most things are quicker to fix directly, and we would rather know.",
+        "You also have the right to complain to the Information Commissioner's Office, the UK's data protection regulator. You can do that at ico.org.uk/make-a-complaint or on 0303 123 1113. Complaining to us first does not affect that right.",
+      ],
+    },
+    {
+      heading: "Children",
+      paragraphs: [
+        "Our service is for adults. We do not knowingly collect information about children through this website. If you are enquiring on behalf of a family member, please give us only what we need to point you in the right direction.",
+      ],
+    },
+    {
+      heading: "Changes to this notice",
+      paragraphs: [
+        "If we change how this website handles personal information — adding analytics, an embedded map or a booking tool, for example — we will update this notice before the change goes live and move the date below. It is worth a look if you have not been here for a while.",
+      ],
+    },
+  ],
+};
+
+export const COOKIES: LegalPage = {
+  eyebrow: "Legal",
+  heading: "Cookie policy",
+  intro:
+    "This website does not set any cookies. Not analytics, not advertising, not preferences. This page explains what that means and why you have not been asked to accept anything.",
+  updated: UPDATED,
+  updatedIso: UPDATED_ISO,
+  sections: [
+    {
+      heading: "The short version",
+      paragraphs: [
+        "Cookies are small files a website asks your browser to store so it can recognise you or your device later. We do not use them. When you load a page on truthcaregroup.co.uk, nothing is written to your browser and nothing is read from it.",
+      ],
+    },
+    {
+      heading: "What that means in practice",
+      listIntro: "Specifically, this site has:",
+      list: [
+        "no analytics — no Google Analytics, no Meta pixel, no heat-mapping, no visitor counter of any kind",
+        "no advertising or retargeting tags, so nothing follows you to another site after you leave",
+        "no embedded third-party content on page load — no YouTube player, no Google Map, no social feed, no chat widget",
+        "no local storage or session storage, which are the other two places a site can leave data on your device",
+        "self-hosted fonts, served from our own domain, so loading a page does not make a request to Google or anyone else",
+      ],
+      outro: [
+        "The practical result is that opening a page here sends a request to our web server and to nowhere else.",
+      ],
+    },
+    {
+      heading: "Why there is no cookie banner",
+      paragraphs: [
+        "UK law — the Privacy and Electronic Communications Regulations — requires your consent before a site stores anything on your device that is not strictly necessary. We do not store anything on your device at all, so there is nothing to ask you about.",
+        "Putting a consent banner on a site that sets no cookies would mean making you dismiss a box for no reason, and it would teach you to click through banners that do matter elsewhere. We would rather not do that. If we ever add something that genuinely needs consent, you will be asked properly, before it loads, with a real choice to decline.",
+      ],
+    },
+    {
+      heading: "The one time information leaves this site",
+      paragraphs: [
+        "If you fill in the enquiry form on our contact page and press send, your browser makes a single request to Formspree, the service that delivers the form to our mailbox. That happens only when you submit — never on page load, and never if you simply read the page and leave.",
+        "We do not set or read any cookie as part of that submission, and nothing about it is used to track you. What Formspree receives, how long it is kept and where it goes are all covered in our privacy notice.",
+      ],
+    },
+    {
+      heading: "Controlling cookies anyway",
+      paragraphs: [
+        "Even though this site sets none, every major browser lets you see, block and delete cookies across all the sites you visit — usually under Settings, then Privacy. The Information Commissioner's Office publishes plain-English guidance on cookies and online tracking at ico.org.uk.",
+      ],
+    },
+    {
+      heading: "If this changes",
+      paragraphs: [
+        "If we ever add something that sets a cookie, we will update this page and put a consent control in place before it goes live, and we will update our privacy notice at the same time. The date below tells you when this page was last reviewed.",
+      ],
+    },
+  ],
+};

@@ -45,8 +45,12 @@ export function localBusinessJsonLd() {
     email: SITE.email,
     address: {
       "@type": "PostalAddress",
-      name: SITE.address.name,
-      streetAddress: SITE.address.street,
+      // schema.org's PostalAddress has no meaningful `name` property — the
+      // building name belongs in streetAddress, which is exactly how Royal
+      // Mail formats a named building: "Beaconsfield House, 11 Beaconsfield
+      // Rd". Emitting `name` here produced a property consumers ignore while
+      // dropping the building name from the address they actually parse.
+      streetAddress: `${SITE.address.name}, ${SITE.address.street}`,
       addressLocality: SITE.address.locality,
       addressRegion: SITE.address.region,
       postalCode: SITE.address.postcode,

@@ -21,3 +21,28 @@ export interface GalleryImage {
   alt: string; // rewritten, human alt text
   caption?: string;
 }
+
+/**
+ * One h2-level block of a long-form prose page (privacy notice, cookie
+ * policy). Every part is optional except the heading so a section can be
+ * prose only, a list only, or both — the page component renders whichever
+ * parts are present, in this order: paragraphs, listIntro, list, outro.
+ */
+export interface LegalSection {
+  heading: string;
+  paragraphs?: string[];
+  listIntro?: string;
+  list?: string[];
+  outro?: string[];
+}
+
+export interface LegalPage {
+  eyebrow: string;
+  heading: string;
+  intro: string;
+  /** Human-readable date, e.g. "26 July 2026". Rendered in a <time>. */
+  updated: string;
+  /** ISO date for the <time datetime> attribute. */
+  updatedIso: string;
+  sections: LegalSection[];
+}

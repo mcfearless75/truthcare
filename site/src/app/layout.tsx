@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Figtree } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/site";
+import { jsonLdScript, localBusinessJsonLd } from "@/lib/schema";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 
@@ -54,6 +55,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main>{children}</main>
         <SiteFooter />
+        {/* Sitewide MedicalBusiness node. Serialised through jsonLdScript(),
+            which escapes `<` so no value in SITE can ever close this script
+            tag early — never hand this to a bare JSON.stringify. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(localBusinessJsonLd()) }}
+        />
       </body>
     </html>
   );
