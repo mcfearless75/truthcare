@@ -249,7 +249,7 @@ export default function HomePage() {
                 </ul>
 
                 <p className="mt-7 leading-relaxed text-muted">
-                  {HOME.whoWeSupportTeaser.paragraphs[2]}
+                  {HOME.whoWeSupportTeaser.paragraph}
                 </p>
 
                 <div className="mt-9">

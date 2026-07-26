@@ -62,11 +62,11 @@ export const HOME = {
   },
   whoWeSupportTeaser: {
     heading: "Who We Support",
-    paragraphs: [
-      "Some residents may lack the capacity to consent to certain decisions. Our team is experienced in using appropriate legal frameworks to support them.",
-      "We are committed to minimising restrictive practices and promoting independence while maintaining safety.",
+    // Only one paragraph is rendered on the homepage teaser (page.tsx uses
+    // it directly beneath the highlights chips); the full three-paragraph
+    // version lives on /who-we-support (support.ts).
+    paragraph:
       "We offer a free initial assessment to ensure we can meet each individual’s needs and work closely with commissioners, care coordinators, case managers, and families to deliver bespoke, community-based rehabilitation.",
-    ],
     supportIntro: "Our highly skilled staff team support the community-based rehabilitation of people living with:",
     highlights: ["Acquired Brain Injury", "Stroke", "Personal Care Needs"],
     cta: { label: "See Who We Support", href: "/who-we-support" },
