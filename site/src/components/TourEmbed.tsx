@@ -28,9 +28,13 @@ interface TourEmbedProps {
  * activation is the consent step; it also keeps the page fast.
  *
  * Two things this component must keep doing:
- *  - `src` must never appear in the markup before activation. Not on a hidden
- *    iframe, not in a `<link rel="preconnect">`, not in a `data-` attribute a
- *    script could promote. The static export ships the poster and nothing else.
+ *  - No *request* reaches Giraffe360 before activation. The `src` string is
+ *    present in the markup before then — the static export's RSC flight
+ *    payload carries it as an inert prop of this client component — but it
+ *    is never on a hidden iframe, a `<link rel="preconnect">`, or any other
+ *    fetching attribute, so nothing is requested until the button is pressed.
+ *    The Playwright regression suite asserts the no-request property
+ *    directly; that is the property that matters, not the string's absence.
  *  - Once `isLoaded` flips it never flips back, and the iframe keeps the same
  *    position in the tree, so React reuses the element and the visitor is
  *    never dropped back to the start of the tour by a re-render.

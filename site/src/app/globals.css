@@ -54,10 +54,10 @@ body {
   }
 }
 
-/* scroll reveal (Task 3 wires the observer). Only hide .reveal content when
-   the `js` flag class is present on <html> (set by an inline beforeInteractive
-   script in the root layout) — with JS disabled or failed, content stays
-   visible by default. */
+/* scroll reveal (the IntersectionObserver lives in Reveal.tsx). Only hide
+   .reveal content when the `js` flag class is present on <html> (set by an
+   inline <head> script in the root layout, layout.tsx) — with JS disabled or
+   failed, content stays visible by default. */
 .js .reveal {
   opacity: 0;
   transform: translateY(1.25rem);
