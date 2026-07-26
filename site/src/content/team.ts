@@ -1,5 +1,31 @@
 import type { TeamMember } from "./types";
 
+/**
+ * Page-level framing copy for /our-team — new copy for this build (the live
+ * site's team page has no heading copy of its own beyond the bios). The six
+ * bios below are the client's verbatim copy and are left untouched.
+ */
+export const TEAM_PAGE = {
+  hero: {
+    heading: "Meet Our Team",
+    intro:
+      "Truth Care Group is led by an experienced multidisciplinary team of clinicians, working together around each resident’s personalised rehabilitation plan.",
+  },
+  ctas: [
+    { label: "Arrange a Visit", href: "/contact-us" },
+    { label: "Make a Referral", href: "/contact-us?type=referral" },
+  ],
+  grid: {
+    eyebrow: "THE TEAM",
+    heading: "Specialists across neuropsychiatry, therapy and nursing",
+    lede: "Every resident’s care is shaped by clinicians who work together on one rehabilitation plan, not in separate silos.",
+  },
+  closing: {
+    heading: "Talk to the team behind the care",
+    body: "Whether you’re a family member, case manager or care coordinator, we’re happy to talk through a referral or arrange a visit to Beaconsfield House.",
+  },
+} as const;
+
 export const TEAM: TeamMember[] = [
   {
     name: "Dr Kumi Pillay",
