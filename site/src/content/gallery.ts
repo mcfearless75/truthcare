@@ -96,15 +96,37 @@ export const SERVICES_GALLERY: GalleryImage[] = pick([
  * Copy for /virtual-tour. `featuresHeading` and `features` are the live tour
  * page's own heading and four bullets, verbatim. The page title changes to
  * "Take a Look Inside" (spec §3 — approved rename, URL unchanged) and the lede,
- * gallery heading and closing CTA are new copy written for this build, because
- * the live page has no gallery to introduce.
+ * tour, gallery and closing copy are new copy written for this build.
+ *
+ * The `tour` block was added when the client supplied a real Giraffe360 tour.
+ * The page had been built as a photo gallery because the live Wix page promised
+ * a tour it never had; the gallery now sits beneath the tour as detail, and the
+ * lede and gallery heading were rewritten so they no longer read as if the
+ * photographs are the only thing on the page.
  */
 export const TOUR = {
   eyebrow: "Supporting Adult Independence",
   heading: "Take a Look Inside",
   /** Header photograph. Its alt text is reused from GALLERY, not rewritten. */
   headerImage: "beaconsfield-house-exterior-side",
-  lede: "Nothing replaces walking round the house itself, but these photographs show Beaconsfield House exactly as it is: the communal rooms, the en-suite bedrooms, the sensory and therapy space, and the secure garden.",
+  lede: "Walk through Beaconsfield House from wherever you are. Our 360° tour takes you through the front door and round the whole building, and the photographs below show the same rooms close up.",
+  /**
+   * The Giraffe360 tour. It is deliberately not loaded on page view: this site
+   * sets no cookies and makes no third-party request until a visitor asks for
+   * one, so `src` reaches the browser only after the button in TourEmbed is
+   * pressed. `notice` exists to say that plainly, without alarming families.
+   */
+  tour: {
+    heading: "Walk through the house",
+    lede: "Move room to room at your own pace, look out of the windows, and get a real sense of the space before you visit. It works on a phone as well as a computer.",
+    src: "https://tour.giraffe360.com/da17e336b14a4da2900293ab947ccedf/",
+    iframeTitle: "360° virtual tour of Beaconsfield House",
+    posterImage: "beaconsfield-house-interior-lounge-wide",
+    badge: "360° virtual tour",
+    activateLabel: "Start the virtual tour",
+    notice:
+      "The tour is made and hosted by Giraffe360, another company. Nothing loads from them until you press play, and they may then set their own cookies.",
+  },
   featuresHeading: "Step inside Beaconsfield House",
   features: [
     "Six spacious en-suite bedrooms",
@@ -113,8 +135,8 @@ export const TOUR = {
     "Secure outdoor garden and dining areas",
   ],
   gallery: {
-    heading: "The house, room by room",
-    hint: "Select any photograph to open it full size.",
+    heading: "The house in photographs",
+    hint: "The rooms in the tour, close up. Select any photograph to open it full size.",
     label: "Photographs of Beaconsfield House",
   },
   closing: {

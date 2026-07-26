@@ -6,12 +6,13 @@ import { Reveal } from "@/components/Reveal";
 import { Gallery } from "@/components/Gallery";
 import { SectionHeading } from "@/components/SectionHeading";
 import { PageHeader } from "@/components/PageHeader";
+import { TourEmbed } from "@/components/TourEmbed";
 import { ButtonPrimary } from "@/components/Buttons";
 
 export const metadata: Metadata = {
   title: "Take a Look Inside",
   description:
-    "Photographs of Beaconsfield House, Weston-super-Mare: the communal lounge and dining room, the en-suite bedrooms, the sensory and therapy room, and the secure garden.",
+    "Take a 360° virtual tour of Beaconsfield House, Weston-super-Mare, and see the photographs of the communal lounge and dining room, the en-suite bedrooms, the sensory and therapy room, and the secure garden.",
   alternates: { canonical: "/virtual-tour" },
 };
 
@@ -24,8 +25,9 @@ export default function VirtualTourPage() {
       {/* Text left, one photograph dropped down on the right — the same
           asymmetry the homepage mission block uses, so the two read as one
           system. Deliberately not a second full-bleed photo hero: the homepage
-          owns that move, and here the photographs are the content, not the
-          backdrop. */}
+          owns that move, and the tour frame below is what should carry the
+          weight on this page. The header shot is the exterior on purpose, so
+          the sequence down the page is arrive, go in, look round. */}
       <PageHeader
         eyebrow={TOUR.eyebrow}
         title={TOUR.heading}
@@ -53,6 +55,28 @@ export default function VirtualTourPage() {
           </div>
         </div>
       </PageHeader>
+
+      {/* --------------------------------------------------------------- Tour */}
+      {/* The main event, and the first thing under the header. Full content
+          width so it outweighs the header photograph beside it — the header
+          shot is the arrival, this is going in. No <Reveal>: it sits high
+          enough to be in view on load, and a section that starts at opacity 0
+          is the wrong thing to put a primary control inside. */}
+      <section className="pb-[var(--space-section)]">
+        <div className="mx-auto max-w-6xl px-5">
+          <SectionHeading title={TOUR.tour.heading} lede={TOUR.tour.lede} />
+          <div className="mt-10 lg:mt-12">
+            <TourEmbed
+              src={TOUR.tour.src}
+              iframeTitle={TOUR.tour.iframeTitle}
+              posterImageKey={TOUR.tour.posterImage}
+              badge={TOUR.tour.badge}
+              activateLabel={TOUR.tour.activateLabel}
+              notice={TOUR.tour.notice}
+            />
+          </div>
+        </div>
+      </section>
 
       {/* ----------------------------------------------------- Features strip */}
       {/* The live tour page's own heading and four bullets, verbatim. Laid out
@@ -98,6 +122,9 @@ export default function VirtualTourPage() {
       </section>
 
       {/* ------------------------------------------------------------ Gallery */}
+      {/* Supporting detail now, not the point of the page: the tour shows how
+          the rooms connect, these show what each one is actually like. Kept in
+          full — nine real photographs of the house, no stock. */}
       <section className="py-[var(--space-section)]">
         <div className="mx-auto max-w-6xl px-5">
           <SectionHeading title={TOUR.gallery.heading} lede={TOUR.gallery.hint} />
