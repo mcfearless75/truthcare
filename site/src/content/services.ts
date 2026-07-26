@@ -1,7 +1,7 @@
 export const SERVICES = {
   heading: "Our Services",
   beaconsfield: {
-    heading: "Beaconsfield House, Weston-Super-Mare",
+    heading: "Beaconsfield House, Weston-super-Mare",
     intro:
       "A six bed transitional and residential ABI service designed to foster independence and provide a supportive, empowering environment that enables effective neurorehabilitation. Ideally located within walking distance of the seafront, shops, cafés, cinema, and leisure facilities.",
     atAGlance: {

@@ -83,17 +83,17 @@ export default function ContactPage() {
               <div className="md:col-span-5">
                 <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-orange" />
                 <h2 className="mt-5 font-display text-[length:var(--text-h3)] font-semibold text-paper">
-                  Regulated by the Care Quality Commission
+                  {CONTACT.regulation.heading}
                 </h2>
               </div>
               <div className="md:col-span-6 md:col-start-7">
                 <p className="text-[length:var(--text-lede)] leading-relaxed text-paper/90">
-                  Beaconsfield House is registered with the CQC.{" "}
+                  {CONTACT.regulation.intro}{" "}
                   <a
                     href={SITE.cqcUrl}
                     className="font-semibold text-paper underline decoration-orange underline-offset-4 hover:text-orange"
                   >
-                    View our entry on the public register
+                    {CONTACT.regulation.linkLabel}
                   </a>
                   .
                 </p>
