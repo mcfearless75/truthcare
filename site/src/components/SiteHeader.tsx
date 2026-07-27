@@ -34,8 +34,17 @@ export function SiteHeader() {
         scrolled ? "shadow-sm" : "shadow-none"
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:py-5">
-        <Link href="/" className="group flex items-center gap-4" onClick={() => setOpen(false)}>
+      {/* max-w-7xl, not max-w-6xl like the body content below — this is
+          header chrome, not a text column, so it can use more of the row
+          before the logo and the brochure button start crowding toward the
+          middle. */}
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:py-5">
+        {/* shrink-0: without it, flexbox lets this text-containing link
+            shrink below its natural width before the nav gives up any of
+            its own space, which wrapped "Truth Care Group" onto two lines
+            at 1024-1440px even though the row had room for everything on
+            one line — the wrong element was absorbing the squeeze. */}
+        <Link href="/" className="group flex shrink-0 items-center gap-4" onClick={() => setOpen(false)}>
           <img
             src={withBasePath("/images/brand-logo/480.webp")}
             alt="Truth Care Group"
@@ -48,10 +57,12 @@ export function SiteHeader() {
 
         {/* Grouped so justify-between on the row above treats "nav + brochure
             button" as one block against the logo, instead of spreading three
-            items apart. Outline style, not solid orange: the accent colour
-            is already doing work in the logo and the nav's underline, and
-            this is a secondary resource, not the site's primary action. */}
-        <div className="hidden items-center gap-3 lg:flex">
+            items apart. A hairline rule + wider gap sets the button visibly
+            apart from the nav rather than reading as a seventh link jammed
+            against "Contact Us". Outline style, not solid orange: the accent
+            colour is already doing work in the logo and the nav's underline,
+            and this is a secondary resource, not the site's primary action. */}
+        <div className="hidden items-center gap-5 lg:flex">
           <nav aria-label="Main navigation">
             <ul className="flex gap-1">
               {NAV.map((item) => (
@@ -70,11 +81,13 @@ export function SiteHeader() {
             </ul>
           </nav>
 
+          <span aria-hidden="true" className="h-6 w-px bg-navy/15" />
+
           <a
             href={withBasePath(SITE.brochureUrl)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border-2 border-navy px-4 py-2 text-sm font-semibold text-navy transition duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:bg-navy hover:text-paper"
+            className="inline-flex items-center gap-2 rounded-full border-2 border-navy px-4 py-2 text-sm font-semibold text-navy transition duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:bg-navy hover:text-paper hover:shadow-navy-md active:translate-y-0 active:shadow-none"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16" />
