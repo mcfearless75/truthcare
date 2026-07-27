@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { withBasePath } from "@/lib/basePath";
+import { SITE } from "@/lib/site";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -45,23 +46,42 @@ export function SiteHeader() {
           <span className="font-display text-lg font-semibold tracking-tight sm:text-xl">Truth Care Group</span>
         </Link>
 
-        <nav aria-label="Main navigation" className="hidden lg:block">
-          <ul className="flex gap-1">
-            {NAV.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={pathname === item.href ? "page" : undefined}
-                  className={`relative rounded-full px-4 py-2.5 text-[0.95rem] font-medium transition-colors duration-200 hover:bg-navy/5 after:absolute after:inset-x-4 after:-bottom-px after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-orange after:transition-transform after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:scale-x-100 ${
-                    pathname === item.href ? "text-orange-text after:scale-x-100" : "text-navy"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        {/* Grouped so justify-between on the row above treats "nav + brochure
+            button" as one block against the logo, instead of spreading three
+            items apart. Outline style, not solid orange: the accent colour
+            is already doing work in the logo and the nav's underline, and
+            this is a secondary resource, not the site's primary action. */}
+        <div className="hidden items-center gap-3 lg:flex">
+          <nav aria-label="Main navigation">
+            <ul className="flex gap-1">
+              {NAV.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    aria-current={pathname === item.href ? "page" : undefined}
+                    className={`relative rounded-full px-4 py-2.5 text-[0.95rem] font-medium transition-colors duration-200 hover:bg-navy/5 after:absolute after:inset-x-4 after:-bottom-px after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-orange after:transition-transform after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:scale-x-100 ${
+                      pathname === item.href ? "text-orange-text after:scale-x-100" : "text-navy"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <a
+            href={withBasePath(SITE.brochureUrl)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border-2 border-navy px-4 py-2 text-sm font-semibold text-navy transition duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:bg-navy hover:text-paper"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16" />
+            </svg>
+            Brochure
+          </a>
+        </div>
 
         <button
           type="button"
@@ -99,6 +119,20 @@ export function SiteHeader() {
             </li>
           ))}
         </ul>
+
+        <div className="border-t border-navy/10 px-5 py-4">
+          <a
+            href={withBasePath(SITE.brochureUrl)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 rounded-full border-2 border-navy px-4 py-3.5 text-lg font-semibold text-navy transition duration-200 hover:bg-navy hover:text-paper"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16" />
+            </svg>
+            Download Brochure
+          </a>
+        </div>
       </nav>
     </header>
   );

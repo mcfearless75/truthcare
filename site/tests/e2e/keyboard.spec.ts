@@ -58,17 +58,26 @@ test.describe("keyboard activation", () => {
     await page.goto("/virtual-tour");
 
     // The last focusable element before the page's own content is the
-    // header's "Contact Us" nav link. Since the virtual tour became a real
-    // Giraffe360 embed there is exactly one interactive element between it
-    // and the gallery — the tour's click-to-load button — so it takes two
-    // real Tab presses to reach the first thumbnail, not one. Asserting the
-    // intermediate stop keeps this honest: if another control is added
-    // above the gallery, this fails rather than silently drifting.
+    // header's brochure button — it sits right after the nav, outside the
+    // nav landmark, so "Contact Us" (the nav's last link) is one Tab short
+    // of the page content now. Since the virtual tour became a real
+    // Giraffe360 embed there are exactly two interactive elements between
+    // "Contact Us" and the gallery — the brochure button, then the tour's
+    // click-to-load button — so it takes three real Tab presses to reach
+    // the first thumbnail. Asserting each intermediate stop keeps this
+    // honest: if another control is added above the gallery, this fails
+    // rather than silently drifting.
     const lastNavLink = page
       .getByRole("navigation", { name: "Main navigation" })
       .getByRole("link", { name: "Contact Us" })
       .first();
     await lastNavLink.focus();
+
+    // exact: true — the footer's own brochure link ("Download our brochure
+    // (PDF)") also contains the substring "Brochure" and would otherwise
+    // match too.
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("link", { name: "Brochure", exact: true })).toBeFocused();
 
     await page.keyboard.press("Tab");
     await expect(page.getByRole("button", { name: "Start the virtual tour" })).toBeFocused();
