@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITE } from "@/lib/site";
+import { withBasePath } from "@/lib/basePath";
 
 export function SiteFooter() {
   return (
@@ -22,6 +23,11 @@ export function SiteFooter() {
                 <br />
                 {SITE.address.locality}, {SITE.address.postcode}
               </address>
+            </li>
+            <li>
+              <a href={withBasePath(SITE.brochureUrl)} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                Download our brochure (PDF)
+              </a>
             </li>
           </ul>
         </div>

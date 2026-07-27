@@ -20,4 +20,8 @@ export const SITE = {
   },
   cqcUrl: "https://www.cqc.org.uk/location/1-26270675575",
   formspree: "https://formspree.io/f/xzdnklod",
+  // Sourced from the live Wix site's downloadable brochure (2026-07-27).
+  // Raw path — callers apply withBasePath() at render time, same convention
+  // as image paths in lib/images.ts.
+  brochureUrl: "/downloads/truth-care-group-brochure.pdf",
 } as const;

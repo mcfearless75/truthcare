@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CONTACT } from "@/content/contact";
 import { SITE } from "@/lib/site";
+import { withBasePath } from "@/lib/basePath";
 import { PageHeader } from "@/components/PageHeader";
 import { Reveal } from "@/components/Reveal";
 import { ContactForm } from "@/components/ContactForm";
@@ -59,6 +60,22 @@ export default function ContactPage() {
               <dd className="mt-2 text-[length:var(--text-lede)]">
                 <a href={CONTACT.links.callUs.href} className={linkClass}>
                   {CONTACT.phone}
+                </a>
+              </dd>
+            </div>
+
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-navy/70">
+                Brochure
+              </dt>
+              <dd className="mt-2 text-[length:var(--text-lede)]">
+                <a
+                  href={withBasePath(SITE.brochureUrl)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={linkClass}
+                >
+                  Download our brochure (PDF)
                 </a>
               </dd>
             </div>

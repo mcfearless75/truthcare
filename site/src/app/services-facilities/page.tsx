@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SERVICES } from "@/content/services";
 import { SERVICES_GALLERY } from "@/content/gallery";
 import { SITE } from "@/lib/site";
+import { withBasePath } from "@/lib/basePath";
 import { Reveal } from "@/components/Reveal";
 import { Gallery } from "@/components/Gallery";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -38,6 +39,20 @@ export default function ServicesFacilitiesPage() {
               label={SERVICES.gallery.cta.label}
             />
           </div>
+
+          {/* Quieter than the two buttons above on purpose — this is a
+              reference document for later, not the primary action. */}
+          <a
+            href={withBasePath(SITE.brochureUrl)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-navy underline decoration-navy/30 underline-offset-4 hover:text-orange-text hover:decoration-orange-text"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16" />
+            </svg>
+            Download our brochure (PDF)
+          </a>
         </div>
       </PageHeader>
 

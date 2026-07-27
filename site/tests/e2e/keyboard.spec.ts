@@ -152,13 +152,20 @@ test.describe("contact form keyboard traversal", () => {
     await page.goto("/contact-us");
 
     // The honeypot (`name="_gotcha"`, tabIndex -1, display:none) sits between
-    // this phone link and the name field in document order — the only way to
-    // prove it is really skipped is to tab in from right before it.
+    // the brochure download link and the name field in document order — the
+    // only way to prove it is really skipped is to tab in from right before it.
     // `.first()`: the footer repeats the phone number as its own tel: link,
     // but it sits after <main> in the DOM, so it isn't this one.
     const phoneLink = page.locator('a[href^="tel:"]').first();
     await phoneLink.focus();
     await expect(phoneLink).toBeFocused();
+
+    // The brochure download link is the last item in the contact details
+    // list, right after phone. `.first()`: the footer repeats the same link
+    // text, but it sits after <main> in the DOM, so it isn't this one.
+    await page.keyboard.press("Tab");
+    const brochureLink = page.getByRole("link", { name: /download our brochure/i }).first();
+    await expect(brochureLink).toBeFocused();
 
     await page.keyboard.press("Tab");
     const nameInput = page.locator("#name");
