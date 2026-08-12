@@ -189,7 +189,8 @@
   },
   "team-kumi-pillay": {
     "widths": [
-      480
+      480,
+      768
     ],
     "aspect": 0.75
   }
