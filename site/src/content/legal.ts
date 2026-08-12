@@ -19,11 +19,10 @@ import type { LegalPage } from "./types";
  * defensible standard positions, not invented facts.
  */
 
-// NEEDS CONFIRMATION: item 14 — UPDATED / UPDATED_ISO are placeholder
-// values set for this build, not a real publication date. Change both to
-// the date this notice is actually reviewed and published before launch.
-const UPDATED = "26 July 2026";
-const UPDATED_ISO = "2026-07-26";
+// Set to the real launch date at go-live (2026-07-27), per the client's
+// sign-off on the legal claims below.
+const UPDATED = "27 July 2026";
+const UPDATED_ISO = "2026-07-27";
 
 export const PRIVACY: LegalPage = {
   eyebrow: "Legal",
