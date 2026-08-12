@@ -38,27 +38,6 @@ export const TEAM: TeamMember[] = [
     image: "team-kumi-pillay",
   },
   {
-    // NEEDS CONFIRMATION: replaced Mrs Alison Woods (previously "Registered
-    // Manager") on 2026-07-27 — she no longer appears on the live team page
-    // at all. Live Wix gives Emma Merriman no explicit job title (only the
-    // "neuro-occupational therapist" phrase inside her own bio text), so
-    // "Neuro-Occupational Therapist" below is inferred, not copied. More
-    // importantly: nobody on the live site is currently labelled "Registered
-    // Manager" — a legally significant title for a CQC-regulated service.
-    // Confirm who holds that role now (may or may not be Emma Merriman) and
-    // update both the role label here and this comment once known.
-    name: "Emma Merriman",
-    role: "Neuro-Occupational Therapist",
-    bio: [
-      "Emma Merriman is a specialist neuro-occupational therapist with clinical experience dating back to 1995. She has worked across acute neurosciences, stroke rehabilitation, pain management, neurorehabilitation, community services, discharge planning and specialist brain injury settings throughout the UK. Since establishing Emma Merriman Rehabilitation Ltd in 2013, she has provided independent occupational therapy and case management for people with acquired brain injury and complex presentations, including cognitive, behavioural, emotional, executive and family-system challenges.",
-      "Emma has particular expertise in cognitive rehabilitation, executive dysfunction and complex needs assessment. Alongside her therapy work, she has extensive experience of the litigation and case management process, coordinating rehabilitation programmes, and managing risk.",
-      "Alongside her clinical practice, Emma has contributed to professional development, training and networking across the brain injury and occupational therapy communities. She has designed and delivered training on risk assessment, risk management, the Mental Capacity Act, cognitive and executive difficulties following brain injury, and client-specific support strategies for care teams and support workers. She has supervised case managers, mentored peers and professionals, served as Regional Representative for the Specialist Section of Neurological Practitioners in the South West, and chaired the South West Specialist Section of Independent Occupational Therapists from 2011 to 2025. She also founded and organised Professionals in Brain Injury, a social and educational forum created to strengthen collaboration and knowledge exchange within the brain injury community. She is a registered occupational therapist, an Advanced Member of the BABICM, and is a Registered Case Manager with IRCM.",
-      "Emma’s approach aligns closely with Truth Care Group’s commitment to specialist brain injury rehabilitation, person-centred practice and community reintegration.",
-      "Her practice is guided by integrity, respect, kindness and optimism. She takes pride in seeing each person not simply as a patient, but as their true self, supporting them to build a life that feels meaningful, connected and achievable.",
-    ].join("\n\n"),
-    image: "team-emma-merriman",
-  },
-  {
     name: "Dr Henk Swanepoel",
     role: "Clinical Neuropsychologist",
     bio: [
@@ -96,5 +75,27 @@ export const TEAM: TeamMember[] = [
       "With over 25 years of experience in neuro-rehab, Gerry offers bespoke, person-centred, outcome-focused interventions to our residents with communication and swallowing needs",
     ].join("\n\n"),
     image: "team-gerry-roxburgh",
+  },
+  {
+    // NEEDS CONFIRMATION: replaced Mrs Alison Woods (previously "Registered
+    // Manager") on 2026-07-27 — she no longer appears on the live team page
+    // at all. Live Wix gives Emma Merriman no explicit job title (only the
+    // "neuro-occupational therapist" phrase inside her own bio text), so
+    // "Neuro-Occupational Therapist" below is inferred, not copied. More
+    // importantly: nobody on the live site is currently labelled "Registered
+    // Manager" — a legally significant title for a CQC-regulated service.
+    // Confirm who holds that role now (may or may not be Emma Merriman) and
+    // update both the role label here and this comment once known.
+    // Moved to the end of the list 2026-08-12 per client request.
+    name: "Emma Merriman",
+    role: "Neuro-Occupational Therapist",
+    bio: [
+      "Emma Merriman is a specialist neuro-occupational therapist with clinical experience dating back to 1995. She has worked across acute neurosciences, stroke rehabilitation, pain management, neurorehabilitation, community services, discharge planning and specialist brain injury settings throughout the UK. Since establishing Emma Merriman Rehabilitation Ltd in 2013, she has provided independent occupational therapy and case management for people with acquired brain injury and complex presentations, including cognitive, behavioural, emotional, executive and family-system challenges.",
+      "Emma has particular expertise in cognitive rehabilitation, executive dysfunction and complex needs assessment. Alongside her therapy work, she has extensive experience of the litigation and case management process, coordinating rehabilitation programmes, and managing risk.",
+      "Alongside her clinical practice, Emma has contributed to professional development, training and networking across the brain injury and occupational therapy communities. She has designed and delivered training on risk assessment, risk management, the Mental Capacity Act, cognitive and executive difficulties following brain injury, and client-specific support strategies for care teams and support workers. She has supervised case managers, mentored peers and professionals, served as Regional Representative for the Specialist Section of Neurological Practitioners in the South West, and chaired the South West Specialist Section of Independent Occupational Therapists from 2011 to 2025. She also founded and organised Professionals in Brain Injury, a social and educational forum created to strengthen collaboration and knowledge exchange within the brain injury community. She is a registered occupational therapist, an Advanced Member of the BABICM, and is a Registered Case Manager with IRCM.",
+      "Emma’s approach aligns closely with Truth Care Group’s commitment to specialist brain injury rehabilitation, person-centred practice and community reintegration.",
+      "Her practice is guided by integrity, respect, kindness and optimism. She takes pride in seeing each person not simply as a patient, but as their true self, supporting them to build a life that feels meaningful, connected and achievable.",
+    ].join("\n\n"),
+    image: "team-emma-merriman",
   },
 ];

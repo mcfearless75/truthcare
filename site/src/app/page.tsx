@@ -38,13 +38,21 @@ export default function HomePage() {
             alt="Beaconsfield House, a Victorian stone building with tall bay windows and its own parking, seen from the road."
             sizes="100vw"
             priority
-            className="absolute inset-0 h-full w-full object-cover object-center"
+            className="absolute inset-0 h-full w-full object-cover object-top"
           />
-          {/* Two-part scrim. A light even wash keeps the Victorian rooflines
-              readable across the top; the bottom gradient turns near-solid
-              navy from ~55% up so the headline clears 7:1 even over bare sky. */}
-          <div className="absolute inset-0 bg-navy/25" />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/80 via-55% to-transparent" />
+          {/* object-top, not object-center: the source photo is 4:3 and this
+              section is much wider than that on desktop, so object-cover was
+              cropping roughly equal amounts off the top and bottom — losing
+              the gables and roofline off the top for no reason, since the
+              text sits at the bottom and never competes with that area.
+              Anchoring to the top keeps the full roofline in frame and lets
+              the crop come entirely from the (uninteresting) ground-level
+              strip at the bottom instead.
+              Scrim is now gradient-only, no flat wash — the wash was dulling
+              the whole photo, including the now-more-visible top, just to
+              keep it readable against bright sky; the gradient alone still
+              clears contrast where the headline actually sits. */}
+          <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/70 via-55% to-transparent" />
         </div>
 
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-16 pt-36 md:pb-24 md:pt-48">

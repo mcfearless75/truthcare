@@ -1,15 +1,16 @@
 import { Pic } from "./Pic";
 import { IMAGES } from "@/lib/images";
+import { slug } from "@/lib/slug";
 import type { TeamMember } from "@/content/types";
 
 /**
  * Most headshots in the manifest are conventional portrait crops (roughly
- * 0.65-0.78 width:height) and sit comfortably in a 3:4 box. team-alison-woods
- * is a near-square 615x640 source (aspect 0.96) and only has a 480w render —
- * forcing it into the standard 3:4 box would crop ~20% off each side. A
- * near-square box keeps that crop to a few percent, top and bottom only.
- * Driven by the manifest's real aspect data so any future near-square
- * headshot gets the same gentler treatment automatically.
+ * 0.65-0.78 width:height) and sit comfortably in a 3:4 box. A near-square
+ * source (e.g. a roughly 1:1 crop) only has a 480w render and would lose
+ * ~20% off each side forced into the standard 3:4 box. A near-square box
+ * keeps that crop to a few percent, top and bottom only. Driven by the
+ * manifest's real aspect data so any near-square headshot gets the same
+ * gentler treatment automatically.
  */
 function boxAspectClass(imageKey: string): string {
   const aspect = IMAGES[imageKey]?.aspect ?? 0.75;
@@ -18,11 +19,17 @@ function boxAspectClass(imageKey: string): string {
 
 export function TeamCard({ member }: { member: TeamMember }) {
   return (
+    // id + scroll-mt-28: the role chips in the page header link straight to
+    // a card (see our-team/page.tsx); the offset keeps the sticky header
+    // from covering the top of the card when the browser jumps to it.
     // Capped and centred below `sm` only: single-column cards otherwise grow
     // with the viewport (up to ~599px at 639px wide) and upscale the two
     // headshots that only ship a 480w render. From `sm` up the grid tracks
     // are already narrower than 480px, so the cap is a no-op there.
-    <article className="mx-auto flex max-w-[480px] flex-col sm:max-w-none">
+    <article
+      id={slug(member.name)}
+      className="mx-auto flex max-w-[480px] scroll-mt-28 flex-col sm:max-w-none"
+    >
       <div className={`overflow-hidden rounded-2xl bg-navy/5 ${boxAspectClass(member.image)}`}>
         <Pic
           imageKey={member.image}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { TEAM, TEAM_PAGE } from "@/content/team";
 import { SITE } from "@/lib/site";
+import { slug } from "@/lib/slug";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { PageHeader } from "@/components/PageHeader";
@@ -9,16 +10,24 @@ import { ButtonPrimary, ButtonSecondary } from "@/components/Buttons";
 
 export const metadata: Metadata = {
   title: "Our Team",
+  // "Registered manager" removed 2026-08-12 — see the NEEDS CONFIRMATION
+  // note on Emma Merriman in team.ts. Update this once that's resolved.
   description:
-    "Meet the Truth Care Group team behind Beaconsfield House: a neuropsychiatrist, registered manager, clinical neuropsychologist, neurophysiotherapists and a neuro speech and language therapist.",
+    "Meet the Truth Care Group team behind Beaconsfield House: a neuropsychiatrist, clinical neuropsychologist, neurophysiotherapists, a neuro speech and language therapist and a neuro-occupational therapist.",
   alternates: { canonical: "/our-team" },
 };
 
 const [primaryCta, secondaryCta] = TEAM_PAGE.ctas;
 
 // Derived from TEAM itself (not re-typed) so the chip row can never drift
-// out of sync with the roles the bios actually list.
-const roles = Array.from(new Set(TEAM.map((member) => member.role)));
+// out of sync with the roles the bios actually list. Two people currently
+// share "Neurophysiotherapist" (Caz Icke, Emily Kerr); the chip links to
+// whichever of them appears first in TEAM, since a role can't point at two
+// cards at once — not a perfect answer, but a reasonable one.
+const roles = Array.from(new Set(TEAM.map((member) => member.role))).map((role) => ({
+  role,
+  href: `#${slug(TEAM.find((member) => member.role === role)!.name)}`,
+}));
 
 export default function OurTeamPage() {
   return (
@@ -35,12 +44,14 @@ export default function OurTeamPage() {
       >
         <div className="md:col-span-6 md:col-start-7 md:pt-4">
           <ul className="flex flex-wrap gap-2.5">
-            {roles.map((role) => (
-              <li
-                key={role}
-                className="rounded-full bg-orange/[0.12] px-4 py-2 text-sm font-semibold text-navy ring-1 ring-orange/40"
-              >
-                {role}
+            {roles.map(({ role, href }) => (
+              <li key={role}>
+                <a
+                  href={href}
+                  className="inline-flex rounded-full bg-orange/[0.12] px-4 py-2 text-sm font-semibold text-navy ring-1 ring-orange/40 transition-colors duration-200 hover:bg-orange/25"
+                >
+                  {role}
+                </a>
               </li>
             ))}
           </ul>
