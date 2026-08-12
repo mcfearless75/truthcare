@@ -38,16 +38,25 @@ export const TEAM: TeamMember[] = [
     image: "team-kumi-pillay",
   },
   {
-    name: "Mrs Alison Woods",
-    role: "Registered Manager",
+    // NEEDS CONFIRMATION: replaced Mrs Alison Woods (previously "Registered
+    // Manager") on 2026-07-27 — she no longer appears on the live team page
+    // at all. Live Wix gives Emma Merriman no explicit job title (only the
+    // "neuro-occupational therapist" phrase inside her own bio text), so
+    // "Neuro-Occupational Therapist" below is inferred, not copied. More
+    // importantly: nobody on the live site is currently labelled "Registered
+    // Manager" — a legally significant title for a CQC-regulated service.
+    // Confirm who holds that role now (may or may not be Emma Merriman) and
+    // update both the role label here and this comment once known.
+    name: "Emma Merriman",
+    role: "Neuro-Occupational Therapist",
     bio: [
-      "Alison Woods is a highly experienced operational healthcare manager with an extensive leadership career in acute neuro-rehabilitation and mental health services across both the NHS and the independent sector. She is a qualified Nurse.",
-      "Alison’s recent experience includes over 20 years as the Hospital Director of the Frenchay Brain Injury Rehabilitation Centre in Bristol and 3 years as the Hospital Manager of a mental health service in Gloucester.",
-      "Alison is a compassionate leader who believes that great care starts with a people-first approach and effective teamwork. She is passionate about creating environments where individuals feel safe, respected and empowered and where staff feel valued and supported.",
-      "She is recognised for developing and shaping new services, embedding a focus on excellent outcomes and continual improvement. She has a strong track record for achieving high-quality standards, Good CQC ratings, developing high-calibre MDT teams, maintaining robust governance, whilst keeping patient-centred care at the core.",
-      "Alison brings warmth, integrity and strong visible leadership to everything she does and her proudest professional achievement is: that she led a neuro-rehab team to consistently receive fantastic patient and carer feedback.",
+      "Emma Merriman is a specialist neuro-occupational therapist with clinical experience dating back to 1995. She has worked across acute neurosciences, stroke rehabilitation, pain management, neurorehabilitation, community services, discharge planning and specialist brain injury settings throughout the UK. Since establishing Emma Merriman Rehabilitation Ltd in 2013, she has provided independent occupational therapy and case management for people with acquired brain injury and complex presentations, including cognitive, behavioural, emotional, executive and family-system challenges.",
+      "Emma has particular expertise in cognitive rehabilitation, executive dysfunction and complex needs assessment. Alongside her therapy work, she has extensive experience of the litigation and case management process, coordinating rehabilitation programmes, and managing risk.",
+      "Alongside her clinical practice, Emma has contributed to professional development, training and networking across the brain injury and occupational therapy communities. She has designed and delivered training on risk assessment, risk management, the Mental Capacity Act, cognitive and executive difficulties following brain injury, and client-specific support strategies for care teams and support workers. She has supervised case managers, mentored peers and professionals, served as Regional Representative for the Specialist Section of Neurological Practitioners in the South West, and chaired the South West Specialist Section of Independent Occupational Therapists from 2011 to 2025. She also founded and organised Professionals in Brain Injury, a social and educational forum created to strengthen collaboration and knowledge exchange within the brain injury community. She is a registered occupational therapist, an Advanced Member of the BABICM, and is a Registered Case Manager with IRCM.",
+      "Emma’s approach aligns closely with Truth Care Group’s commitment to specialist brain injury rehabilitation, person-centred practice and community reintegration.",
+      "Her practice is guided by integrity, respect, kindness and optimism. She takes pride in seeing each person not simply as a patient, but as their true self, supporting them to build a life that feels meaningful, connected and achievable.",
     ].join("\n\n"),
-    image: "team-alison-woods",
+    image: "team-emma-merriman",
   },
   {
     name: "Dr Henk Swanepoel",

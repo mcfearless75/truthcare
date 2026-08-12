@@ -152,12 +152,6 @@
     ],
     "aspect": 1.499531396438613
   },
-  "team-alison-woods": {
-    "widths": [
-      480
-    ],
-    "aspect": 0.9609375
-  },
   "team-caz-icke": {
     "widths": [
       480,
@@ -172,6 +166,12 @@
       768
     ],
     "aspect": 0.6666666666666666
+  },
+  "team-emma-merriman": {
+    "widths": [
+      241
+    ],
+    "aspect": 0.7507788161993769
   },
   "team-gerry-roxburgh": {
     "widths": [

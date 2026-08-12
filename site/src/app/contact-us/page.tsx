@@ -9,7 +9,7 @@ import { ContactForm } from "@/components/ContactForm";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Contact Truth Care Group about a placement, a referral or a visit to Beaconsfield House, Weston-super-Mare. Call 07966 284872 or send us a message.",
+    "Contact Truth Care Group about a placement, a referral or a visit to Beaconsfield House, Weston-super-Mare. Call 07483 483955 or send us a message.",
   alternates: { canonical: "/contact-us" },
 };
 

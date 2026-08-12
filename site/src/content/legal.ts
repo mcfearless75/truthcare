@@ -46,7 +46,7 @@ export const PRIVACY: LegalPage = {
       heading: "Who we are",
       paragraphs: [
         "Truth Care Group Ltd is the data controller for the personal information described in this notice. That means we decide why it is collected and what happens to it.",
-        "You can reach us at Beaconsfield House, 11 Beaconsfield Rd, Weston-super-Mare, BS23 1YE, by email at info@truthcaregroup.co.uk, or by phone on 07966 284872. If you have a question about your information, use the same details and mark it for the attention of the registered manager.",
+        "You can reach us at Beaconsfield House, 11 Beaconsfield Rd, Weston-super-Mare, BS23 1YE, by email at info@truthcaregroup.co.uk, or by phone on 07483 483955. If you have a question about your information, use the same details and mark it for the attention of the registered manager.",
       ],
     },
     {
@@ -189,7 +189,7 @@ export const PRIVACY: LegalPage = {
     {
       heading: "If you are not happy",
       paragraphs: [
-        "Please tell us first — email info@truthcaregroup.co.uk or call 07966 284872. Most things are quicker to fix directly, and we would rather know.",
+        "Please tell us first — email info@truthcaregroup.co.uk or call 07483 483955. Most things are quicker to fix directly, and we would rather know.",
         "You also have the right to complain to the Information Commissioner's Office, the UK's data protection regulator. You can do that at ico.org.uk/make-a-complaint or on 0303 123 1113. Complaining to us first does not affect that right.",
       ],
     },

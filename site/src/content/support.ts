@@ -54,11 +54,12 @@ export const SUPPORT = {
     heading: "Referrals and enquiries",
     intro: "To discuss a referral or arrange a visit:",
     emails: ["kumi@truthcaregroup.co.uk", "info@truthcaregroup.co.uk"],
-    phone: "07966 284872",
+    // Updated 2026-07-27 — see the matching note in lib/site.ts.
+    phone: "07483 483955",
     // Explicit tel: href, not derived from `phone` by stripping spaces —
-    // that would produce the invalid national-format `tel:07966284872`.
+    // that would produce the invalid national-format `tel:07483483955`.
     // Matches CONTACT.links.callUs and SITE.phone. See contact.ts for why.
-    phoneHref: "tel:+447966284872",
+    phoneHref: "tel:+447483483955",
   },
   faqsHeading: "Frequently asked questions",
   faqs: [

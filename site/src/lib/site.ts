@@ -1,9 +1,13 @@
 export const SITE = {
   name: "Truth Care Group",
   url: "https://truthcaregroup.co.uk",
-  // Verified against tel:+44 7966 284872 link on the live homepage hero
-  // and "call us" link on /contact-us (2026-07-26).
-  phone: "+44 7966 284872",
+  // Updated 2026-07-27: live Wix's sitewide "Call Us" link (header, footer,
+  // /contact-us) now resolves to +44 7483 483955, not the +44 7966 284872
+  // this was verified against on 2026-07-26. The old number survives only
+  // on the homepage's "Arrange a Visit" button, which looks like an
+  // unfinished update on Wix's side rather than a deliberate second line —
+  // worth the client double-checking which number should actually be live.
+  phone: "+44 7483 483955",
   email: "info@truthcaregroup.co.uk",
   address: {
     name: "Beaconsfield House",
