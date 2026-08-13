@@ -1,8 +1,8 @@
 # Handover: truthcaregroup.co.uk rebuild
 
-26 July 2026
+26 July 2026 — updated 13 August 2026: **the site is live.** DNS cut over on 13 August; `truthcaregroup.co.uk` now serves this rebuild on Vercel, not Wix. The "Before you launch" section below is kept for the record but has been superseded by "Status since launch" — read that first.
 
-This is the client-facing handover for the rebuilt site. It covers what was built, how to run it, the measured results, and every open item that needs your answer before this goes live. Read the "Before you launch" section properly. Nothing there is optional.
+This is the client-facing handover for the rebuilt site. It covers what was built, how to run it, the measured results, and the open items that still need your answer.
 
 ## What was built
 
@@ -59,9 +59,32 @@ Target was every page under 120 KB. The heaviest page is 72 KB, 61% under target
 
 `npx tsc --noEmit` is clean.
 
+## Status since launch (13 August 2026)
+
+**Resolved:**
+- Legal name confirmed against your actual CQC Certificate of Registration (item 1 below)
+- Image provenance confirmed — the two flagged photos are genuine (item 3 below)
+- "Last updated" date set to the real launch date (item 14 below)
+- Landline added (item 7 below) — you provided `01934 753233`
+- Security headers set at the host (item 8 below) — Vercel, via `vercel.json`
+- Phone number resynced to your current one (`07483 483955`) across the whole site
+- Team page resynced to match your live changes (Emma Merriman now appears in place of Alison Woods)
+
+**Still open, in priority order:**
+1. **No CQC rating displayed anywhere on the site.** The certificate on file proves registration, not a quality rating (Good/Outstanding/etc). This is the single highest-leverage trust/SEO fix left — get me the actual current rating and I'll add it.
+2. **Nobody is named as Registered Manager.** Alison Woods held that title and is no longer on your team page; it's a legally significant CQC role and the site currently doesn't say who holds it.
+3. **Your Google Business Profile has the old phone number on it.** I found it's already set up and managed under your Google account, with a genuine 5-star review and real customer interactions — just needs the phone number updated. I can walk you through it.
+4. **Company number, ICO registration number, DPO status** (items 2-4 below) — still not actually supplied, even though the broader legal sign-off was given verbally before cutover.
+5. **Delete the test Formspree submission** (item 2 below) — never confirmed done.
+6. The CQC certificate you sent also raised two smaller open questions noted in `legal.ts`: a Provider ID different from the site's existing Location ID, and a registered Bristol address different from Beaconsfield House's — both need your call on how (or whether) to use them.
+
+Full detail on all of this lives in `docs/SESSION-RESUME.md` and the latest SEO audit, `docs/SEO-AUDIT-2026-08-13.md`.
+
 ## Before you launch: everything that needs your answer
 
-Nothing below is a defect. It's either a fact only you can confirm, or a decision that's yours to make. The site will not go live with any of this unresolved.
+*(Original pre-launch checklist — kept for the record. Several items above are now resolved; see "Status since launch.")*
+
+Nothing below is a defect. It's either a fact only you can confirm, or a decision that's yours to make.
 
 ### 1. Legal pages: 18 flagged claims
 
@@ -163,25 +186,21 @@ Do this on a weekday, ideally Tuesday to Thursday, with a full working day ahead
 9. Keep the old Wix site accessible (unpublished from search, not deleted) for a couple of weeks in case you need to roll back.
 10. Monitor the Formspree inbox and email deliverability for the first week after cutover.
 
-## Deploy preview
+## Deploy — this is now production, not a preview
 
-A working preview build is live at:
+**https://truthcaregroup.co.uk is live on Vercel.** DNS cut over on 13 August 2026: both the apex and `www` point at Vercel's `76.76.21.21`, verified propagated and all 8 pages returning 200 directly against the real domain. Your email (MX records, separate infrastructure) was untouched by this change.
 
-**https://truthcaregroup-ndlinzgwf-paul-mcwilliams-projects.vercel.app**
-
-This is a genuine preview deployment on Vercel, not production, not connected to any DNS. I checked all 8 pages return 200. It was pushed via `vercel deploy --target=preview` from `site/`, using the already-authenticated Vercel CLI on this machine, against a new Vercel project (`truthcaregroup`) created for this purpose in your account. The project's first deployment auto-promoted to a `truthcaregroup.vercel.app` alias (normal Vercel behaviour for a brand-new project's first deploy, not something I did on purpose); that alias is just a Vercel subdomain, unconnected to your real domain, so nothing about your live DNS was touched.
-
-To redeploy a fresh preview yourself later:
+Any future content or code change needs two steps to actually go live — pushing to GitHub alone only updates the GitHub Pages preview, not the real site:
 
 ```bash
+# 1. commit and push (from the repo root)
+git add <files>
+git commit -m "..."
+git push origin main
+
+# 2. deploy to the live domain (from site/)
 cd site
-npx vercel deploy --target=preview
-```
-
-To promote to production once you're ready for real cutover:
-
-```bash
 npx vercel deploy --prod
 ```
 
-That still only affects the Vercel project's own domain unless you separately point your registrar's DNS at it; see the cutover checklist above.
+The Vercel CLI is already authenticated on this machine against the `truthcaregroup` project under your account, so `--prod` ships straight to `truthcaregroup.co.uk` with no further setup.
