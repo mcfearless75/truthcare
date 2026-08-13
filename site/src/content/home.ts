@@ -65,6 +65,37 @@ export const HOME = {
     ],
     cta: { label: "View Virtual Tour", href: "/virtual-tour" },
   },
+  /**
+   * Added 2026-08-13. Both SEO audits flagged "no CQC rating on the site" as
+   * the biggest remaining trust gap. Checking the register showed there is no
+   * rating to show: Beaconsfield House was registered on 30 December 2025 and
+   * has not been inspected yet, so CQC has published no rating. The client's
+   * decision was to say that plainly rather than stay silent — families check
+   * CQC regardless and find the blank rating, so getting ahead of it reads as
+   * confidence where silence reads as concealment.
+   *
+   * EVERY FACT BELOW IS TRANSCRIBED FROM cqc.org.uk/location/1-26270675575 AND
+   * ITS REGISTRATION-DETAILS PAGE. Do not edit them without re-checking that
+   * page — the maximum-of-six figure and the personal-care-not-nursing line
+   * are conditions of registration, not marketing copy. When the first
+   * inspection happens, replace `rating` with the real published rating.
+   */
+  cqc: {
+    eyebrow: "REGULATION",
+    heading: "Registered with the Care Quality Commission",
+    lede: "Beaconsfield House is registered with the CQC to provide accommodation for people who require personal care, for a maximum of six adults. We provide personal care rather than nursing care.",
+    facts: [
+      { label: "Registered provider", value: "Truth Care Group Ltd" },
+      { label: "Registered since", value: "30 December 2025" },
+      { label: "CQC location ID", value: "1-26270675575" },
+    ],
+    rating: {
+      heading: "Our CQC rating",
+      body: "We do not have a rating yet. The CQC does not rate a newly registered service until it has completed its first inspection, and that inspection has not yet taken place. As soon as a rating is published we will show it here.",
+      note: "You do not have to take our word for any of this — our entry on the CQC's public register is the authoritative source and is updated by the regulator, not by us.",
+      linkLabel: "Check our entry on the CQC register",
+    },
+  },
   whoWeSupportTeaser: {
     heading: "Who We Support",
     // Only one paragraph is rendered on the homepage teaser (page.tsx uses

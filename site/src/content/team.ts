@@ -17,8 +17,17 @@ export const TEAM_PAGE = {
   ],
   grid: {
     eyebrow: "THE TEAM",
-    heading: "Specialists across neuropsychiatry, therapy and nursing",
-    lede: "Every resident’s care is shaped by clinicians who work together on one rehabilitation plan, not in separate silos.",
+    // Reworded 2026-08-13. This heading previously ended "...therapy and
+    // nursing". CQC registered Beaconsfield House with an explicit condition
+    // that it must NOT provide nursing care, so a heading advertising
+    // "nursing" alongside the services was worth removing even though it was
+    // describing staff backgrounds rather than offering nursing care. The
+    // lede now draws that distinction explicitly instead of leaving a reader
+    // to infer it — individual clinicians' nursing registrations are real and
+    // stay in their bios; what changes is that the page no longer implies the
+    // service itself is registered for nursing.
+    heading: "Specialists across neuropsychiatry, therapy and clinical care",
+    lede: "Every resident’s care is shaped by clinicians who work together on one rehabilitation plan, not in separate silos. Our team’s professional backgrounds span neuropsychiatry, therapy and nursing; Beaconsfield House itself is registered to provide personal care rather than nursing care.",
   },
   closing: {
     heading: "Talk to the team behind the care",

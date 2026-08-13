@@ -165,6 +165,84 @@ export default function HomePage() {
         </Reveal>
       </section>
 
+      {/* ---------------------------------------------------------------- CQC */}
+      {/* Sits directly after the values block on purpose: those five cards are
+          CQC's own key questions (well-led / responsive / safe / effective /
+          caring), so the regulator's actual registration status is the natural
+          next thing a reader wants after being told the service is measured
+          against that framework. See the comment on HOME.cqc — the honest
+          "no rating yet" wording is deliberate, not a placeholder. */}
+      <section className="pb-[var(--space-section)]">
+        <Reveal>
+          <div className="mx-auto max-w-6xl px-5">
+            <div className="rounded-[1.75rem] bg-navy/[0.04] p-8 ring-1 ring-navy/10 md:p-12">
+              <div className="grid gap-10 md:grid-cols-12 md:gap-12">
+                <div className="md:col-span-6">
+                  <SectionHeading
+                    eyebrow={HOME.cqc.eyebrow}
+                    title={HOME.cqc.heading}
+                    lede={HOME.cqc.lede}
+                  />
+
+                  <dl className="mt-9">
+                    {HOME.cqc.facts.map((fact) => (
+                      <div
+                        key={fact.label}
+                        className="flex flex-col gap-1 border-t border-navy/10 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+                      >
+                        <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+                          {fact.label}
+                        </dt>
+                        <dd className="font-semibold text-navy">{fact.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+
+                <div className="md:col-span-5 md:col-start-8">
+                  <div className="rounded-2xl bg-paper p-7 shadow-navy-md ring-1 ring-navy/5">
+                    <h3 className="font-display text-[length:var(--text-h3)] font-semibold leading-tight text-navy">
+                      {HOME.cqc.rating.heading}
+                    </h3>
+
+                    <p className="mt-5 leading-relaxed text-muted">
+                      {HOME.cqc.rating.body}
+                    </p>
+
+                    <p className="mt-4 border-t border-navy/10 pt-4 text-sm leading-relaxed text-muted">
+                      {HOME.cqc.rating.note}
+                    </p>
+
+                    <a
+                      href={SITE.cqcUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-6 inline-flex items-center gap-2 font-semibold text-navy underline decoration-orange decoration-2 underline-offset-4 hover:text-orange-text"
+                    >
+                      {HOME.cqc.rating.linkLabel}
+                      <span className="sr-only"> (opens in a new tab)</span>
+                      <svg
+                        aria-hidden="true"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M7 17 17 7M9 7h8v8" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
       {/* ------------------------------------------------- Beaconsfield teaser */}
       <section className="bg-navy text-paper">
         <Reveal>

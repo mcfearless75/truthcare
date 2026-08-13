@@ -64,14 +64,21 @@ export const PRIVACY: LegalPage = {
       // needs the client's registration reference); and item 4, whether a
       // Data Protection Officer has been appointed (a small provider is
       // unlikely to be required to, but the named responsible person
-      // should be stated). Note that the contact paragraph below points
-      // information requests at "the registered manager" — that title is
-      // currently unassigned in team.ts, so items 4 and the Registered
-      // Manager question are the same open question wearing two hats.
+      // should be stated).
+      //
+      // The contact paragraph below used to direct information requests at
+      // "the registered manager". Changed 2026-08-13 to "the management
+      // team at Beaconsfield House": the client confirmed that Kumarasen
+      // Pillay — named on the CQC register as responsible for the regulated
+      // activity — is the nominated individual/provider, NOT the Registered
+      // Manager, so that title remains vacant. Pointing a statutory rights
+      // request at a role nobody holds is a real dead end, not a cosmetic
+      // one. Once a Registered Manager is appointed, name them here and in
+      // team.ts, and revisit item 4 at the same time.
       heading: "Who we are",
       paragraphs: [
         "Truth Care Group Ltd is the data controller for the personal information described in this notice. That means we decide why it is collected and what happens to it. We are a company registered in England and Wales, company number 15651211, with our registered office at 339 Two Mile Hill Road, Bristol, BS15 1AN.",
-        "You can reach us at Beaconsfield House, 11 Beaconsfield Rd, Weston-super-Mare, BS23 1YE, by email at info@truthcaregroup.co.uk, or by phone on 07483 483955. If you have a question about your information, use the same details and mark it for the attention of the registered manager.",
+        "You can reach us at Beaconsfield House, 11 Beaconsfield Rd, Weston-super-Mare, BS23 1YE, by email at info@truthcaregroup.co.uk, or by phone on 07483 483955. If you have a question about your information, use the same details and mark it for the attention of the management team at Beaconsfield House.",
       ],
     },
     {
