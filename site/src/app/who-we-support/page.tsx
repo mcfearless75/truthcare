@@ -11,7 +11,7 @@ import { ButtonPrimary, ButtonSecondary } from "@/components/Buttons";
 export const metadata: Metadata = {
   title: "Who We Support",
   description:
-    "Truth Care Group supports adults with acquired and traumatic brain injury and stroke at Beaconsfield House, Weston-super-Mare, North Somerset.",
+    "Truth Care Group supports adults with acquired brain injury, alcohol-related brain damage and stroke at Beaconsfield House, Weston-super-Mare, North Somerset.",
   alternates: { canonical: "/who-we-support" },
 };
 

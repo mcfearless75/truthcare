@@ -14,6 +14,12 @@ export const SUPPORT = {
     "Cognitive and Executive Function Impairments",
     "Epilepsy",
     "Acquired Brain Injury",
+    // Added 2026-08-13, confirmed in scope by the client — not part of the
+    // live site's original list like the rest of this array. Real GSC query
+    // data showed 117 impressions (0 clicks) across "alcohol related brain
+    // damage care home weston-super-mare" and "wernicke encephalopathy care
+    // home weston-super-mare" — genuine demand the site wasn't naming.
+    "Alcohol-Related Brain Damage (including Wernicke-Korsakoff Syndrome)",
     "Communication Difficulties",
     "Stroke",
     "Co morbid Mental Health and Emotional Needs",
@@ -92,6 +98,13 @@ export const SUPPORT = {
       question: "How do you manage capacity and decision-making?",
       answer:
         "Where a person lacks capacity for specific decisions, we follow the appropriate legal frameworks and act in their best interests, aiming for the least restrictive approach wherever possible.",
+    },
+    {
+      // Added 2026-08-13 alongside the matching conditions-list entry — see
+      // the note there.
+      question: "Do you support people with alcohol-related brain damage?",
+      answer:
+        "Yes. We support adults living with alcohol-related brain damage, including Wernicke-Korsakoff Syndrome, alongside other forms of acquired brain injury, using the same person-centred, slow-stream rehabilitation approach.",
     },
   ] as Faq[],
 } as const;
