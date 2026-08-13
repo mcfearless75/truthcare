@@ -77,21 +77,26 @@ Target was every page under 120 KB. The heaviest page is 72 KB, 61% under target
 
 **Still open, in priority order:**
 
-1. **There is no CQC rating to display — and that's not a gap in the site, it's a fact about the service.** I checked your CQC location page directly. Beaconsfield House was registered on 30 December 2025 and **has not been inspected yet**, so no rating exists. Both SEO audits framed this as "the rating isn't on the site"; that framing was wrong, and I'd rather tell you than keep chasing you for a rating that doesn't exist.
+**Done since, on 13 August:**
 
-   **What I'd recommend instead:** a short, honest "CQC registered" block — registration date, what you're registered to provide, and a link to your CQC page — with a plain line saying newly registered services aren't rated until their first inspection. Families check CQC anyway; they will find the blank rating either way. Getting ahead of it reads as confidence, whereas silence reads as something being hidden. **Your call — say the word and I'll build it.**
+- **The CQC question is settled, and the site now handles it honestly.** There is no rating to display: Beaconsfield House was registered on 30 December 2025 and **has not been inspected yet**. Both SEO audits framed this as "the rating isn't on the site" — that framing was wrong, and no amount of chasing you would have produced a rating that doesn't exist. Your homepage now carries a short regulation block that states your registration facts, says plainly that no rating exists yet and why, and links to your CQC entry as the authoritative source. Families check CQC regardless; getting ahead of it reads as confidence where silence reads as concealment.
+- **The nursing wording is fixed.** CQC registered you with an explicit condition that Beaconsfield House **must not provide nursing care**, while your team page was headed "Specialists across neuropsychiatry, therapy and nursing". The heading now says "clinical care", and the line beneath it spells out the distinction: your team's backgrounds do span nursing, but the service is registered for personal care rather than nursing care. Your clinicians' individual nursing registrations stay in their bios, untouched.
+- **The privacy notice no longer sends people to a role nobody holds.** It used to direct data protection requests to "the registered manager". Since that title is vacant, those requests now go to the management team at Beaconsfield House.
+- **I checked the rest of the site against your conditions of registration.** Your "six bedrooms" copy matches the maximum-of-six condition exactly, and you make no learning-disability or autism claims. Both clean, no action needed.
 
-2. **Nobody is named as Registered Manager.** Still open, but I have a lead: your CQC registration page names **Kumarasen Pillay as responsible for the regulated activity**. That is not automatically the same thing as holding the Registered Manager title, so I won't put it on the site until you confirm. Is Dr Pillay the Registered Manager? This also settles the DPO question below, since the privacy notice currently points information requests at "the registered manager".
+**Still open, in priority order:**
+
+1. **Your homepage claims a registered manager you don't currently have.** Under "Our Services Are", the WELL LED card reads *"Experienced registered manager aligned to our Values"*. That's your own copy carried over from the Wix site, and it's live right now while the Registered Manager post is vacant. **I've deliberately not rewritten it**, because if you have someone starting shortly it becomes true again and no change is needed. But of everything on this list it's the one carrying real regulatory exposure, because it's a specific factual claim about a CQC-significant role. Tell me which way to go: leave it, or reword it to lead on governance rather than on a person.
+
+2. **Nobody is named as Registered Manager.** Confirmed genuinely vacant — you've told me Dr Pillay is the nominated individual rather than the Registered Manager, so the CQC register's "responsible for these services" line isn't the answer. When you appoint someone, tell me and I'll update the team page, the homepage card above, and the privacy notice together.
 
 3. **Your Google Business Profile has the old phone number on it.** Already set up and managed under your Google account, with a genuine 5-star review and real customer interactions — just needs the phone number updated. I can walk you through it.
 
-4. **ICO registration number** — the one legal item I genuinely could not resolve from public record, because the ICO register is only searchable through a form. If you're registered, send me the reference and I'll add it. If you believe you're exempt, tell me and I'll note the exemption instead. (Company number and DPO are dealt with above.)
+4. **ICO registration number** — the one legal item I genuinely could not resolve from the public registers, because the ICO's is only searchable through a form. If you're registered, send me the reference and I'll add it. If you believe you're exempt, tell me and I'll note the exemption instead. (Company number and DPO are dealt with above.)
 
 5. **Delete the test Formspree submission** (item 2 below) — never confirmed done.
 
 6. **Provider ID placement** — your CQC certificate carries a provider-level ID distinct from the site's location-level one. Still your call whether it appears anywhere. (The Bristol address half of this question is now resolved, above.)
-
-7. **One thing worth a conversation:** CQC registered you with an explicit condition that Beaconsfield House **must not provide nursing care**. Your team page is headed "Specialists across neuropsychiatry, therapy and nursing". I read that as describing your staff's professional backgrounds rather than offering nursing care, which is fine — but given the condition is explicit, you may want to reword it. I've left it alone pending your view. I also checked the rest of the site against your registration conditions: your "six bedrooms" copy matches the max-6 condition exactly, and you make no learning-disability or autism claims, so both of those are clean.
 
 Full detail on all of this lives in `docs/SESSION-RESUME.md` and the latest SEO audit, `docs/SEO-AUDIT-2026-08-13.md`.
 
