@@ -70,13 +70,28 @@ Target was every page under 120 KB. The heaviest page is 72 KB, 61% under target
 - Phone number resynced to your current one (`07483 483955`) across the whole site
 - Team page resynced to match your live changes (Emma Merriman now appears in place of Alison Woods)
 
+**Also resolved 13 August, by checking the public registers instead of waiting on you:**
+- **Your company number is 15651211** — taken from the Companies House register, verified, and now stated in the privacy notice as it should be.
+- **The Bristol address question is answered.** 339 Two Mile Hill Road, BS15 1AN is your registered office on the Companies House register. That's exactly the role it now plays in the privacy notice. Beaconsfield House remains the address anyone actually writes to; nothing visitor-facing changed.
+- **The CQC rating question is answered too, and the answer changes the job** — see item 1 below.
+
 **Still open, in priority order:**
-1. **No CQC rating displayed anywhere on the site.** The certificate on file proves registration, not a quality rating (Good/Outstanding/etc). This is the single highest-leverage trust/SEO fix left — get me the actual current rating and I'll add it.
-2. **Nobody is named as Registered Manager.** Alison Woods held that title and is no longer on your team page; it's a legally significant CQC role and the site currently doesn't say who holds it.
-3. **Your Google Business Profile has the old phone number on it.** I found it's already set up and managed under your Google account, with a genuine 5-star review and real customer interactions — just needs the phone number updated. I can walk you through it.
-4. **Company number, ICO registration number, DPO status** (items 2-4 below) — still not actually supplied, even though the broader legal sign-off was given verbally before cutover.
+
+1. **There is no CQC rating to display — and that's not a gap in the site, it's a fact about the service.** I checked your CQC location page directly. Beaconsfield House was registered on 30 December 2025 and **has not been inspected yet**, so no rating exists. Both SEO audits framed this as "the rating isn't on the site"; that framing was wrong, and I'd rather tell you than keep chasing you for a rating that doesn't exist.
+
+   **What I'd recommend instead:** a short, honest "CQC registered" block — registration date, what you're registered to provide, and a link to your CQC page — with a plain line saying newly registered services aren't rated until their first inspection. Families check CQC anyway; they will find the blank rating either way. Getting ahead of it reads as confidence, whereas silence reads as something being hidden. **Your call — say the word and I'll build it.**
+
+2. **Nobody is named as Registered Manager.** Still open, but I have a lead: your CQC registration page names **Kumarasen Pillay as responsible for the regulated activity**. That is not automatically the same thing as holding the Registered Manager title, so I won't put it on the site until you confirm. Is Dr Pillay the Registered Manager? This also settles the DPO question below, since the privacy notice currently points information requests at "the registered manager".
+
+3. **Your Google Business Profile has the old phone number on it.** Already set up and managed under your Google account, with a genuine 5-star review and real customer interactions — just needs the phone number updated. I can walk you through it.
+
+4. **ICO registration number** — the one legal item I genuinely could not resolve from public record, because the ICO register is only searchable through a form. If you're registered, send me the reference and I'll add it. If you believe you're exempt, tell me and I'll note the exemption instead. (Company number and DPO are dealt with above.)
+
 5. **Delete the test Formspree submission** (item 2 below) — never confirmed done.
-6. The CQC certificate you sent also raised two smaller open questions noted in `legal.ts`: a Provider ID different from the site's existing Location ID, and a registered Bristol address different from Beaconsfield House's — both need your call on how (or whether) to use them.
+
+6. **Provider ID placement** — your CQC certificate carries a provider-level ID distinct from the site's location-level one. Still your call whether it appears anywhere. (The Bristol address half of this question is now resolved, above.)
+
+7. **One thing worth a conversation:** CQC registered you with an explicit condition that Beaconsfield House **must not provide nursing care**. Your team page is headed "Specialists across neuropsychiatry, therapy and nursing". I read that as describing your staff's professional backgrounds rather than offering nursing care, which is fine — but given the condition is explicit, you may want to reword it. I've left it alone pending your view. I also checked the rest of the site against your registration conditions: your "six bedrooms" copy matches the max-6 condition exactly, and you make no learning-disability or autism claims, so both of those are clean.
 
 Full detail on all of this lives in `docs/SESSION-RESUME.md` and the latest SEO audit, `docs/SEO-AUDIT-2026-08-13.md`.
 
