@@ -94,11 +94,11 @@ Target was every page under 120 KB. The heaviest page is 72 KB, 61% under target
 
    Google will settle on the non-www version — which is correct — but a www-only Search Console property can only report on www addresses. So over the coming weeks your reports will show less and less traffic, and it will look like your visitors are disappearing when in fact they've simply moved to the address Search Console isn't watching.
 
-   **The fix is straightforward and I can do it once you say go:**
-   - Add a second, **Domain-level** property that covers both versions at once. This needs one DNS record added at whoever manages your domain name — tell me who that is, or add it yourself if you'd rather and I'll give you the exact value.
-   - Optionally, make the www version redirect to the non-www one, so there's only ever one address in play. That's a small change on our hosting and I can do it directly.
+   **Half of this is now done.** The www version of your site now redirects to the non-www one, so there is only ever one address in play. Every page, plus your sitemap and robots file, was tested against the live site to confirm it. Visitors typing either version land in the right place, and any links pointing at the www version now pass their value to the real address instead of splitting it.
 
-   Keep the existing www property either way — it holds your history.
+   **The other half still needs you, and the fix above has made it more urgent rather than less.** Now that www redirects away, Google will stop indexing www addresses entirely — so your existing Search Console property will go quiet *faster* than it would have done. You need a **Domain-level property**, which covers every version of your address at once.
+
+   That takes one DNS record added wherever your domain name is managed. **Tell me who manages it** and I'll give you the exact value to paste, or walk whoever does through it. Keep the existing property either way — it holds your history.
 
    Separately: Google is **still showing your old Wix page title** in search results. That's normal this soon after the switch now that the sitemap has only just been read; worth re-checking in a week rather than worrying about today.
 
