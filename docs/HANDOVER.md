@@ -86,13 +86,21 @@ Target was every page under 120 KB. The heaviest page is 72 KB, 61% under target
 
 **Still open, in priority order:**
 
-1. **You don't have a Google Search Console account for the site, and that's blocking everything to do with getting found.** I checked all three Google accounts signed in on your machine — none of them has a property for truthcaregroup.co.uk. That means nobody can submit your sitemap, ask Google to re-crawl the new site, or see which searches are finding you.
+1. **Your Search Console is set up on the wrong version of your domain, and it will quietly stop reporting.**
 
-   You can see the effect already: search for yourself and Google still shows the **old Wix page title**, with "Bristol" in it. Nothing has told Google the site changed.
+   First, a correction: earlier in this document I told you that you had no Search Console account at all. **That was wrong, and I'm glad you sent me the link.** You do have one — it's under `paulmc18@gmail.com`, and it's healthy: 135 clicks, and your new sitemap was submitted today, read successfully, with all 8 pages found. So the cutover step I said was missing had in fact been done. My apologies for the wrong steer.
 
-   I have to correct something I told you earlier in this document, and something in my own notes: I'd said to "request re-indexing in Search Console". That isn't possible yet, because the account doesn't exist. My notes also claimed Search Console was already connected with 90 days of data — that data was real, but it almost certainly came from Wix's own SEO dashboard, not Search Console. I'd rather flag that than let you rely on it.
+   **But there's a genuine problem underneath it.** Your Search Console property is registered for the **www** version of your address (`www.truthcaregroup.co.uk`), while your website tells Google to treat the **non-www** version (`truthcaregroup.co.uk`) as the real one. Both currently load, and neither redirects to the other.
 
-   **What I need from you: which Google account should own this?** It's a business asset, so it's your call rather than mine. Once you tell me, setting it up is quick — I can verify ownership through the site's own code and submit the sitemap the same day.
+   Google will settle on the non-www version — which is correct — but a www-only Search Console property can only report on www addresses. So over the coming weeks your reports will show less and less traffic, and it will look like your visitors are disappearing when in fact they've simply moved to the address Search Console isn't watching.
+
+   **The fix is straightforward and I can do it once you say go:**
+   - Add a second, **Domain-level** property that covers both versions at once. This needs one DNS record added at whoever manages your domain name — tell me who that is, or add it yourself if you'd rather and I'll give you the exact value.
+   - Optionally, make the www version redirect to the non-www one, so there's only ever one address in play. That's a small change on our hosting and I can do it directly.
+
+   Keep the existing www property either way — it holds your history.
+
+   Separately: Google is **still showing your old Wix page title** in search results. That's normal this soon after the switch now that the sitemap has only just been read; worth re-checking in a week rather than worrying about today.
 
 2. **Your homepage claims a registered manager you don't currently have.** Under "Our Services Are", the WELL LED card reads *"Experienced registered manager aligned to our Values"*. That's your own copy carried over from the Wix site, and it's live right now while the Registered Manager post is vacant. **I've deliberately not rewritten it**, because if you have someone starting shortly it becomes true again and no change is needed. But of everything on this list it's the one carrying real regulatory exposure, because it's a specific factual claim about a CQC-significant role. Tell me which way to go: leave it, or reword it to lead on governance rather than on a person.
 
