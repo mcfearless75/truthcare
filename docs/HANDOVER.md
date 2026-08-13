@@ -86,13 +86,33 @@ Target was every page under 120 KB. The heaviest page is 72 KB, 61% under target
 
 **Still open, in priority order:**
 
-1. **Your homepage claims a registered manager you don't currently have.** Under "Our Services Are", the WELL LED card reads *"Experienced registered manager aligned to our Values"*. That's your own copy carried over from the Wix site, and it's live right now while the Registered Manager post is vacant. **I've deliberately not rewritten it**, because if you have someone starting shortly it becomes true again and no change is needed. But of everything on this list it's the one carrying real regulatory exposure, because it's a specific factual claim about a CQC-significant role. Tell me which way to go: leave it, or reword it to lead on governance rather than on a person.
+1. **You don't have a Google Search Console account for the site, and that's blocking everything to do with getting found.** I checked all three Google accounts signed in on your machine — none of them has a property for truthcaregroup.co.uk. That means nobody can submit your sitemap, ask Google to re-crawl the new site, or see which searches are finding you.
+
+   You can see the effect already: search for yourself and Google still shows the **old Wix page title**, with "Bristol" in it. Nothing has told Google the site changed.
+
+   I have to correct something I told you earlier in this document, and something in my own notes: I'd said to "request re-indexing in Search Console". That isn't possible yet, because the account doesn't exist. My notes also claimed Search Console was already connected with 90 days of data — that data was real, but it almost certainly came from Wix's own SEO dashboard, not Search Console. I'd rather flag that than let you rely on it.
+
+   **What I need from you: which Google account should own this?** It's a business asset, so it's your call rather than mine. Once you tell me, setting it up is quick — I can verify ownership through the site's own code and submit the sitemap the same day.
+
+2. **Your homepage claims a registered manager you don't currently have.** Under "Our Services Are", the WELL LED card reads *"Experienced registered manager aligned to our Values"*. That's your own copy carried over from the Wix site, and it's live right now while the Registered Manager post is vacant. **I've deliberately not rewritten it**, because if you have someone starting shortly it becomes true again and no change is needed. But of everything on this list it's the one carrying real regulatory exposure, because it's a specific factual claim about a CQC-significant role. Tell me which way to go: leave it, or reword it to lead on governance rather than on a person.
 
 2. **Nobody is named as Registered Manager.** Confirmed genuinely vacant — you've told me Dr Pillay is the nominated individual rather than the Registered Manager, so the CQC register's "responsible for these services" line isn't the answer. When you appoint someone, tell me and I'll update the team page, the homepage card above, and the privacy notice together.
 
 3. **Your Google Business Profile — phone was already fixed, but I found something worse and corrected it.** Both your numbers are on there correctly (`07483 483955` as primary, plus the landline), so that item is closed. **However, your profile's primary category was set to "Nursing home"** — which contradicts the CQC condition that Beaconsfield House must not provide nursing care, and was putting you in front of people searching for something you're not registered to offer. I've changed it to **"Rehabilitation Centre"**, which matches how you describe yourselves. Google shows it as pending review; it normally clears within minutes.
 
-   **Two small things there still worth doing, which I couldn't complete:** add **"Care home" as a second category** so you still appear for care-home searches, and add **Bristol to your service area** (it currently lists Somerset, North Somerset and Weston-super-Mare only, but Search Console shows real Bristol searches finding you). Both are a couple of clicks in the Business Profile dashboard.
+   **Two small things there still worth doing, which I couldn't complete:** add a **second category** so you still appear for care-home searches, and add **Bristol to your service area** (it currently lists Somerset, North Somerset and Weston-super-Mare only, despite real Bristol searches finding you).
+
+   ⚠️ **On the second category — Google will reject anything you type by hand.** If you type "Care Home" you'll get *"We didn't understand your category."* You have to pick from the dropdown that appears as you type, because only Google's exact category names are accepted. Type `care` or `residential` and take whichever of their suggestions fits best.
+
+   **Your profile description is also weak for search** — it's your mission statement, with no mention of where you are, what conditions you treat, or who should refer. Google gives you 750 characters and you're using 331 of them. Here's a replacement (746 characters, so it fits) that covers brain injury, stroke, alcohol-related brain damage, your location and catchment, your therapy disciplines, and your CQC registration — while carefully not claiming nursing care:
+
+   > Truth Care Group provides specialist residential rehabilitation for adults living with acquired or traumatic brain injury, stroke and alcohol-related brain damage, at Beaconsfield House in Weston-super-Mare, North Somerset.
+   >
+   > Six en-suite bedrooms and therapy space support slow-stream neurorehabilitation from a multidisciplinary team spanning neuropsychiatry, neuropsychology, neurophysiotherapy, occupational therapy and speech and language therapy. Residents work towards personalised SMART goals, building independence and community reintegration.
+   >
+   > Registered with the Care Quality Commission for accommodation and personal care. We welcome referrals from case managers, commissioners and families across Somerset, Bristol and the South West.
+
+   Paste that into **Edit profile → About → Description**. Don't add a phone number or web address to it — Google rejects descriptions containing those.
 
 4. **ICO registration number** — the one legal item I genuinely could not resolve from the public registers, because the ICO's is only searchable through a form. If you're registered, send me the reference and I'll add it. If you believe you're exempt, tell me and I'll note the exemption instead. (Company number and DPO are dealt with above.)
 
