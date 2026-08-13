@@ -13,7 +13,10 @@ export const metadata: Metadata = {
   // "Registered manager" removed 2026-08-12 — see the NEEDS CONFIRMATION
   // note on Emma Merriman in team.ts. Update this once that's resolved.
   description:
-    "Meet the Truth Care Group team behind Beaconsfield House: a neuropsychiatrist, clinical neuropsychologist, neurophysiotherapists, a neuro speech and language therapist and a neuro-occupational therapist.",
+    // Shortened 2026-08-13 from 203 characters, which Google was certain to
+    // truncate mid-list. Keeps the disciplines that people actually search
+    // for and drops the long-form job titles.
+    "Meet the clinicians behind Beaconsfield House, Weston-super-Mare: neuropsychiatry, neuropsychology, physiotherapy, speech and occupational therapy.",
   alternates: { canonical: "/our-team" },
 };
 

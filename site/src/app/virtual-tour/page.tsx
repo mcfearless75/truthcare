@@ -12,7 +12,9 @@ import { ButtonPrimary } from "@/components/Buttons";
 export const metadata: Metadata = {
   title: "Take a Look Inside",
   description:
-    "Take a 360° virtual tour of Beaconsfield House, Weston-super-Mare, and see the photographs of the communal lounge and dining room, the en-suite bedrooms, the sensory and therapy room, and the secure garden.",
+    // Shortened 2026-08-13 from 206 characters, which Google was certain to
+    // truncate before reaching the garden.
+    "Take a 360° virtual tour of Beaconsfield House, Weston-super-Mare: the communal lounge and dining room, en-suite bedrooms, sensory room and secure garden.",
   alternates: { canonical: "/virtual-tour" },
 };
 
