@@ -108,7 +108,29 @@ Verified directly from `cqc.org.uk/location/1-26270675575` and its registration-
 
     ⚠️ **Gotcha worth remembering:** the first attempt used one `"source": "/:path*"` rule. That redirected every sub-path correctly but left the **www homepage returning 200** — Vercel's `:path*` does not match the bare root here. It needs an explicit `"/"` rule plus `"/:path+"` for everything below. The homepage is the URL that matters most, so this would have been a bad miss; it was only caught by testing each path against production rather than assuming the wildcard covered them.
 
-    **Fix 1 — STILL OUTSTANDING, and fix 2 has made it MORE urgent, not less.** Add a **Domain property** (`sc-domain:truthcaregroup.co.uk`) via a DNS TXT record at the registrar; it covers apex + www + http + https in one property. Now that www 308s away, Google will stop indexing www URLs entirely, so the existing www URL-prefix property will go dark **faster** than it would have done. Keep it for historical continuity, but the Domain property is now the priority. Blocked on: who manages DNS for the domain.
+    **Fix 1 — IN PROGRESS. The Domain property is created; it needs one DNS record to go live.**
+
+    The `sc-domain:truthcaregroup.co.uk` property has been created under `paulmc18@gmail.com` and is sitting **unverified**, awaiting a TXT record. The client manages DNS themselves.
+
+    **DNS facts, confirmed by live lookup 2026-08-13:**
+    - Nameservers are `ns73/ns74.domaincontrol.com` → **GoDaddy**.
+    - Apex A record and `www` both point at `76.76.21.21` (Vercel).
+    - Existing apex TXT records that **must survive untouched**: the SPF record `v=spf1 include:_spf-usg1.ppe-hosted.com include:secureserver.net ~all`, and the Microsoft 365 record `NETORGFT16701657.onmicrosoft.com`.
+    - MX points at Proofpoint Essentials (`mx1/mx2/mx3-usg1.ppe-hosted.com`). **This is live email — do not touch it.**
+
+    **The record to add** (Type `TXT`, Name/Host `@`, TTL default):
+    ```
+    google-site-verification=wxnFcMuW9yNKTPFo5rZJhU2SCbWaq004FbgxKTHSV_k
+    ```
+    This is not a secret — verification tokens are published in public DNS by design.
+
+    ⚠️ **The one way to get this badly wrong:** GoDaddy's UI invites you to *edit* the existing TXT record rather than add a second one. Overwriting the SPF record would break outbound email deliverability for the whole business. It must be a **new, additional** TXT record on `@`.
+
+    Google also offered an automated path ("START VERIFICATION" authorises Google to access the GoDaddy DNS account via OAuth). **Deliberately not taken** — it is an OAuth grant against the client's registrar account and needs their GoDaddy login, so it is their decision, not one to make on their behalf. The manual TXT route reaches the same result with no third-party access granted.
+
+    After the record propagates, click VERIFY in Search Console, then submit `https://truthcaregroup.co.uk/sitemap.xml` to the new Domain property. Keep the old www URL-prefix property for historical continuity.
+
+    **Why this matters more since fix 2:** now that www 308s away, Google will stop indexing www URLs entirely, so the existing www-scoped property will go dark *faster* than it would have done.
 
     Still true and unchanged: **Google is still serving the pre-cutover Wix page title** ("…Rehabilitation **Bristol**"). That is expected this soon after cutover with the sitemap only just read; re-check in a week.
 13. **NEW 2026-08-13 — homepage `<title>` is 76 characters and will truncate in the SERP.** *"Truth Care Group | Brain Injury Residential Rehabilitation Weston-super-Mare"* — Google cuts around 60. The brand sits first, so the truncation eats the location, which is the part actually worth ranking for. A keyword-first version like *"Brain Injury Rehabilitation, Weston-super-Mare | Truth Care Group"* (63) would survive. **Not changed** — the current title was set deliberately with reasoning recorded in `app/page.tsx`, and reordering a homepage title is a branding call. Raise it with the client.
