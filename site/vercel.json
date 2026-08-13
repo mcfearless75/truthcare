@@ -1,9 +1,15 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/",
       "has": [{ "type": "host", "value": "www.truthcaregroup.co.uk" }],
-      "destination": "https://truthcaregroup.co.uk/:path*",
+      "destination": "https://truthcaregroup.co.uk/",
+      "permanent": true
+    },
+    {
+      "source": "/:path+",
+      "has": [{ "type": "host", "value": "www.truthcaregroup.co.uk" }],
+      "destination": "https://truthcaregroup.co.uk/:path+",
       "permanent": true
     }
   ],
