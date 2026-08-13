@@ -66,8 +66,12 @@ export default function OurTeamPage() {
       {/* --------------------------------------------------------- Team grid */}
       {/* Reveal now fires on threshold: 0 with a negative rootMargin (see
           Reveal.tsx), so it triggers off the element's top edge rather than
-          a ratio of its total height — safe even for a tall six-card grid. */}
-      <section className="py-[var(--space-section)]">
+          a ratio of its total height — safe even for a tall six-card grid.
+          pb only, not py: PageHeader already ends in its own
+          pb-[var(--space-section)], so a matching pt- here stacked both and
+          left a huge gap between the header content and "The Team" —
+          matches the pattern virtual-tour's tour section already uses. */}
+      <section className="pb-[var(--space-section)]">
         <Reveal>
           <div className="mx-auto max-w-6xl px-5">
             <SectionHeading

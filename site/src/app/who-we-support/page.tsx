@@ -51,7 +51,11 @@ export default function WhoWeSupportPage() {
       </PageHeader>
 
       {/* ------------------------------------------------------------ How we help */}
-      <section className="py-[var(--space-section)]">
+      {/* pb only, not py — see the matching note in our-team/page.tsx:
+          PageHeader already ends in its own pb-[var(--space-section)], so a
+          matching pt- here doubled the gap between the header and this
+          section. */}
+      <section className="pb-[var(--space-section)]">
         <Reveal>
           <div className="mx-auto max-w-6xl px-5">
             <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
