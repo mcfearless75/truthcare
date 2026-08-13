@@ -96,22 +96,13 @@ Target was every page under 120 KB. The heaviest page is 72 KB, 61% under target
 
    **Half of this is now done.** The www version of your site now redirects to the non-www one, so there is only ever one address in play. Every page, plus your sitemap and robots file, was tested against the live site to confirm it. Visitors typing either version land in the right place, and any links pointing at the www version now pass their value to the real address instead of splitting it.
 
-   **The other half needs one action from you, and the fix above has made it more urgent rather than less.** Now that www redirects away, Google will stop indexing www addresses entirely — so your existing Search Console property will go quiet *faster* than it would have done.
+   **The other half is now done too.** You added the DNS record, and the new **Domain-level property** is verified and live. It covers every version of your address at once, so your reporting can't go quiet the way it was about to.
 
-   I've created the new **Domain-level property** for you. It's waiting on a single DNS record, which only you can add since it needs your GoDaddy login. In GoDaddy → your domain → **DNS → Add New Record**:
+   **I checked your email survived the DNS change**, because that was the real risk — your SPF record, your Microsoft 365 record and all three mail-routing records are present and untouched. Nothing about your email changed.
 
-   | Field | Value |
-   |---|---|
-   | Type | `TXT` |
-   | Name / Host | `@` |
-   | Value | `google-site-verification=wxnFcMuW9yNKTPFo5rZJhU2SCbWaq004FbgxKTHSV_k` |
-   | TTL | leave as default |
+   Your sitemap has been submitted to the new property. It currently reads "Couldn't fetch", which sounds alarming but is just Google saying it hasn't looked yet — there's no read date against it. I tested the file independently from outside and it's served correctly, valid, and openly readable by Google's crawler. **Worth a glance in a day**; if it still says that then, it's worth a proper look.
 
-   ⚠️ **One thing to be careful about.** You already have TXT records on `@` — one is your email's SPF record. GoDaddy's screen makes it easy to *edit* an existing record instead of adding a new one, and overwriting that SPF record would break your outgoing email. Make sure you're using **Add New Record**, and leave everything already there alone.
-
-   Once it's saved, tell me and I'll confirm it's live and finish the verification. DNS usually takes a few minutes, occasionally up to a day.
-
-   (Google did offer to do this automatically by connecting to your GoDaddy account directly. I didn't take that route — it means granting Google ongoing access to your domain settings, and that's your decision to make, not mine. The record above achieves exactly the same thing without giving anything away.)
+   Keep the old www property — it holds your history.
 
    Separately: Google is **still showing your old Wix page title** in search results. That's normal this soon after the switch now that the sitemap has only just been read; worth re-checking in a week rather than worrying about today.
 

@@ -108,9 +108,15 @@ Verified directly from `cqc.org.uk/location/1-26270675575` and its registration-
 
     ⚠️ **Gotcha worth remembering:** the first attempt used one `"source": "/:path*"` rule. That redirected every sub-path correctly but left the **www homepage returning 200** — Vercel's `:path*` does not match the bare root here. It needs an explicit `"/"` rule plus `"/:path+"` for everything below. The homepage is the URL that matters most, so this would have been a bad miss; it was only caught by testing each path against production rather than assuming the wildcard covered them.
 
-    **Fix 1 — IN PROGRESS. The Domain property is created; it needs one DNS record to go live.**
+    **Fix 1 — DONE 2026-08-13. `sc-domain:truthcaregroup.co.uk` is created and VERIFIED under `paulmc18@gmail.com`.** The client added the TXT record at GoDaddy themselves.
 
-    The `sc-domain:truthcaregroup.co.uk` property has been created under `paulmc18@gmail.com` and is sitting **unverified**, awaiting a TXT record. The client manages DNS themselves.
+    **Post-change DNS safety check passed** — confirmed by live lookup after the edit, because the risk here was overwriting rather than adding: the Google token is present, the SPF record is intact, the Microsoft 365 record is intact, and all three Proofpoint MX records are present. **Email was not disturbed.** Re-run that check any time DNS is touched.
+
+    **Sitemap:** the apex sitemap `https://truthcaregroup.co.uk/sitemap.xml` has been submitted to the new Domain property. The property also inherited the older `https://www.truthcaregroup.co.uk/sitemap.xml` entry (Success, 8 pages) — harmless, and worth leaving until the apex one reads successfully.
+
+    ⚠️ **The apex sitemap currently shows "Couldn't fetch" with no "Last read" date.** This is the normal transient state immediately after submission, not a failure. Verified independently that the file is genuinely fine: HTTP 200, `content-type: application/xml`, valid XML, 8 `<loc>` entries, no `x-robots-tag`, `robots.txt` allows everything and declares this exact URL, and it returns 200 to a Googlebot user-agent. **Re-check in a day; if it still says "Couldn't fetch" then, investigate for real rather than assuming it is still settling.**
+
+    Historical detail retained below.
 
     **DNS facts, confirmed by live lookup 2026-08-13:**
     - Nameservers are `ns73/ns74.domaincontrol.com` → **GoDaddy**.
