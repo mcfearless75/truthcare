@@ -90,7 +90,9 @@ Target was every page under 120 KB. The heaviest page is 72 KB, 61% under target
 
 2. **Nobody is named as Registered Manager.** Confirmed genuinely vacant — you've told me Dr Pillay is the nominated individual rather than the Registered Manager, so the CQC register's "responsible for these services" line isn't the answer. When you appoint someone, tell me and I'll update the team page, the homepage card above, and the privacy notice together.
 
-3. **Your Google Business Profile has the old phone number on it.** Already set up and managed under your Google account, with a genuine 5-star review and real customer interactions — just needs the phone number updated. I can walk you through it.
+3. **Your Google Business Profile — phone was already fixed, but I found something worse and corrected it.** Both your numbers are on there correctly (`07483 483955` as primary, plus the landline), so that item is closed. **However, your profile's primary category was set to "Nursing home"** — which contradicts the CQC condition that Beaconsfield House must not provide nursing care, and was putting you in front of people searching for something you're not registered to offer. I've changed it to **"Rehabilitation Centre"**, which matches how you describe yourselves. Google shows it as pending review; it normally clears within minutes.
+
+   **Two small things there still worth doing, which I couldn't complete:** add **"Care home" as a second category** so you still appear for care-home searches, and add **Bristol to your service area** (it currently lists Somerset, North Somerset and Weston-super-Mare only, but Search Console shows real Bristol searches finding you). Both are a couple of clicks in the Business Profile dashboard.
 
 4. **ICO registration number** — the one legal item I genuinely could not resolve from the public registers, because the ICO's is only searchable through a form. If you're registered, send me the reference and I'll add it. If you believe you're exempt, tell me and I'll note the exemption instead. (Company number and DPO are dealt with above.)
 
