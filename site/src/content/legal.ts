@@ -38,28 +38,39 @@ export const PRIVACY: LegalPage = {
       // Certificate of Registration (Certificate no. CRT1-26302995677,
       // Provider ID 1-21880615075, registered 30/12/2025). That
       // certificate's Provider ID differs from the Location ID already
-      // used for cqcUrl in lib/site.ts (1-26270575575, which points at
+      // used for cqcUrl in lib/site.ts (1-26270675575, which points at
       // Beaconsfield House's own CQC page) — both are legitimate, one is
       // the provider-level registration and one is the specific location.
       // Placement of the provider-level ID is still being decided with the
-      // client. The certificate also lists a registered/correspondence
-      // address (339 Two Mile Hill Road, Bristol, Avon, BS15 1AN) that is
-      // NOT Beaconsfield House's address — do not use it as the visitor-
-      // facing address anywhere; whether it belongs in this "who we are"
-      // section as the data controller's correspondence address is still
-      // being confirmed with the client.
+      // client.
       //
-      // Still NEEDS CONFIRMATION: item 2, registered company number
-      // (currently omitted, should be stated — this certificate doesn't
-      // carry a Companies House number, that's a separate register);
-      // item 3, ICO data protection fee registration number, or
-      // confirmation of exemption (currently omitted); and item 4, whether
-      // a Data Protection Officer has been appointed (a small provider is
+      // Item 2 CONFIRMED 2026-08-13: registered company number is 15651211,
+      // verified against the Companies House public register, not supplied
+      // by the client — TRUTH CARE GROUP LTD, active, private limited
+      // company, incorporated 16 April 2024. Now stated above.
+      //
+      // The Bristol address question is likewise RESOLVED: 339 Two Mile
+      // Hill Road, Bristol, BS15 1AN is the company's *registered office*
+      // on the Companies House register, which is exactly the role it
+      // plays in the sentence above. It is still NOT Beaconsfield House's
+      // address — do not use it as the visitor-facing address anywhere.
+      // The contact paragraph below deliberately keeps Beaconsfield House
+      // as the address a person actually writes to.
+      //
+      // Still NEEDS CONFIRMATION: item 3, ICO data protection fee
+      // registration number, or confirmation of exemption (currently
+      // omitted — the ICO register is only searchable through a form, so
+      // this one genuinely could not be resolved from public record and
+      // needs the client's registration reference); and item 4, whether a
+      // Data Protection Officer has been appointed (a small provider is
       // unlikely to be required to, but the named responsible person
-      // should be stated).
+      // should be stated). Note that the contact paragraph below points
+      // information requests at "the registered manager" — that title is
+      // currently unassigned in team.ts, so items 4 and the Registered
+      // Manager question are the same open question wearing two hats.
       heading: "Who we are",
       paragraphs: [
-        "Truth Care Group Ltd is the data controller for the personal information described in this notice. That means we decide why it is collected and what happens to it.",
+        "Truth Care Group Ltd is the data controller for the personal information described in this notice. That means we decide why it is collected and what happens to it. We are a company registered in England and Wales, company number 15651211, with our registered office at 339 Two Mile Hill Road, Bristol, BS15 1AN.",
         "You can reach us at Beaconsfield House, 11 Beaconsfield Rd, Weston-super-Mare, BS23 1YE, by email at info@truthcaregroup.co.uk, or by phone on 07483 483955. If you have a question about your information, use the same details and mark it for the attention of the registered manager.",
       ],
     },
