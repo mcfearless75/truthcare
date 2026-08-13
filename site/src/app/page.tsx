@@ -12,8 +12,12 @@ export const metadata: Metadata = {
     absolute:
       "Truth Care Group | Brain Injury Residential Rehabilitation Weston-super-Mare",
   },
+  // Trimmed to target length and added "North Somerset" 2026-08-13 — real
+  // GSC query data shows impressions (no clicks yet) for "Minehead" and
+  // "Bristol" ABI searches, confirming demand from beyond Weston-super-Mare
+  // itself; North Somerset is the actual local authority area WSM sits in.
   description:
-    "Specialist residential brain injury rehabilitation at Beaconsfield House, Weston-super-Mare. Person-centred, goal-focused community rehabilitation for adults living with acquired or traumatic brain injury.",
+    "Specialist residential brain injury rehabilitation in Weston-super-Mare, North Somerset, for adults with acquired or traumatic brain injury.",
   alternates: { canonical: "/" },
 };
 

@@ -12,7 +12,7 @@ import { ButtonPrimary, ButtonSecondary } from "@/components/Buttons";
 export const metadata: Metadata = {
   title: "Services & Facilities",
   description:
-    "Beaconsfield House, Weston-super-Mare: a six bed transitional and residential acquired brain injury service, within walking distance of the seafront, shops and leisure facilities.",
+    "Beaconsfield House, Weston-super-Mare, North Somerset: a six bed transitional and residential acquired brain injury service near the seafront and shops.",
   alternates: { canonical: "/services-facilities" },
 };
 

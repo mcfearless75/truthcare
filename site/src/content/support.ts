@@ -4,7 +4,7 @@ export const SUPPORT = {
   hero: {
     heading: "Who We Support",
     intro:
-      "Truth Care Group supports adults living with the cognitive, emotional and physical effects of acquired and traumatic brain injury. Our focus is on independence, meaningful recovery and community reintegration, delivered through a personalised, collaborative rehabilitation approach.",
+      "Truth Care Group supports adults living with the cognitive, emotional and physical effects of acquired and traumatic brain injury, at Beaconsfield House in Weston-super-Mare, North Somerset. Our focus is on independence, meaningful recovery and community reintegration, delivered through a personalised, collaborative rehabilitation approach — and we welcome referrals from across Somerset, Bristol and the wider South West.",
     ctas: [
       { label: "Arrange a Visit", href: "/contact-us" },
       { label: "Make a Referral", href: "/contact-us?type=referral" },

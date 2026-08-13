@@ -3,7 +3,7 @@ import type { ServiceValue } from "./types";
 export const HOME = {
   hero: {
     title: "Specialist Residential Brain Injury Rehabilitation",
-    lede: "Personalised, community-based rehabilitation for adults living with acquired or traumatic brain injury.",
+    lede: "Personalised, community-based rehabilitation for adults living with acquired or traumatic brain injury, based in Weston-super-Mare, North Somerset.",
     ctas: [
       { label: "Arrange a Visit", href: "/contact-us" },
       { label: "Make a Referral", href: "/contact-us?type=referral" },
@@ -19,6 +19,11 @@ export const HOME = {
     paragraphs: [
       "Truth Care Group develops specialist residential services for individuals living with the cognitive, emotional, and physical effects of acquired brain injuries.",
       "Our mission is to deliver person-centred rehabilitation and promote community reintegration.",
+      // Added 2026-08-13: real Search Console query data shows the site
+      // already surfacing for "Minehead" and "Bristol" ABI searches with
+      // zero clicks — genuine demand from beyond Weston-super-Mare itself
+      // that this line makes explicit rather than leaving implicit.
+      "Based at Beaconsfield House in Weston-super-Mare, North Somerset, we welcome referrals and enquiries from across Somerset, Bristol and the wider South West.",
       "Our values - Integrity, Respect, Kindness, and Optimism - guide every aspect of our work.",
     ],
   },
