@@ -169,9 +169,16 @@ test.describe("contact form keyboard traversal", () => {
     await phoneLink.focus();
     await expect(phoneLink).toBeFocused();
 
+    // The landline is the next item in the contact details list, right
+    // after the mobile number.
+    await page.keyboard.press("Tab");
+    const landlineLink = page.getByRole("link", { name: "01934 753233" });
+    await expect(landlineLink).toBeFocused();
+
     // The brochure download link is the last item in the contact details
-    // list, right after phone. `.first()`: the footer repeats the same link
-    // text, but it sits after <main> in the DOM, so it isn't this one.
+    // list, right after the landline. `.first()`: the footer repeats the
+    // same link text, but it sits after <main> in the DOM, so it isn't
+    // this one.
     await page.keyboard.press("Tab");
     const brochureLink = page.getByRole("link", { name: /download our brochure/i }).first();
     await expect(brochureLink).toBeFocused();

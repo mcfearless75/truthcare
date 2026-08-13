@@ -8,6 +8,10 @@ export const SITE = {
   // unfinished update on Wix's side rather than a deliberate second line —
   // worth the client double-checking which number should actually be live.
   phone: "+44 7483 483955",
+  // Added 2026-08-13, provided directly by the client — resolves the
+  // "Landline? confirm mobile-only or add one" item from the original
+  // handover doc. Beaconsfield House Manager/Office's work line.
+  landline: "+44 1934 753233",
   email: "info@truthcaregroup.co.uk",
   address: {
     name: "Beaconsfield House",

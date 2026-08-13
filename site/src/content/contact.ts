@@ -7,6 +7,8 @@ export const CONTACT = {
   email: "info@truthcaregroup.co.uk",
   // Updated 2026-07-27 — see the matching note in lib/site.ts.
   phone: "07483 483955",
+  // Added 2026-08-13 — see the matching note in lib/site.ts.
+  landline: "01934 753233",
   links: {
     emailUs: { href: "mailto:info@truthcaregroup.co.uk" },
     // A literal space is invalid in a tel: URI per RFC 3966 §3 and some
@@ -14,6 +16,7 @@ export const CONTACT = {
     // here. Only the href is corrected — the human-readable `phone` above
     // still renders verbatim.
     callUs: { href: "tel:+447483483955" },
+    callLandline: { href: "tel:+441934753233" },
   },
   form: {
     heading: "Contact information",

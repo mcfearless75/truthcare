@@ -66,6 +66,17 @@ export default function ContactPage() {
 
             <div>
               <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-navy/70">
+                Landline
+              </dt>
+              <dd className="mt-2 text-[length:var(--text-lede)]">
+                <a href={CONTACT.links.callLandline.href} className={linkClass}>
+                  {CONTACT.landline}
+                </a>
+              </dd>
+            </div>
+
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-navy/70">
                 Brochure
               </dt>
               <dd className="mt-2 text-[length:var(--text-lede)]">
