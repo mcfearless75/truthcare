@@ -33,15 +33,30 @@ export const PRIVACY: LegalPage = {
   updatedIso: UPDATED_ISO,
   sections: [
     {
-      // NEEDS CONFIRMATION: item 1 — "Truth Care Group Ltd" is the exact
-      // registered legal name to use as data controller; it was sourced
-      // from the CQC-register comment in lib/site.ts, not confirmed by the
-      // client. Also: item 2, registered company number (currently
-      // omitted, should be stated); item 3, ICO data protection fee
-      // registration number, or confirmation of exemption (currently
-      // omitted); and item 4, whether a Data Protection Officer has been
-      // appointed (a small provider is unlikely to be required to, but the
-      // named responsible person should be stated).
+      // Item 1 CONFIRMED 2026-08-13: "Truth Care Group Ltd" is the exact
+      // registered legal name, verified directly against the client's CQC
+      // Certificate of Registration (Certificate no. CRT1-26302995677,
+      // Provider ID 1-21880615075, registered 30/12/2025). That
+      // certificate's Provider ID differs from the Location ID already
+      // used for cqcUrl in lib/site.ts (1-26270575575, which points at
+      // Beaconsfield House's own CQC page) — both are legitimate, one is
+      // the provider-level registration and one is the specific location.
+      // Placement of the provider-level ID is still being decided with the
+      // client. The certificate also lists a registered/correspondence
+      // address (339 Two Mile Hill Road, Bristol, Avon, BS15 1AN) that is
+      // NOT Beaconsfield House's address — do not use it as the visitor-
+      // facing address anywhere; whether it belongs in this "who we are"
+      // section as the data controller's correspondence address is still
+      // being confirmed with the client.
+      //
+      // Still NEEDS CONFIRMATION: item 2, registered company number
+      // (currently omitted, should be stated — this certificate doesn't
+      // carry a Companies House number, that's a separate register);
+      // item 3, ICO data protection fee registration number, or
+      // confirmation of exemption (currently omitted); and item 4, whether
+      // a Data Protection Officer has been appointed (a small provider is
+      // unlikely to be required to, but the named responsible person
+      // should be stated).
       heading: "Who we are",
       paragraphs: [
         "Truth Care Group Ltd is the data controller for the personal information described in this notice. That means we decide why it is collected and what happens to it.",
