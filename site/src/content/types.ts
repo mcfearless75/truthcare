@@ -36,6 +36,16 @@ export interface LegalSection {
   outro?: string[];
 }
 
+export interface Testimonial {
+  quote: string; // may contain \n\n for paragraphs
+  excerpt: string; // short pull-quote for compact placements (homepage strip)
+  attribution: string;
+  /** Where the quote came from, e.g. "Google review". Omit for direct submissions. */
+  source?: string;
+  /** Star rating out of 5, only meaningful alongside `source`. */
+  rating?: number;
+}
+
 export interface LegalPage {
   eyebrow: string;
   heading: string;

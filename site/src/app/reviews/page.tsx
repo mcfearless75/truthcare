@@ -43,12 +43,14 @@ export default function ReviewsPage() {
           <Reveal>
             <div className="mx-auto max-w-6xl px-5">
               <SectionHeading title={REVIEWS.testimonialsHeading} align="center" />
-              <div className="mx-auto mt-12 max-w-3xl">
+              <div className="mx-auto mt-12 max-w-3xl space-y-8">
                 {REVIEWS.testimonials.map((testimonial) => (
                   <TestimonialQuote
                     key={testimonial.attribution}
                     quote={testimonial.quote}
                     attribution={testimonial.attribution}
+                    source={testimonial.source}
+                    rating={testimonial.rating}
                   />
                 ))}
               </div>

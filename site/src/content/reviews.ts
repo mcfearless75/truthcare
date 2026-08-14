@@ -1,3 +1,5 @@
+import type { Testimonial } from "./types";
+
 export const REVIEWS = {
   eyebrow: "Reviews",
   heading: "Tell us how we're doing",
@@ -21,7 +23,22 @@ export const REVIEWS = {
         "We have been incredibly impressed with the care and support provided by Truth Care Group.",
       attribution: "Family member",
     },
-  ],
+    // Truth Care Group's one live Google review as of 2026-08-14 — read
+    // directly off the Google Business Profile (public, unedited). Reviewer
+    // surname trimmed to an initial for the same reason the family quote
+    // above is anonymised; the rating and "a week ago" timing are Google's,
+    // not ours. Re-check this against the profile before editing — it will
+    // read stale once more reviews come in.
+    {
+      quote:
+        "A family member in under the care of Truth Care. She has complex needs and is currently being assessed here. The staff are kind, considerate and importantly experienced with brain injured patients. My relative is very happy there and making progress. It is a relief to the family that she is in such a brilliant and appropriate place.",
+      excerpt:
+        "The staff are kind, considerate and importantly experienced with brain injured patients.",
+      attribution: "Trish T.",
+      source: "Google review",
+      rating: 5,
+    },
+  ] as Testimonial[],
   // href isn't stored here — it's SITE.googleReviewUrl, read directly at the
   // call site so there is exactly one copy of the URL in the codebase.
   ctaLabel: "Leave a Google Review",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { HOME } from "@/content/home";
 import { REVIEWS } from "@/content/reviews";
 import { SITE } from "@/lib/site";
@@ -6,6 +7,7 @@ import { Pic } from "@/components/Pic";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ValueCard } from "@/components/ValueCard";
+import { Stars } from "@/components/TestimonialQuote";
 import { ButtonPrimary, ButtonSecondary, ButtonSecondaryOnDark } from "@/components/Buttons";
 
 export const metadata: Metadata = {
@@ -32,7 +34,11 @@ const DARK_FOCUS = "[&_a:focus-visible]:outline-paper!";
 
 export default function HomePage() {
   const [primaryCta, secondaryCta] = HOME.hero.ctas;
-  const featuredReview = REVIEWS.testimonials[0];
+  // Prefer a review with a star rating (currently the Google one) for this
+  // strip — the stars are doing real work as a trust signal here. Falls
+  // back to the first testimonial if a rating is ever unavailable.
+  const featuredReview =
+    REVIEWS.testimonials.find((t) => t.rating) ?? REVIEWS.testimonials[0];
 
   return (
     <>
@@ -359,41 +365,36 @@ export default function HomePage() {
       </section>
 
       {/* --------------------------------------------------------- Reviews strip */}
-      {/* A real, anonymised family review as a pull-quote, not a fabricated
-          count of "growing reviews" — see the note in content/reviews.ts on
-          why this list only ever grows from genuine client-supplied
-          submissions. Links out to /reviews, which carries the full quote
-          plus the QR code / Google review CTA. */}
+      {/* Deliberately quiet: a hairline-bordered strip, not a coloured panel
+          with a pair of buttons — this is a trust signal to notice on the
+          way past, not a second homepage CTA competing with the ones above.
+          A real review (Google's own star rating, where the featured quote
+          has one) as a pull-quote, not a fabricated count of "growing
+          reviews" — see the note in content/reviews.ts on why this list only
+          ever grows from genuine submissions. Links out to /reviews, which
+          carries the full quotes plus the QR code / Google review CTA. */}
       {featuredReview && (
-        <section className="pb-[var(--space-section)]">
+        <section className="border-t border-navy/10 py-14 md:py-16">
           <Reveal>
-            <div className="mx-auto max-w-6xl px-5">
-              <div className="relative overflow-hidden rounded-[1.75rem] bg-orange/[0.08] px-6 py-14 ring-1 ring-orange/25 sm:px-12 sm:py-16">
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 top-0 mx-auto h-1 w-24 rounded-b-full bg-orange"
-                />
-                <div className="grid gap-10 md:grid-cols-12 md:items-center md:gap-12">
-                  <div className="md:col-span-7">
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-text">
-                      Reviews
-                    </p>
-                    <p className="mt-4 font-display text-[length:var(--text-h2)] font-semibold leading-[1.15] tracking-tight text-balance text-navy">
-                      &ldquo;{featuredReview.excerpt}&rdquo;
-                    </p>
-                    <p className="mt-5 text-sm font-semibold uppercase tracking-[0.14em] text-navy/70">
-                      &mdash; {featuredReview.attribution}
-                    </p>
-                  </div>
-
-                  <div className="md:col-span-4 md:col-start-9">
-                    <div className="flex flex-col gap-3">
-                      <ButtonPrimary href="/reviews" label="Read Reviews" />
-                      <ButtonSecondary href={SITE.googleReviewUrl} label="Leave a Review" external />
-                    </div>
-                  </div>
+            <div className="mx-auto max-w-2xl px-5 text-center">
+              {featuredReview.rating && (
+                <div className="flex justify-center">
+                  <Stars rating={featuredReview.rating} />
                 </div>
-              </div>
+              )}
+              <p className="mt-4 font-display text-[length:var(--text-lede)] italic leading-relaxed text-balance text-navy/80">
+                &ldquo;{featuredReview.excerpt}&rdquo;
+              </p>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-navy/50">
+                {featuredReview.attribution}
+                {featuredReview.source && ` · ${featuredReview.source}`}
+              </p>
+              <Link
+                href="/reviews"
+                className="mt-5 inline-block text-sm font-semibold text-navy/70 underline decoration-navy/30 underline-offset-4 hover:text-orange-text hover:decoration-orange-text"
+              >
+                Read more reviews
+              </Link>
             </div>
           </Reveal>
         </section>
