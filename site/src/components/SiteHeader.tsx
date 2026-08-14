@@ -11,6 +11,7 @@ const NAV = [
   { href: "/virtual-tour", label: "Take a Look Inside" },
   { href: "/who-we-support", label: "Who We Support" },
   { href: "/our-team", label: "Our Team" },
+  { href: "/reviews", label: "Reviews" },
   { href: "/contact-us", label: "Contact Us" },
 ];
 

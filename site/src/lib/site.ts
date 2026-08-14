@@ -27,6 +27,11 @@ export const SITE = {
     country: "GB",
   },
   cqcUrl: "https://www.cqc.org.uk/location/1-26270675575",
+  // Truth Care Group's Google Business Profile "write a review" deep link,
+  // supplied directly by the client 2026-08-14. Short g.page links like this
+  // don't expire the way a raw place-review URL built from a place_id can,
+  // so it's used verbatim rather than reconstructed.
+  googleReviewUrl: "https://g.page/r/CTLQPUoUP0uMEBM/review",
   formspree: "https://formspree.io/f/xzdnklod",
   // Sourced from the live Wix site's downloadable brochure (2026-07-27).
   // Raw path — callers apply withBasePath() at render time, same convention

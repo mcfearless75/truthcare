@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { HOME } from "@/content/home";
+import { REVIEWS } from "@/content/reviews";
 import { SITE } from "@/lib/site";
 import { Pic } from "@/components/Pic";
 import { Reveal } from "@/components/Reveal";
@@ -31,6 +32,7 @@ const DARK_FOCUS = "[&_a:focus-visible]:outline-paper!";
 
 export default function HomePage() {
   const [primaryCta, secondaryCta] = HOME.hero.ctas;
+  const featuredReview = REVIEWS.testimonials[0];
 
   return (
     <>
@@ -355,6 +357,47 @@ export default function HomePage() {
           </div>
         </Reveal>
       </section>
+
+      {/* --------------------------------------------------------- Reviews strip */}
+      {/* A real, anonymised family review as a pull-quote, not a fabricated
+          count of "growing reviews" — see the note in content/reviews.ts on
+          why this list only ever grows from genuine client-supplied
+          submissions. Links out to /reviews, which carries the full quote
+          plus the QR code / Google review CTA. */}
+      {featuredReview && (
+        <section className="pb-[var(--space-section)]">
+          <Reveal>
+            <div className="mx-auto max-w-6xl px-5">
+              <div className="relative overflow-hidden rounded-[1.75rem] bg-orange/[0.08] px-6 py-14 ring-1 ring-orange/25 sm:px-12 sm:py-16">
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 top-0 mx-auto h-1 w-24 rounded-b-full bg-orange"
+                />
+                <div className="grid gap-10 md:grid-cols-12 md:items-center md:gap-12">
+                  <div className="md:col-span-7">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-text">
+                      Reviews
+                    </p>
+                    <p className="mt-4 font-display text-[length:var(--text-h2)] font-semibold leading-[1.15] tracking-tight text-balance text-navy">
+                      &ldquo;{featuredReview.excerpt}&rdquo;
+                    </p>
+                    <p className="mt-5 text-sm font-semibold uppercase tracking-[0.14em] text-navy/70">
+                      &mdash; {featuredReview.attribution}
+                    </p>
+                  </div>
+
+                  <div className="md:col-span-4 md:col-start-9">
+                    <div className="flex flex-col gap-3">
+                      <ButtonPrimary href="/reviews" label="Read Reviews" />
+                      <ButtonSecondary href={SITE.googleReviewUrl} label="Leave a Review" external />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </section>
+      )}
     </>
   );
 }

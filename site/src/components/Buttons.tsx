@@ -6,19 +6,43 @@ const base =
 interface ButtonProps {
   href: string;
   label: string;
+  /**
+   * Set for links that leave the site (e.g. the Google review form). Swaps
+   * `next/link` for a plain anchor with `target="_blank" rel="noopener
+   * noreferrer"` — the same treatment the brochure and CQC links get
+   * elsewhere on the site — so the button doesn't navigate the visitor away
+   * from the page they were on.
+   */
+  external?: boolean;
 }
 
-export function ButtonPrimary({ href, label }: ButtonProps) {
+export function ButtonPrimary({ href, label, external }: ButtonProps) {
+  const className = `${base} bg-orange text-navy hover:brightness-105`;
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+        {label}
+      </a>
+    );
+  }
   return (
-    <Link href={href} className={`${base} bg-orange text-navy hover:brightness-105`}>
+    <Link href={href} className={className}>
       {label}
     </Link>
   );
 }
 
-export function ButtonSecondary({ href, label }: ButtonProps) {
+export function ButtonSecondary({ href, label, external }: ButtonProps) {
+  const className = `${base} border-2 border-navy text-navy hover:bg-navy hover:text-paper`;
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+        {label}
+      </a>
+    );
+  }
   return (
-    <Link href={href} className={`${base} border-2 border-navy text-navy hover:bg-navy hover:text-paper`}>
+    <Link href={href} className={className}>
       {label}
     </Link>
   );

@@ -15,6 +15,7 @@ const ROUTES = [
   "/virtual-tour",
   "/who-we-support",
   "/our-team",
+  "/reviews",
   "/contact-us",
   "/privacy-policy",
   "/cookie-policy",
