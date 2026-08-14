@@ -71,7 +71,14 @@ export function SiteHeader() {
                   <Link
                     href={item.href}
                     aria-current={pathname === item.href ? "page" : undefined}
-                    className={`relative rounded-full px-4 py-2.5 text-[0.95rem] font-medium transition-colors duration-200 hover:bg-navy/5 after:absolute after:inset-x-4 after:-bottom-px after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-orange after:transition-transform after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:scale-x-100 ${
+                    // rounded-[9999px], not rounded-full: Tailwind v4's
+                    // rounded-full is `calc(infinity * 1px)`, which Chromium
+                    // clamps to ~2^25px internally. Under this header's
+                    // backdrop-blur, compositing that clamped value produced
+                    // a visible notch/square corner on the hover pill and the
+                    // active-tab underline instead of a clean pill — a
+                    // finite (if absurdly large) radius avoids the clamp.
+                    className={`relative rounded-[9999px] px-4 py-2.5 text-[0.95rem] font-medium transition-colors duration-200 hover:bg-navy/5 after:absolute after:inset-x-4 after:-bottom-px after:h-0.5 after:origin-left after:scale-x-0 after:rounded-[9999px] after:bg-orange after:transition-transform after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:scale-x-100 ${
                       pathname === item.href ? "text-orange-text after:scale-x-100" : "text-navy"
                     }`}
                   >
@@ -88,7 +95,7 @@ export function SiteHeader() {
             href={withBasePath(SITE.brochureUrl)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border-2 border-navy px-4 py-2 text-sm font-semibold text-navy transition duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:bg-navy hover:text-paper hover:shadow-navy-md active:translate-y-0 active:shadow-none"
+            className="inline-flex items-center gap-2 rounded-[9999px] border-2 border-navy px-4 py-2 text-sm font-semibold text-navy transition duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:bg-navy hover:text-paper hover:shadow-navy-md active:translate-y-0 active:shadow-none"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16" />
@@ -99,7 +106,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="lg:hidden flex h-12 w-12 items-center justify-center rounded-full hover:bg-navy/5"
+          className="lg:hidden flex h-12 w-12 items-center justify-center rounded-[9999px] hover:bg-navy/5"
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen(!open)}
@@ -139,7 +146,7 @@ export function SiteHeader() {
             href={withBasePath(SITE.brochureUrl)}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-full border-2 border-navy px-4 py-3.5 text-lg font-semibold text-navy transition duration-200 hover:bg-navy hover:text-paper"
+            className="flex items-center justify-center gap-2 rounded-[9999px] border-2 border-navy px-4 py-3.5 text-lg font-semibold text-navy transition duration-200 hover:bg-navy hover:text-paper"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16" />
