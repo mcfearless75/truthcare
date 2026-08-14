@@ -35,11 +35,14 @@ export function SiteHeader() {
         scrolled ? "shadow-sm" : "shadow-none"
       }`}
     >
-      {/* max-w-7xl, not max-w-6xl like the body content below — this is
-          header chrome, not a text column, so it can use more of the row
-          before the logo and the brochure button start crowding toward the
-          middle. */}
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:py-5">
+      {/* max-w-[100rem], not max-w-6xl like the body content below — this is
+          header chrome, not a text column, so it can use more of the row:
+          the logo sits closer to the left edge and the brochure button
+          closer to the right on wide viewports, instead of both stranded
+          in from the edges by a text-column-width cap. py bumped up a
+          notch too, so the row has a little more breathing room than the
+          bare-minimum height it had before. */}
+      <div className="mx-auto flex max-w-[100rem] items-center justify-between px-6 py-5 md:px-8 md:py-6">
         {/* shrink-0: without it, flexbox lets this text-containing link
             shrink below its natural width before the nav gives up any of
             its own space, which wrapped "Truth Care Group" onto two lines
@@ -71,14 +74,17 @@ export function SiteHeader() {
                   <Link
                     href={item.href}
                     aria-current={pathname === item.href ? "page" : undefined}
-                    // rounded-[9999px], not rounded-full: Tailwind v4's
-                    // rounded-full is `calc(infinity * 1px)`, which Chromium
-                    // clamps to ~2^25px internally. Under this header's
-                    // backdrop-blur, compositing that clamped value produced
-                    // a visible notch/square corner on the hover pill and the
-                    // active-tab underline instead of a clean pill — a
-                    // finite (if absurdly large) radius avoids the clamp.
-                    className={`relative rounded-[9999px] px-4 py-2.5 text-[0.95rem] font-medium transition-colors duration-200 hover:bg-navy/5 after:absolute after:inset-x-4 after:-bottom-px after:h-0.5 after:origin-left after:scale-x-0 after:rounded-[9999px] after:bg-orange after:transition-transform after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:scale-x-100 ${
+                    // isolate: forces this link onto its own compositing
+                    // layer. Without it, Chromium mis-rasterises its rounded
+                    // hover background and active-tab underline — a jagged
+                    // notch instead of a clean pill/rule — because they sit
+                    // under the header's backdrop-blur (a known Chromium
+                    // compositing bug with backdrop-filter ancestors).
+                    // rounded-[9999px] (not rounded-full) is a belt-and-braces
+                    // second fix: Tailwind v4's rounded-full is `calc(infinity
+                    // * 1px)`, which Chromium clamps to ~2^25px, and large
+                    // radii are more prone to this class of artifact too.
+                    className={`relative isolate rounded-[9999px] px-4 py-2.5 text-[0.95rem] font-medium transition-colors duration-200 hover:bg-navy/5 after:absolute after:inset-x-4 after:-bottom-px after:h-0.5 after:origin-left after:scale-x-0 after:rounded-[9999px] after:bg-orange after:transition-transform after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:scale-x-100 ${
                       pathname === item.href ? "text-orange-text after:scale-x-100" : "text-navy"
                     }`}
                   >
@@ -95,7 +101,7 @@ export function SiteHeader() {
             href={withBasePath(SITE.brochureUrl)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-[9999px] border-2 border-navy px-4 py-2 text-sm font-semibold text-navy transition duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:bg-navy hover:text-paper hover:shadow-navy-md active:translate-y-0 active:shadow-none"
+            className="isolate inline-flex items-center gap-2 rounded-[9999px] border-2 border-navy px-4 py-2 text-sm font-semibold text-navy transition duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:bg-navy hover:text-paper hover:shadow-navy-md active:translate-y-0 active:shadow-none"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16" />
@@ -106,7 +112,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="lg:hidden flex h-12 w-12 items-center justify-center rounded-[9999px] hover:bg-navy/5"
+          className="isolate lg:hidden flex h-12 w-12 items-center justify-center rounded-[9999px] hover:bg-navy/5"
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen(!open)}
@@ -146,7 +152,7 @@ export function SiteHeader() {
             href={withBasePath(SITE.brochureUrl)}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-[9999px] border-2 border-navy px-4 py-3.5 text-lg font-semibold text-navy transition duration-200 hover:bg-navy hover:text-paper"
+            className="isolate flex items-center justify-center gap-2 rounded-[9999px] border-2 border-navy px-4 py-3.5 text-lg font-semibold text-navy transition duration-200 hover:bg-navy hover:text-paper"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16" />
