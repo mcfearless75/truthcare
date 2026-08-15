@@ -19,11 +19,31 @@ export default function DayAtBeaconsfieldPage() {
       <DayProgress />
 
       {/* ------------------------------------------------------------- Header */}
+      {/* Every other interior page fills PageHeader's right-hand column with
+          a photo or CTA — this one shipped without it, leaving a large blank
+          gap next to the title. Garden patio, not one of the three images
+          already used in the bands below, so nothing repeats on this page. */}
       <PageHeader
         eyebrow={DAY_AT_BEACONSFIELD.eyebrow}
         title={DAY_AT_BEACONSFIELD.heading}
         lede={DAY_AT_BEACONSFIELD.intro}
-      />
+      >
+        <div className="relative md:col-span-6 md:col-start-7 md:mt-12 lg:mt-16">
+          <span
+            aria-hidden="true"
+            className="absolute -bottom-4 -right-4 h-24 w-24 rounded-br-[1.75rem] border-b-4 border-r-4 border-orange md:-bottom-6 md:-right-6 md:h-36 md:w-36"
+          />
+          <div className="relative overflow-hidden rounded-[1.75rem] shadow-navy-lg">
+            <Pic
+              imageKey="beaconsfield-house-garden-patio"
+              alt="The enclosed rear patio at Beaconsfield House, with wooden benches, raised planting beds and a fenced boundary."
+              sizes="(min-width: 768px) 50vw, calc(100vw - 2.5rem)"
+              priority
+              className="w-full object-cover"
+            />
+          </div>
+        </div>
+      </PageHeader>
 
       {/* --------------------------------------------------------------- Bands */}
       {/* Image left, text right, for all three bands — deliberately not
