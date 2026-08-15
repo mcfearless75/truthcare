@@ -1,1 +1,6 @@
+# Agent/tooling scratch — local to whoever is running the tools, never part of
+# the site build. The site itself lives in site/ and has its own .gitignore.
 .superpowers/
+.claude-flow/
+.swarm/
+ruvector.db
