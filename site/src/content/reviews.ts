@@ -22,6 +22,7 @@ export const REVIEWS = {
       excerpt:
         "We have been incredibly impressed with the care and support provided by Truth Care Group.",
       attribution: "Family member",
+      permissionNote: "Shared with permission, in their own words",
     },
     // Truth Care Group's one live Google review as of 2026-08-14 — read
     // directly off the Google Business Profile (public, unedited). Reviewer

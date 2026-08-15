@@ -76,10 +76,10 @@ test.describe("keyboard activation", () => {
     await lastNavLink.focus();
 
     await page.keyboard.press("Tab");
-    await expect(page.getByRole("button", { name: "Switch to large text size" })).toBeFocused();
+    await expect(page.getByRole("button", { name: /switch to large text size/i })).toBeFocused();
 
     await page.keyboard.press("Tab");
-    await expect(page.getByRole("button", { name: "Turn off animation" })).toBeFocused();
+    await expect(page.getByRole("button", { name: /turn off animation/i })).toBeFocused();
 
     // exact: true — the footer's own brochure link ("Download our brochure
     // (PDF)") also contains the substring "Brochure" and would otherwise

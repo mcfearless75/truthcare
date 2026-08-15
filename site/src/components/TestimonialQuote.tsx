@@ -7,6 +7,8 @@ interface TestimonialQuoteProps {
   source?: string;
   /** Star rating out of 5, shown next to the source when both are given. */
   rating?: number;
+  /** Shown in place of `source` when there isn't one. Never inferred — see Testimonial type. */
+  permissionNote?: string;
 }
 
 /** Exported so the homepage's quieter review strip can reuse the same mark. */
@@ -34,7 +36,7 @@ export function Stars({ rating }: { rating: number }) {
  * §3 for why: the subject's own words carry the section, not a
  * charity-written header.
  */
-export function TestimonialQuote({ excerpt, quote, attribution, source, rating }: TestimonialQuoteProps) {
+export function TestimonialQuote({ excerpt, quote, attribution, source, rating, permissionNote }: TestimonialQuoteProps) {
   const paragraphs = quote.split("\n\n");
 
   return (
@@ -53,21 +55,20 @@ export function TestimonialQuote({ excerpt, quote, attribution, source, rating }
       <figcaption className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold uppercase tracking-[0.14em] text-navy/70">
         <span aria-hidden="true" className="h-px w-8 bg-orange" />
         {attribution}
-        {source ? (
+        {source && (
           <>
             <span aria-hidden="true" className="text-navy/30">
               &middot;
             </span>
             <span className="normal-case tracking-normal text-navy/60">{source}</span>
           </>
-        ) : (
+        )}
+        {!source && permissionNote && (
           <>
             <span aria-hidden="true" className="text-navy/30">
               &middot;
             </span>
-            <span className="normal-case tracking-normal text-navy/60">
-              Shared with permission, in their own words
-            </span>
+            <span className="normal-case tracking-normal text-navy/60">{permissionNote}</span>
           </>
         )}
         {rating && <Stars rating={rating} />}

@@ -36,6 +36,7 @@ export function SiteFooter() {
           <ul className="mt-3 space-y-2 text-paper/90">
             <li><Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link></li>
             <li><Link href="/cookie-policy" className="hover:underline">Cookie Policy</Link></li>
+            <li><Link href="/accessibility" className="hover:underline">Accessibility</Link></li>
           </ul>
         </div>
       </div>

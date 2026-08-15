@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 
 interface DayProgressItem {
   id: string;
-  label: string;
 }
 
 const ITEMS: DayProgressItem[] = [
-  { id: "morning", label: "Morning" },
-  { id: "afternoon", label: "Afternoon" },
-  { id: "evening", label: "Evening" },
+  { id: "morning" },
+  { id: "afternoon" },
+  { id: "evening" },
 ];
 
 /**
@@ -47,7 +46,7 @@ export function DayProgress() {
   return (
     <div
       aria-hidden="true"
-      className="fixed left-8 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-4 lg:flex"
+      className="fixed left-8 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-4 min-[1200px]:flex"
     >
       {ITEMS.map((item) => (
         <span

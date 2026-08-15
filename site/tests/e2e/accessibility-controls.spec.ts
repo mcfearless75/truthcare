@@ -10,7 +10,7 @@ test.describe("accessibility controls", () => {
       parseFloat(getComputedStyle(document.documentElement).fontSize)
     );
 
-    await page.getByRole("button", { name: "Switch to large text size" }).click();
+    await page.getByRole("button", { name: /switch to large text size/i }).click();
 
     const largeSize = await page.evaluate(() =>
       parseFloat(getComputedStyle(document.documentElement).fontSize)
@@ -34,7 +34,7 @@ test.describe("accessibility controls", () => {
     await page.goto("/who-we-support");
     await expect(page.locator("html")).toHaveAttribute("data-motion", "normal");
 
-    await page.getByRole("button", { name: "Turn off animation" }).click();
+    await page.getByRole("button", { name: /turn off animation/i }).click();
     await expect(page.locator("html")).toHaveAttribute("data-motion", "reduced");
 
     const transitionDuration = await page
@@ -43,14 +43,14 @@ test.describe("accessibility controls", () => {
       .evaluate((el) => getComputedStyle(el).transitionDuration);
     expect(transitionDuration).toBe("0s");
 
-    await page.getByRole("button", { name: "Turn animation back on" }).click();
+    await page.getByRole("button", { name: /turn animation back on/i }).click();
     await expect(page.locator("html")).toHaveAttribute("data-motion", "normal");
   });
 
   test("neither control writes a cookie or any local/session storage", async ({ page, context }) => {
     await page.goto("/");
-    await page.getByRole("button", { name: "Switch to large text size" }).click();
-    await page.getByRole("button", { name: "Turn off animation" }).click();
+    await page.getByRole("button", { name: /switch to large text size/i }).click();
+    await page.getByRole("button", { name: /turn off animation/i }).click();
 
     const cookies = await context.cookies();
     expect(cookies).toEqual([]);
@@ -61,5 +61,24 @@ test.describe("accessibility controls", () => {
     }));
     expect(storage.localStorage).toBe(0);
     expect(storage.sessionStorage).toBe(0);
+  });
+
+  test("no horizontal overflow at 1201px, before or after enabling large text (regression guard for the header-overflow bug)", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1201, height: 800 });
+    await page.goto("/");
+
+    const noOverflow = () =>
+      page.evaluate(
+        () => document.documentElement.scrollWidth <= document.documentElement.clientWidth
+      );
+
+    expect(await noOverflow()).toBe(true);
+
+    await page.getByRole("button", { name: /switch to large text size/i }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-text-size", "large");
+
+    expect(await noOverflow()).toBe(true);
   });
 });

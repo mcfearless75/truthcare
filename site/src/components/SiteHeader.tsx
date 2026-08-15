@@ -68,7 +68,15 @@ export function SiteHeader() {
             against "Contact Us". Outline style, not solid orange: the accent
             colour is already doing work in the logo and the nav's underline,
             and this is a secondary resource, not the site's primary action. */}
-        <div className="hidden items-center gap-5 min-[1200px]:flex">
+        {/* flex-wrap + justify-end: at 1200px the nav/controls/brochure group
+            is measured empirically to fit at DEFAULT text size, but rem-based
+            sizing means the "Aa" large-text toggle (or browser zoom) can grow
+            this row's natural width past what's left after the logo. Rather
+            than chase a new pixel threshold, let the row wrap to a second
+            line — degrades gracefully instead of clipping the Brochure
+            button off-screen. justify-end keeps a wrapped second line
+            aligned to the right, under the brochure/nav side of the header. */}
+        <div className="hidden flex-wrap items-center justify-end gap-5 min-[1200px]:flex">
           <nav aria-label="Main navigation">
             <ul className="flex gap-1">
               {NAV.map((item) => (

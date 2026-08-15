@@ -33,9 +33,11 @@
  * header's "Aa" toggle (AccessibilityControls.tsx) via a `data-text-size`
  * attribute on <html> — see AccessibilityContext.tsx. Scaling the root
  * font-size percentage scales every rem-based size sitewide (Tailwind's own
- * utilities and this file's clamp()-based --text-hero/--text-lede/etc. are
- * all rem-based), so this one rule is enough — no per-component overrides
- * needed.
+ * utilities scale uniformly this way). This file's clamp()-based
+ * --text-hero/--text-lede/etc. also scale, since their floor and ceiling
+ * values are rem-based — but not by a uniform percentage at every viewport
+ * width, because the vw component of each clamp() doesn't respond to
+ * --text-scale at all. No per-component overrides needed either way.
  */
 :root {
   --text-scale: 1;

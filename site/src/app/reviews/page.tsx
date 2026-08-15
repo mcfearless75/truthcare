@@ -60,6 +60,7 @@ export default function ReviewsPage() {
                     attribution={testimonial.attribution}
                     source={testimonial.source}
                     rating={testimonial.rating}
+                    permissionNote={testimonial.permissionNote}
                   />
                 ))}
               </div>

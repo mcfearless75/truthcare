@@ -44,6 +44,12 @@ export interface Testimonial {
   source?: string;
   /** Star rating out of 5, only meaningful alongside `source`. */
   rating?: number;
+  /**
+   * Explicit note shown in place of `source` when there isn't one, e.g.
+   * "Shared with permission, in their own words". Only rendered when
+   * `source` is absent. Must be authored per-testimonial — never inferred.
+   */
+  permissionNote?: string;
 }
 
 export interface LegalPage {

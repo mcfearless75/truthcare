@@ -54,7 +54,7 @@ export default function DayAtBeaconsfieldPage() {
           page.tsx's "Mission" and "Support teaser" sections already use
           and is simpler to verify correct by inspection. */}
       {DAY_AT_BEACONSFIELD.bands.map((band) => (
-        <section key={band.id} id={band.id} className="pb-[var(--space-section)]">
+        <section key={band.id} id={band.id} className="scroll-mt-28 pb-[var(--space-section)]">
           <Reveal>
             <div className="mx-auto max-w-6xl px-5">
               <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
@@ -71,9 +71,13 @@ export default function DayAtBeaconsfieldPage() {
 
                 <div className="lg:col-span-5 lg:col-start-8">
                   <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-orange" />
-                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-orange-text">
+                  {/* Real heading, not just eyebrow styling: gives the page an
+                      h1 -> h2 -> h2 -> h2 -> h2(closing) outline for screen
+                      readers, matching the heading-semantics convention
+                      established in reviews/page.tsx's "What families say". */}
+                  <h2 className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-orange-text">
                     {band.label}
-                  </p>
+                  </h2>
                   <p className="mt-3 text-[length:var(--text-lede)] leading-relaxed text-navy/90">
                     {band.body}
                   </p>

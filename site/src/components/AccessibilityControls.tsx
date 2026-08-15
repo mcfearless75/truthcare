@@ -16,7 +16,7 @@ export function AccessibilityControls() {
         type="button"
         onClick={() => setTextSize(textSize === "normal" ? "large" : "normal")}
         aria-pressed={textSize === "large"}
-        aria-label={textSize === "large" ? "Switch to normal text size" : "Switch to large text size"}
+        aria-label={textSize === "large" ? "Aa — switch to normal text size" : "Aa — switch to large text size"}
         className="isolate rounded-[9999px] px-3 py-1.5 font-semibold text-navy transition-colors duration-200 hover:bg-navy/5"
       >
         Aa
@@ -25,7 +25,7 @@ export function AccessibilityControls() {
         type="button"
         onClick={() => setMotion(motion === "normal" ? "reduced" : "normal")}
         aria-pressed={motion === "reduced"}
-        aria-label={motion === "reduced" ? "Turn animation back on" : "Turn off animation"}
+        aria-label={motion === "reduced" ? "Motion off — turn animation back on" : "Motion on — turn off animation"}
         className="isolate rounded-[9999px] px-3 py-1.5 font-semibold text-navy transition-colors duration-200 hover:bg-navy/5"
       >
         {motion === "reduced" ? "Motion off" : "Motion on"}
