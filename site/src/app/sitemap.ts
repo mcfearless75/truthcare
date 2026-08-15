@@ -13,6 +13,7 @@ const ROUTES = [
   "",
   "/services-facilities",
   "/virtual-tour",
+  "/a-day-at-beaconsfield",
   "/who-we-support",
   "/our-team",
   "/reviews",

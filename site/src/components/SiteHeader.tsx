@@ -10,6 +10,7 @@ const NAV = [
   { href: "/", label: "Home" },
   { href: "/services-facilities", label: "Services & Facilities" },
   { href: "/virtual-tour", label: "Take a Look Inside" },
+  { href: "/a-day-at-beaconsfield", label: "A Day at Beaconsfield" },
   { href: "/who-we-support", label: "Who We Support" },
   { href: "/our-team", label: "Our Team" },
   { href: "/reviews", label: "Reviews" },
