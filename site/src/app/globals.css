@@ -28,8 +28,25 @@
   --shadow-navy-lg: 0 30px 70px -40px rgba(15, 44, 63, 0.6);
 }
 
+/*
+ * Text size control. `--text-scale` defaults to 1 and is bumped by the
+ * header's "Aa" toggle (AccessibilityControls.tsx) via a `data-text-size`
+ * attribute on <html> — see AccessibilityContext.tsx. Scaling the root
+ * font-size percentage scales every rem-based size sitewide (Tailwind's own
+ * utilities and this file's clamp()-based --text-hero/--text-lede/etc. are
+ * all rem-based), so this one rule is enough — no per-component overrides
+ * needed.
+ */
+:root {
+  --text-scale: 1;
+}
+html[data-text-size="large"] {
+  --text-scale: 1.15;
+}
+
 html {
   scroll-behavior: smooth;
+  font-size: calc(100% * var(--text-scale));
 }
 
 body {
@@ -54,6 +71,22 @@ body {
   }
 }
 
+/*
+ * Same effect as the prefers-reduced-motion block above, triggered by the
+ * header's explicit "Motion" toggle instead of (or as well as) the OS
+ * setting — both are respected independently, either can request reduced
+ * motion. See AccessibilityContext.tsx.
+ */
+html[data-motion="reduced"] {
+  scroll-behavior: auto;
+}
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
 /* scroll reveal (the IntersectionObserver lives in Reveal.tsx). Only hide
    .reveal content when the `js` flag class is present on <html> (set by an
    inline <head> script in the root layout, layout.tsx) — with JS disabled or
@@ -66,4 +99,9 @@ body {
 .js .reveal.is-visible { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   .js .reveal { opacity: 1; transform: none; transition: none; }
+}
+html[data-motion="reduced"] .js .reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
 }
