@@ -81,6 +81,31 @@ export default function DayAtBeaconsfieldPage() {
                   <p className="mt-3 text-[length:var(--text-lede)] leading-relaxed text-navy/90">
                     {band.body}
                   </p>
+
+                  {/* Only the afternoon band carries these, so the field is
+                      optional on the union of band shapes — "activities" in
+                      band narrows it for TypeScript without a cast. Rendered
+                      as a real <ul> rather than styled paragraphs: it is a
+                      list of separate things, and screen readers announce the
+                      item count, which is genuinely useful here. */}
+                  {"activities" in band && (
+                    <div className="mt-6">
+                      <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-navy/60">
+                        {band.activitiesHeading}
+                      </h3>
+                      <ul className="mt-3 space-y-2">
+                        {band.activities.map((activity) => (
+                          <li key={activity} className="flex gap-3 leading-relaxed text-navy/90">
+                            <span
+                              aria-hidden="true"
+                              className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-orange"
+                            />
+                            <span>{activity}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
