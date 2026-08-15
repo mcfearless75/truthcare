@@ -1,4 +1,6 @@
 interface TestimonialQuoteProps {
+  /** The subject's own opening line — rendered as the visual headline, editorial pull-quote style. */
+  excerpt: string;
   quote: string;
   attribution: string;
   /** Where the quote came from, e.g. "Google review". Omit for direct submissions. */
@@ -21,13 +23,18 @@ export function Stars({ rating }: { rating: number }) {
 }
 
 /**
- * Full testimonial as a standalone card: an oversized quotation mark, the
- * quote itself (split on blank lines into paragraphs — see
- * content/reviews.ts), and the attribution set off by a short orange rule.
- * `source`/`rating` are optional — the anonymised family quote has neither,
- * the Google review carries both.
+ * Full testimonial as a standalone card. `excerpt` — the subject's own
+ * opening line — is the visual headline (an editorial pull-quote), with the
+ * full `quote` following underneath at normal body weight; the excerpt does
+ * legitimately repeat as the opening of the full quote below it in the
+ * family testimonial's case, and appears mid-quote in the Google review's
+ * case — both are fine, this is the standard pull-quote convention, not a
+ * duplication bug. See
+ * docs/superpowers/specs/2026-08-14-sensitive-interactive-experience-design.md
+ * §3 for why: the subject's own words carry the section, not a
+ * charity-written header.
  */
-export function TestimonialQuote({ quote, attribution, source, rating }: TestimonialQuoteProps) {
+export function TestimonialQuote({ excerpt, quote, attribution, source, rating }: TestimonialQuoteProps) {
   const paragraphs = quote.split("\n\n");
 
   return (
@@ -35,7 +42,10 @@ export function TestimonialQuote({ quote, attribution, source, rating }: Testimo
       <span aria-hidden="true" className="font-display text-6xl leading-none text-orange/40 sm:text-7xl">
         &ldquo;
       </span>
-      <blockquote className="-mt-4 space-y-4 text-[length:var(--text-lede)] leading-relaxed text-navy/90 sm:-mt-6">
+      <p className="-mt-4 font-display text-[length:var(--text-h3)] font-semibold leading-snug text-navy sm:-mt-6">
+        {excerpt}
+      </p>
+      <blockquote className="mt-4 space-y-4 leading-relaxed text-navy/80">
         {paragraphs.map((paragraph, i) => (
           <p key={i}>{paragraph}</p>
         ))}
@@ -43,12 +53,21 @@ export function TestimonialQuote({ quote, attribution, source, rating }: Testimo
       <figcaption className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold uppercase tracking-[0.14em] text-navy/70">
         <span aria-hidden="true" className="h-px w-8 bg-orange" />
         {attribution}
-        {source && (
+        {source ? (
           <>
             <span aria-hidden="true" className="text-navy/30">
               &middot;
             </span>
             <span className="normal-case tracking-normal text-navy/60">{source}</span>
+          </>
+        ) : (
+          <>
+            <span aria-hidden="true" className="text-navy/30">
+              &middot;
+            </span>
+            <span className="normal-case tracking-normal text-navy/60">
+              Shared with permission, in their own words
+            </span>
           </>
         )}
         {rating && <Stars rating={rating} />}

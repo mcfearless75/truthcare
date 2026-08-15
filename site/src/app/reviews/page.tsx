@@ -42,11 +42,20 @@ export default function ReviewsPage() {
         <section className="pb-[var(--space-section)]">
           <Reveal>
             <div className="mx-auto max-w-6xl px-5">
-              <SectionHeading title={REVIEWS.testimonialsHeading} align="center" />
+              {/* A real <h2>, not a <p> — heading structure stays intact for
+                  screen readers — but styled at eyebrow scale rather than
+                  SectionHeading's large display size, so the testimonials'
+                  own opening lines (rendered inside TestimonialQuote) are
+                  the dominant visual heading, not this label. See
+                  docs/superpowers/specs/2026-08-14-...-design.md §3. */}
+              <h2 className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-orange-text">
+                {REVIEWS.testimonialsHeading}
+              </h2>
               <div className="mx-auto mt-12 max-w-3xl space-y-8">
                 {REVIEWS.testimonials.map((testimonial) => (
                   <TestimonialQuote
                     key={testimonial.attribution}
+                    excerpt={testimonial.excerpt}
                     quote={testimonial.quote}
                     attribution={testimonial.attribution}
                     source={testimonial.source}
