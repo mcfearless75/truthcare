@@ -324,3 +324,49 @@ export const COOKIES: LegalPage = {
     },
   ],
 };
+
+// New page, authored 2026-08-15 alongside the accessibility controls —
+// separate UPDATED consts from PRIVACY/COOKIES above since this is a
+// genuinely different last-reviewed date, not the same edit.
+const UPDATED_ACCESSIBILITY = "15 August 2026";
+const UPDATED_ACCESSIBILITY_ISO = "2026-08-15";
+
+export const ACCESSIBILITY: LegalPage = {
+  eyebrow: "Accessibility",
+  heading: "Accessibility statement",
+  intro:
+    "This page describes what this website does to be usable by as many visitors as possible, and where it currently falls short.",
+  updated: UPDATED_ACCESSIBILITY,
+  updatedIso: UPDATED_ACCESSIBILITY_ISO,
+  sections: [
+    {
+      heading: "What this site does",
+      listIntro: "Specifically, this site has:",
+      list: [
+        "a text size control in the header (labelled \"Aa\") that switches to a larger type size across every page, for the current visit",
+        "a motion control in the header that turns off scroll-triggered animation, on top of automatically respecting your device's own reduced-motion setting if you already have one turned on",
+        "descriptive alt text on every photograph, written for the specific photo rather than a generic caption",
+        "a single, logical heading structure on every page",
+        "full keyboard operability, including the photo gallery, the FAQ accordion and the mobile menu",
+      ],
+    },
+    {
+      heading: "What it doesn't do yet",
+      paragraphs: [
+        "There is no high-contrast colour mode yet. If this site's colours are hard to read, your browser or operating system's own contrast tools will work here — we have not blocked or overridden them.",
+      ],
+    },
+    {
+      heading: "How the text size and motion controls work",
+      paragraphs: [
+        "Neither control stores anything on your device — no cookies, no local storage — in keeping with this site's cookie policy. That means your choice applies as you move between pages during a visit, and resets if you reload the page or come back later.",
+      ],
+    },
+    {
+      heading: "Tell us about a problem",
+      paragraphs: [
+        "If you hit a barrier using this site that isn't listed here, let us know at info@truthcaregroup.co.uk and we'll do what we can to fix it.",
+      ],
+    },
+  ],
+};
