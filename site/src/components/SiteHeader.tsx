@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { withBasePath } from "@/lib/basePath";
 import { SITE } from "@/lib/site";
+import { AccessibilityControls } from "@/components/AccessibilityControls";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -95,6 +96,8 @@ export function SiteHeader() {
             </ul>
           </nav>
 
+          <AccessibilityControls />
+
           <span aria-hidden="true" className="h-6 w-px bg-navy/15" />
 
           <a
@@ -148,6 +151,9 @@ export function SiteHeader() {
         </ul>
 
         <div className="border-t border-navy/10 px-5 py-4">
+          <div className="flex justify-center pb-4">
+            <AccessibilityControls />
+          </div>
           <a
             href={withBasePath(SITE.brochureUrl)}
             target="_blank"

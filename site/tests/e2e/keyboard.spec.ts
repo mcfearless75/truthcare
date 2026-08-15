@@ -58,12 +58,14 @@ test.describe("keyboard activation", () => {
     await page.goto("/virtual-tour");
 
     // The last focusable element before the page's own content is the
-    // header's brochure button — it sits right after the nav, outside the
-    // nav landmark, so "Contact Us" (the nav's last link) is one Tab short
-    // of the page content now. Since the virtual tour became a real
-    // Giraffe360 embed there are exactly two interactive elements between
-    // "Contact Us" and the gallery — the brochure button, then the tour's
-    // click-to-load button — so it takes three real Tab presses to reach
+    // header's brochure button — it sits right after the nav (and after the
+    // AccessibilityControls "Aa"/"Motion" toggles, added between the nav and
+    // the brochure button), outside the nav landmark, so "Contact Us" (the
+    // nav's last link) is a few Tabs short of the page content now. Since the
+    // virtual tour became a real Giraffe360 embed there are exactly four
+    // interactive elements between "Contact Us" and the gallery — the two
+    // accessibility toggles, the brochure button, then the tour's
+    // click-to-load button — so it takes five real Tab presses to reach
     // the first thumbnail. Asserting each intermediate stop keeps this
     // honest: if another control is added above the gallery, this fails
     // rather than silently drifting.
@@ -72,6 +74,12 @@ test.describe("keyboard activation", () => {
       .getByRole("link", { name: "Contact Us" })
       .first();
     await lastNavLink.focus();
+
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("button", { name: "Switch to large text size" })).toBeFocused();
+
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("button", { name: "Turn off animation" })).toBeFocused();
 
     // exact: true — the footer's own brochure link ("Download our brochure
     // (PDF)") also contains the substring "Brochure" and would otherwise

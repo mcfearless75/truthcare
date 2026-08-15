@@ -5,6 +5,7 @@ import { SITE } from "@/lib/site";
 import { jsonLdScript, localBusinessJsonLd } from "@/lib/schema";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { AccessibilityProvider } from "@/components/AccessibilityContext";
 import { withBasePath } from "@/lib/basePath";
 
 const fraunces = Fraunces({
@@ -53,9 +54,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <SiteHeader />
-        <main>{children}</main>
-        <SiteFooter />
+        <AccessibilityProvider>
+          <SiteHeader />
+          <main>{children}</main>
+          <SiteFooter />
+        </AccessibilityProvider>
         {/* Sitewide MedicalBusiness node. Serialised through jsonLdScript(),
             which escapes `<` so no value in SITE can ever close this script
             tag early — never hand this to a bare JSON.stringify. */}

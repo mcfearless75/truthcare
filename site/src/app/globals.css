@@ -83,8 +83,8 @@ html[data-motion="reduced"] {
 html[data-motion="reduced"] *,
 html[data-motion="reduced"] *::before,
 html[data-motion="reduced"] *::after {
-  animation-duration: 0.01ms !important;
-  transition-duration: 0.01ms !important;
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
 }
 
 /* scroll reveal (the IntersectionObserver lives in Reveal.tsx). Only hide
