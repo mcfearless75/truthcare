@@ -1,9 +1,27 @@
 # Truth Care Group rebuild — session resume
 
-**Last updated:** 13 August 2026
+**Last updated:** 15 August 2026
 **Repo:** `C:\Users\LAPTOP80\Projects\truthcare` (moved from `C:\Users\LAPTOP80\Desktop\_Apps_Code\ALL APPS\truthcare` — same git history, same GitHub remote, just a different local clone path. If working from yet another path, memory for this project lives per-path; check the local `docs/` files first regardless of where you're running from, they're the source of truth.)
 **Branch:** `main` (site code lives in `site/`)
 **GitHub:** https://github.com/mcfearless75/truthcare (public)
+
+## 2026-08-15 session — Reviews, header fixes, "sensitive/interactive" pass
+
+**⚠️ Read this before assuming a clean starting state — a background agent may still be finishing work as this doc is read.** The last thing this session did was dispatch a fix subagent (`fix-final-review`) to address findings from a whole-branch code review, and hand off to a new session before its completion notification arrived. Check `git log --oneline -15` on `main` and `.superpowers/sdd/final-review-fix-report.md` (if present) to see whether it landed. If `git log` shows a commit starting `fix: address final whole-branch review findings` after `8fa9261`, it completed; if not, either resume that agent or just re-run its work manually — the full brief is reconstructable from `.superpowers/sdd/progress.md`'s last entries.
+
+**What shipped this session, all live at truthcaregroup.co.uk:**
+- **`/reviews` page** — Google review QR code, "Leave a Google Review" CTA, the real family testimonial + the one live Google review (Trish T., 5★), added to nav.
+- **Two real nav-rendering bugs found and fixed**, both Chromium `backdrop-filter` compositing issues on the sticky header (a jagged/notched pill instead of a clean rounded shape on hover/active states) — root cause was the header needing `isolate` on interactive elements sitting under `backdrop-blur`, not (as first suspected) Tailwind v4's `rounded-full`/`calc(infinity)` clamping. Also widened the header and fixed vertical spacing per user feedback.
+- **A full "make it a sensitive, touching, interactive experience" pass** — triggered by a request to research competitors (none have any real interactivity — Arbor, Active Care Group, Askham, Richardson Care, Brainkind, Elysium all static text/photo sites) and best-practice sensitive-sector sites (Headway, Marie Curie, Dementia UK). Went through full brainstorming → spec → plan → **subagent-driven-development** execution (11 tasks, each implementer + reviewer, 2 needed one fix round). Design spec: `docs/superpowers/specs/2026-08-14-sensitive-interactive-experience-design.md`. Plan: `docs/superpowers/plans/2026-08-15-sensitive-interactive-experience.md`. Built:
+  - **Real accessibility controls** — "Aa" text-size toggle + reduced-motion toggle in the header. **Deliberately NOT localStorage** — an in-memory React Context (`AccessibilityContext.tsx`) instead, because the site has an existing tested/published commitment to zero client-side storage (`tests/e2e/regression.spec.ts`, `content/legal.ts`'s cookie policy). State persists across in-site `Link` navigation, resets on hard reload — by design.
+  - **`/accessibility` statement page** — honest about what's built and what isn't (no high-contrast mode yet).
+  - **Testimonials redesigned** to lead with the subject's own words as a headline, not a charity-written heading — `TestimonialQuote.tsx` + `reviews/page.tsx`.
+  - **New page `/a-day-at-beaconsfield`** — Morning/Afternoon/Evening bands from real existing photos + already-approved copy from `content/support.ts`. **Deliberately no invented schedule/timetable claims** — the home is CQC-regulated, so specific times/meals/activities that aren't verified would be a compliance risk, not just a style choice. Has its own `DayProgress` scroll-tracking side rail.
+  - **A real production bug caught live by the user**, not by any automated check: the header overflowed and clipped the Brochure button off-screen at 1024px (8 nav items + new a11y controls + brochure button didn't fit at the old `lg:` breakpoint). Fixed by scoping the header's own desktop/mobile switch to `min-[1200px]`/`max-[1200px]` — Tailwind's global `lg:` (1024px) is untouched everywhere else.
+  - A **final whole-branch review** (after all 11 tasks) found zero Critical issues but 6 Important ones — most notably `/accessibility` had no inbound link anywhere (orphaned), a heading-semantics inconsistency between two pages, a WCAG "label in name" gap on both new toggle buttons, and a plausible-but-unverified interaction where the text-size toggle could re-open the exact header overflow bug just fixed. A consolidated fix was dispatched for all of them together — **see the note at the top of this section for whether it landed.**
+- **Confirmed (again) this Vercel project has no GitHub integration** — checked directly in Vercel's dashboard under Settings → Git: "This Project is not connected to a Git repository." Every deploy this session used `vercel deploy --prod --yes` from `site/` directly; `git push` alone never updates the live site here, only the GitHub Pages preview via GH Actions (see "Deploy loop" below).
+
+**Full task-by-task record:** `.superpowers/sdd/progress.md` (git-ignored scratch, but readable) has the complete ledger — every task's commit range and review outcome, including the two mid-plan fix rounds and their reasoning.
 
 ## Status: LIVE IN PRODUCTION
 
