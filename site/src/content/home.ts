@@ -31,7 +31,14 @@ export const HOME = {
   values: [
     {
       title: "WELL LED",
-      body: "Experienced registered manager aligned to our Values – Integrity, Respect, Kindness and Optimism",
+      // "manager", NOT "registered manager". Joanne Bray was confirmed as the
+      // Manager on 2026-08-15, but the CQC register checked the same day lists
+      // no Registered Manager for this location — it still names Kumarasen
+      // Pillay as responsible for the regulated activity. "Registered Manager"
+      // is a CQC-registered role, so claiming it before the register shows it
+      // is a specific false claim about a CQC-significant role. Restore the
+      // word "registered" only once the register lists her.
+      body: "Experienced manager aligned to our Values – Integrity, Respect, Kindness and Optimism",
       icon: "icon-well-led",
     },
     {
