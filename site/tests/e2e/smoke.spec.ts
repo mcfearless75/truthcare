@@ -4,11 +4,14 @@ const PAGES = [
   "/",
   "/services-facilities",
   "/virtual-tour",
+  "/a-day-at-beaconsfield",
   "/who-we-support",
   "/our-team",
+  "/reviews",
   "/contact-us",
   "/privacy-policy",
   "/cookie-policy",
+  "/accessibility",
 ];
 
 for (const path of PAGES) {
