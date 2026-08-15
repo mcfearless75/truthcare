@@ -22,12 +22,13 @@ Three pieces came out of brainstorming against that backdrop, each approved indi
 
 **Why real controls over a statement-only approach:** the research found Scope's approach (link out to OS/browser accessibility tools, publish an honest statement) is good practice, but a small residential provider's actual audience — older visitors, families reading under acute stress, people with their own cognitive/communication difficulties — benefits more from a control that's simply *there* than from a link to go configure their OS. This isn't a bolt-on toolbar widget (like Brainkind's Recite Me integration) — it's two specific, useful settings, nothing more.
 
-**Mechanism:**
-- `data-text-size="normal"|"large"` and `data-motion="normal"|"reduced"` attributes on `<html>`.
-- Set via a small inline script in `<head>` (same established pattern as the existing `js` class add in `layout.tsx`) reading from `localStorage` before paint, so there's no flash of the wrong size/motion state.
-- A client component (`AccessibilityControls.tsx`) in the header renders the two toggles, writes to `localStorage`, and updates the `<html>` attributes on change.
-- CSS: `--text-scale` custom property (1 / 1.15) driving a `font-size` multiplier at `:root` scope; `Reveal` and other transition/animation classes gate on `[data-motion="reduced"]` the same way they already should gate on `prefers-reduced-motion` (both respected — explicit control OR OS setting either can request reduced motion).
-- No new dependency.
+**Mechanism — revised during plan-writing, no storage of any kind:**
+- The original draft of this spec called for `localStorage` persistence. That conflicts with an existing, deliberate site commitment: `tests/e2e/regression.spec.ts` asserts zero cookies and zero localStorage/sessionStorage on every page, with the site's cookie policy stating plainly that it "sets nothing and calls nobody" and carries no consent banner as a result. `localStorage` would have quietly broken that promise.
+- Instead: an `AccessibilityProvider` React Context, mounted once in the root layout (`layout.tsx`) around `{children}`, holding `textSize`/`reducedMotion` state in memory only. Next.js's App Router keeps the root layout mounted across client-side `Link` navigation (the same reason `SiteHeader`'s scroll state already survives page-to-page browsing), so the toggle state genuinely persists as a visitor browses the site in one visit — with **zero cookies, zero localStorage, zero sessionStorage**. A hard refresh or a new tab resets it; that's an honest, acceptable tradeoff, not a defect.
+- The provider applies `data-text-size="normal"|"large"` and `data-motion="normal"|"reduced"` attributes to `document.documentElement` in an effect when state changes — no inline `<head>` script, no pre-paint read needed, since there's nothing stored to read on first load (state always starts at the default).
+- A client component (`AccessibilityControls.tsx`) in the header consumes the context and renders the two toggles.
+- CSS: `--text-scale` custom property (1 / 1.15) driving a `font-size` multiplier at `:root` scope; `Reveal`'s existing `.js .reveal` transition rules gate on `[data-motion="reduced"]` the same way they already gate on `prefers-reduced-motion` (both respected — explicit control OR OS setting either can request reduced motion).
+- No new dependency. No changes needed to the cookie policy or the existing regression test.
 
 **Companion page:** `/accessibility` — short, plain-English statement of what the site does (text size control, reduced motion control, alt text on every photo, semantic heading structure, keyboard-navigable nav) **and 1-2 honest current gaps** (e.g. no high-contrast mode yet), in the spirit of Scope's audited statement. This is the page the header control's "Accessibility" link points to, and it's where any future accessibility work gets logged rather than silently added.
 
@@ -60,13 +61,13 @@ Three pieces came out of brainstorming against that backdrop, each approved indi
 
 ## 6. Files touched (implementation-time detail, not exhaustive)
 
-- New: `src/components/AccessibilityControls.tsx`, `src/app/accessibility/page.tsx`, `src/app/a-day-at-beaconsfield/page.tsx`, `src/content/dayAtBeaconsfield.ts` (references/re-exports the relevant `support.ts` copy rather than duplicating it verbatim, so the two stay in sync)
-- Edited: `src/app/layout.tsx` (inline script + header control mount), `src/app/globals.css` (`--text-scale`, `[data-motion]` gates), `src/components/TestimonialQuote.tsx`, `src/app/page.tsx` (homepage strip), `src/components/SiteHeader.tsx` (nav entry), `src/app/sitemap.ts`
+- New: `src/components/AccessibilityContext.tsx` (provider + hook), `src/components/AccessibilityControls.tsx` (header toggles), `src/app/accessibility/page.tsx`, `src/app/a-day-at-beaconsfield/page.tsx`, `src/content/dayAtBeaconsfield.ts` (references/re-exports the relevant `support.ts` copy rather than duplicating it verbatim, so the two stay in sync)
+- Edited: `src/app/layout.tsx` (wrap `{children}` in `AccessibilityProvider`), `src/app/globals.css` (`--text-scale`, `[data-motion]` gates), `src/components/TestimonialQuote.tsx`, `src/app/page.tsx` (homepage strip), `src/components/SiteHeader.tsx` (nav entry + mount `AccessibilityControls`), `src/app/sitemap.ts`, `tests/e2e/smoke.spec.ts` and `tests/e2e/a11y.spec.ts` (add the two new routes to their `PAGES` arrays)
 
 ## 7. Verification plan
 
 - `npm run build` clean.
-- Text-size and reduced-motion toggles checked in a live browser: state persists across a reload and across page navigation (localStorage), no flash of wrong state on load.
+- Text-size and reduced-motion toggles checked in a live browser: state persists across in-site `Link` navigation between pages, and correctly resets on a hard reload (no storage, by design).
 - Reduced-motion checked with the toggle on AND with OS `prefers-reduced-motion` set, independently.
 - New page checked at mobile and desktop widths.
 - Existing pages (`/reviews`, `/`) re-checked after the testimonial hierarchy change for layout regressions.
