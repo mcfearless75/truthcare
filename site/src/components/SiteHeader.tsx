@@ -68,7 +68,7 @@ export function SiteHeader() {
             against "Contact Us". Outline style, not solid orange: the accent
             colour is already doing work in the logo and the nav's underline,
             and this is a secondary resource, not the site's primary action. */}
-        <div className="hidden items-center gap-5 lg:flex">
+        <div className="hidden items-center gap-5 min-[1200px]:flex">
           <nav aria-label="Main navigation">
             <ul className="flex gap-1">
               {NAV.map((item) => (
@@ -116,7 +116,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="isolate lg:hidden flex h-12 w-12 items-center justify-center rounded-[9999px] hover:bg-navy/5"
+          className="isolate max-[1200px]:flex hidden h-12 w-12 items-center justify-center rounded-[9999px] hover:bg-navy/5"
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen(!open)}
@@ -132,7 +132,7 @@ export function SiteHeader() {
         id="mobile-nav"
         aria-label="Main navigation"
         hidden={!open}
-        className="lg:hidden border-t border-navy/10 bg-paper"
+        className="max-[1200px]:block hidden border-t border-navy/10 bg-paper"
       >
         <ul className="px-5 py-4 space-y-1">
           {NAV.map((item) => (
