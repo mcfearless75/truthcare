@@ -12,8 +12,11 @@ import { ButtonPrimary, ButtonSecondary, ButtonSecondaryOnDark } from "@/compone
 
 export const metadata: Metadata = {
   title: {
-    absolute:
-      "Truth Care Group | Brain Injury Residential Rehabilitation Weston-super-Mare",
+    // Trimmed from 76 to 65 chars 2026-09-01 (SEO check) — Google was
+    // truncating "Weston-super-Mare" off the end in the SERP. Dropped
+    // "Residential" (the weaker of the two lost words to cut) and kept
+    // "Rehabilitation" and the full location intact.
+    absolute: "Truth Care Group | Brain Injury Rehabilitation, Weston-super-Mare",
   },
   // Trimmed to target length and added "North Somerset" 2026-08-13 — real
   // GSC query data shows impressions (no clicks yet) for "Minehead" and

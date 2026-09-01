@@ -8,8 +8,11 @@ import { ButtonPrimary } from "@/components/Buttons";
 
 export const metadata: Metadata = {
   title: "A Day at Beaconsfield House",
+  // Trimmed from 191 to 156 chars 2026-09-01 (SEO check) — was past Google's
+  // snippet truncation point. Dropped "not a schedule, but" (the page itself
+  // makes that point in its own hero copy) and tightened the rest.
   description:
-    "A sense of what a day at Beaconsfield House can hold — not a schedule, but the shape of morning, afternoon and evening for residents at our Weston-super-Mare brain injury rehabilitation home.",
+    "A sense of a day at Beaconsfield House: the shape of morning, afternoon and evening for residents of our Weston-super-Mare brain injury rehabilitation home.",
   alternates: { canonical: "/a-day-at-beaconsfield" },
 };
 
