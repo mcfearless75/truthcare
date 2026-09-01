@@ -86,6 +86,22 @@ export const TEAM: TeamMember[] = [
     image: "team-gerry-roxburgh",
   },
   {
+    // Added 2026-09-01, moved up from the end of the list the same day so
+    // she sits in row 2 of the grid instead of alone in row 3 — role is
+    // "Manager", matching the title already confirmed for Joanne Bray in
+    // home.ts and legal.ts, NOT "Registered Manager" (see the NEEDS
+    // CONFIRMATION note on Emma Merriman below, which is about that
+    // separate, still-unresolved title).
+    name: "Joanne Bray",
+    role: "Manager",
+    bio: [
+      "Joanne Bray is an experienced health and social care leader with a strong track record of improving quality, governance, and outcomes within residential care services.",
+      "As Manager, Joanne is passionate about delivering person-centred care, developing high-performing teams, and fostering a culture of continuous improvement, with expertise in regulatory compliance, workforce development, digital transformation, and quality assurance.",
+      "Joanne has successfully led services through quality improvement programmes and supported teams to achieve positive outcomes for the people they support. She is committed to ensuring that care services promote dignity, independence, and excellence in everything they do.",
+    ].join("\n\n"),
+    image: "team-joanne-bray",
+  },
+  {
     // NEEDS CONFIRMATION: replaced Mrs Alison Woods (previously "Registered
     // Manager") on 2026-07-27 — she no longer appears on the live team page
     // at all. Live Wix gives Emma Merriman no explicit job title (only the
@@ -95,30 +111,28 @@ export const TEAM: TeamMember[] = [
     // Manager" — a legally significant title for a CQC-regulated service.
     // Confirm who holds that role now (may or may not be Emma Merriman) and
     // update both the role label here and this comment once known.
-    // Moved to the end of the list 2026-08-12 per client request.
+    // Moved to the end of the list 2026-08-12 per client request, and stays
+    // there — now the sole card in the grid's final row (Joanne Bray moved
+    // up to row 2 above, 2026-09-01) so this bio's length no longer stretches
+    // a shared row to match it.
+    //
+    // Bio trimmed 2026-09-01 from five paragraphs to three, per site owner
+    // request: the original was long enough that every card sharing its
+    // grid row had to match its height, leaving large gaps under shorter
+    // bios. Condensed to keep the throughline — 1995 to present, founding
+    // her own practice, ABI/cognitive-rehab specialism, professional
+    // leadership, credentials, and the closing values statement — while
+    // dropping repeated detail (specific training topics delivered, the
+    // Regional Representative role, the case-manager supervision/mentoring
+    // list). No longer verbatim client copy like the others below; flag for
+    // client sign-off if the exact original wording matters to them.
     name: "Emma Merriman",
     role: "Neuro-Occupational Therapist",
     bio: [
-      "Emma Merriman is a specialist neuro-occupational therapist with clinical experience dating back to 1995. She has worked across acute neurosciences, stroke rehabilitation, pain management, neurorehabilitation, community services, discharge planning and specialist brain injury settings throughout the UK. Since establishing Emma Merriman Rehabilitation Ltd in 2013, she has provided independent occupational therapy and case management for people with acquired brain injury and complex presentations, including cognitive, behavioural, emotional, executive and family-system challenges.",
-      "Emma has particular expertise in cognitive rehabilitation, executive dysfunction and complex needs assessment. Alongside her therapy work, she has extensive experience of the litigation and case management process, coordinating rehabilitation programmes, and managing risk.",
-      "Alongside her clinical practice, Emma has contributed to professional development, training and networking across the brain injury and occupational therapy communities. She has designed and delivered training on risk assessment, risk management, the Mental Capacity Act, cognitive and executive difficulties following brain injury, and client-specific support strategies for care teams and support workers. She has supervised case managers, mentored peers and professionals, served as Regional Representative for the Specialist Section of Neurological Practitioners in the South West, and chaired the South West Specialist Section of Independent Occupational Therapists from 2011 to 2025. She also founded and organised Professionals in Brain Injury, a social and educational forum created to strengthen collaboration and knowledge exchange within the brain injury community. She is a registered occupational therapist, an Advanced Member of the BABICM, and is a Registered Case Manager with IRCM.",
-      "Emma’s approach aligns closely with Truth Care Group’s commitment to specialist brain injury rehabilitation, person-centred practice and community reintegration.",
-      "Her practice is guided by integrity, respect, kindness and optimism. She takes pride in seeing each person not simply as a patient, but as their true self, supporting them to build a life that feels meaningful, connected and achievable.",
+      "Emma Merriman is a specialist neuro-occupational therapist with clinical experience dating back to 1995, spanning acute neurosciences, stroke rehabilitation, community services, discharge planning and specialist brain injury settings across the UK. Since founding Emma Merriman Rehabilitation Ltd in 2013, she has provided independent occupational therapy and case management for people with acquired brain injury and complex presentations.",
+      "She has particular expertise in cognitive rehabilitation, executive dysfunction and complex needs assessment, alongside extensive experience of the litigation and case management process. She has also contributed widely to professional development within the brain injury community — chairing the South West Specialist Section of Independent Occupational Therapists from 2011 to 2025 and founding Professionals in Brain Injury, a forum for collaboration and knowledge exchange.",
+      "Emma is a registered occupational therapist, an Advanced Member of BABICM, and a Registered Case Manager with IRCM. Her practice is guided by integrity, respect, kindness and optimism — she takes pride in supporting each person to build a life that feels meaningful, connected and achievable.",
     ].join("\n\n"),
     image: "team-emma-merriman",
-  },
-  {
-    // Added 2026-09-01. Role is "Manager", matching the title already
-    // confirmed for Joanne Bray in home.ts and legal.ts — NOT "Registered
-    // Manager" (see the NEEDS CONFIRMATION note on Emma Merriman above,
-    // which is about that separate, still-unresolved title).
-    name: "Joanne Bray",
-    role: "Manager",
-    bio: [
-      "Joanne Bray is an experienced health and social care leader with a strong track record of improving quality, governance, and outcomes within residential care services.",
-      "As Manager, Joanne is passionate about delivering person-centred care, developing high-performing teams, and fostering a culture of continuous improvement, with expertise in regulatory compliance, workforce development, digital transformation, and quality assurance.",
-      "Joanne has successfully led services through quality improvement programmes and supported teams to achieve positive outcomes for the people they support. She is committed to ensuring that care services promote dignity, independence, and excellence in everything they do.",
-    ].join("\n\n"),
-    image: "team-joanne-bray",
   },
 ];
