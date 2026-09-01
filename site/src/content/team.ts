@@ -107,4 +107,18 @@ export const TEAM: TeamMember[] = [
     ].join("\n\n"),
     image: "team-emma-merriman",
   },
+  {
+    // Added 2026-09-01. Role is "Manager", matching the title already
+    // confirmed for Joanne Bray in home.ts and legal.ts — NOT "Registered
+    // Manager" (see the NEEDS CONFIRMATION note on Emma Merriman above,
+    // which is about that separate, still-unresolved title).
+    name: "Joanne Bray",
+    role: "Manager",
+    bio: [
+      "Joanne Bray is an experienced health and social care leader with a strong track record of improving quality, governance, and outcomes within residential care services.",
+      "As Manager, Joanne is passionate about delivering person-centred care, developing high-performing teams, and fostering a culture of continuous improvement, with expertise in regulatory compliance, workforce development, digital transformation, and quality assurance.",
+      "Joanne has successfully led services through quality improvement programmes and supported teams to achieve positive outcomes for the people they support. She is committed to ensuring that care services promote dignity, independence, and excellence in everything they do.",
+    ].join("\n\n"),
+    image: "team-joanne-bray",
+  },
 ];
