@@ -47,6 +47,20 @@ export const TEAM: TeamMember[] = [
     image: "team-kumi-pillay",
   },
   {
+    // Moved up to directly follow Dr Kumi Pillay 2026-09-04, per client
+    // request ("before Henk") — was previously positioned after Henk in
+    // row 2 of the grid (see the note below, now stale on ordering: row-2
+    // positioning is unchanged, only which card leads row 2 changes).
+    name: "Joanne Bray",
+    role: "Manager",
+    bio: [
+      "Joanne Bray is an experienced health and social care leader with a strong track record of improving quality, governance, and outcomes within residential care services.",
+      "As Manager, Joanne is passionate about delivering person-centred care, developing high-performing teams, and fostering a culture of continuous improvement, with expertise in regulatory compliance, workforce development, digital transformation, and quality assurance.",
+      "Joanne has successfully led services through quality improvement programmes and supported teams to achieve positive outcomes for the people they support. She is committed to ensuring that care services promote dignity, independence, and excellence in everything they do.",
+    ].join("\n\n"),
+    image: "team-joanne-bray",
+  },
+  {
     name: "Dr Henk Swanepoel",
     role: "Clinical Neuropsychologist",
     bio: [
@@ -84,22 +98,6 @@ export const TEAM: TeamMember[] = [
       "With over 25 years of experience in neuro-rehab, Gerry offers bespoke, person-centred, outcome-focused interventions to our residents with communication and swallowing needs",
     ].join("\n\n"),
     image: "team-gerry-roxburgh",
-  },
-  {
-    // Added 2026-09-01, moved up from the end of the list the same day so
-    // she sits in row 2 of the grid instead of alone in row 3 — role is
-    // "Manager", matching the title already confirmed for Joanne Bray in
-    // home.ts and legal.ts, NOT "Registered Manager" (see the NEEDS
-    // CONFIRMATION note on Emma Merriman below, which is about that
-    // separate, still-unresolved title).
-    name: "Joanne Bray",
-    role: "Manager",
-    bio: [
-      "Joanne Bray is an experienced health and social care leader with a strong track record of improving quality, governance, and outcomes within residential care services.",
-      "As Manager, Joanne is passionate about delivering person-centred care, developing high-performing teams, and fostering a culture of continuous improvement, with expertise in regulatory compliance, workforce development, digital transformation, and quality assurance.",
-      "Joanne has successfully led services through quality improvement programmes and supported teams to achieve positive outcomes for the people they support. She is committed to ensuring that care services promote dignity, independence, and excellence in everything they do.",
-    ].join("\n\n"),
-    image: "team-joanne-bray",
   },
   {
     // NEEDS CONFIRMATION: replaced Mrs Alison Woods (previously "Registered

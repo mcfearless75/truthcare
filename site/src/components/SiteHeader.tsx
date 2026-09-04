@@ -68,15 +68,21 @@ export function SiteHeader() {
             against "Contact Us". Outline style, not solid orange: the accent
             colour is already doing work in the logo and the nav's underline,
             and this is a secondary resource, not the site's primary action. */}
-        {/* flex-wrap + justify-end: at 1200px the nav/controls/brochure group
-            is measured empirically to fit at DEFAULT text size, but rem-based
-            sizing means the "Aa" large-text toggle (or browser zoom) can grow
-            this row's natural width past what's left after the logo. Rather
-            than chase a new pixel threshold, let the row wrap to a second
-            line — degrades gracefully instead of clipping the Brochure
-            button off-screen. justify-end keeps a wrapped second line
-            aligned to the right, under the brochure/nav side of the header. */}
-        <div className="hidden flex-wrap items-center justify-end gap-5 min-[1200px]:flex">
+        {/* Breakpoint raised from 1200px to 1360px on 2026-09-04: reported as
+            "nav out of alignment" on a laptop where it looked fine on a wider
+            screen. Reproduced directly — at 1200-1290px CSS width (not raw
+            screen resolution; a laptop at a high physical resolution but with
+            Windows display scaling above 100% commonly lands here) the full
+            row (logo + nav + Aa/Motion controls + Brochure) does NOT fit on
+            one line despite the old comment's claim, and flex-wrap drops it
+            into a messy 2-3 line stack instead of the clean single-column
+            hamburger menu. Empirically confirmed clean at 1360px+ with a
+            margin for the "Aa" large-text toggle. flex-wrap + justify-end
+            kept as a second line of defence (not the primary fix) in case a
+            locale/zoom combination still overflows above 1360px — justify-end
+            keeps a wrapped second line aligned to the right, under the
+            brochure/nav side of the header, rather than clipping off-screen. */}
+        <div className="hidden flex-wrap items-center justify-end gap-5 min-[1360px]:flex">
           <nav aria-label="Main navigation">
             <ul className="flex gap-1">
               {NAV.map((item) => (
@@ -124,7 +130,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="isolate max-[1200px]:flex hidden h-12 w-12 items-center justify-center rounded-[9999px] hover:bg-navy/5"
+          className="isolate max-[1360px]:flex hidden h-12 w-12 items-center justify-center rounded-[9999px] hover:bg-navy/5"
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen(!open)}
@@ -140,7 +146,7 @@ export function SiteHeader() {
         id="mobile-nav"
         aria-label="Main navigation"
         hidden={!open}
-        className="max-[1200px]:block hidden border-t border-navy/10 bg-paper"
+        className="max-[1360px]:block hidden border-t border-navy/10 bg-paper"
       >
         <ul className="px-5 py-4 space-y-1">
           {NAV.map((item) => (
