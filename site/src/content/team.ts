@@ -51,11 +51,18 @@ export const TEAM: TeamMember[] = [
     // request ("before Henk") — was previously positioned after Henk in
     // row 2 of the grid (see the note below, now stale on ordering: row-2
     // positioning is unchanged, only which card leads row 2 changes).
+    //
+    // Role updated 2026-09-04 from "Manager" to "Registered Manager" — the
+    // client confirmed the CQC register now lists Joanne Bray as Registered
+    // Manager for this location (superseding the 2026-08-15 note, still on
+    // record in home.ts and legal.ts history, that the register did not yet
+    // show a Registered Manager here). See home.ts and legal.ts for the
+    // matching title updates.
     name: "Joanne Bray",
-    role: "Manager",
+    role: "Registered Manager",
     bio: [
       "Joanne Bray is an experienced health and social care leader with a strong track record of improving quality, governance, and outcomes within residential care services.",
-      "As Manager, Joanne is passionate about delivering person-centred care, developing high-performing teams, and fostering a culture of continuous improvement, with expertise in regulatory compliance, workforce development, digital transformation, and quality assurance.",
+      "As Registered Manager, Joanne is passionate about delivering person-centred care, developing high-performing teams, and fostering a culture of continuous improvement, with expertise in regulatory compliance, workforce development, digital transformation, and quality assurance.",
       "Joanne has successfully led services through quality improvement programmes and supported teams to achieve positive outcomes for the people they support. She is committed to ensuring that care services promote dignity, independence, and excellence in everything they do.",
     ].join("\n\n"),
     image: "team-joanne-bray",
@@ -100,15 +107,15 @@ export const TEAM: TeamMember[] = [
     image: "team-gerry-roxburgh",
   },
   {
-    // NEEDS CONFIRMATION: replaced Mrs Alison Woods (previously "Registered
-    // Manager") on 2026-07-27 — she no longer appears on the live team page
-    // at all. Live Wix gives Emma Merriman no explicit job title (only the
+    // Replaced Mrs Alison Woods (previously "Registered Manager") on
+    // 2026-07-27 — she no longer appears on the live team page at all. Live
+    // Wix gives Emma Merriman no explicit job title (only the
     // "neuro-occupational therapist" phrase inside her own bio text), so
-    // "Neuro-Occupational Therapist" below is inferred, not copied. More
-    // importantly: nobody on the live site is currently labelled "Registered
-    // Manager" — a legally significant title for a CQC-regulated service.
-    // Confirm who holds that role now (may or may not be Emma Merriman) and
-    // update both the role label here and this comment once known.
+    // "Neuro-Occupational Therapist" below is inferred, not copied. The
+    // "Registered Manager" question this note used to flag as unconfirmed
+    // is resolved as of 2026-09-04: the CQC register now lists Joanne Bray
+    // in that role — see her entry above and the team.ts/home.ts/legal.ts
+    // notes there. Not Emma Merriman's title; unrelated to her card.
     // Moved to the end of the list 2026-08-12 per client request, and stays
     // there — now the sole card in the grid's final row (Joanne Bray moved
     // up to row 2 above, 2026-09-01) so this bio's length no longer stretches

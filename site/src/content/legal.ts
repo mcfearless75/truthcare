@@ -77,17 +77,18 @@ export const PRIVACY: LegalPage = {
       //
       // Changed again 2026-08-15: the client confirmed Joanne Bray as the
       // Manager, so requests now name a person rather than a group, which is
-      // what a data subject actually needs. Her title here is "Manager", NOT
+      // what a data subject actually needs. Her title here was "Manager", NOT
       // "Registered Manager" — the CQC register checked the same day still
-      // lists no Registered Manager for this location and does not mention
-      // her, and that title is CQC's to confer, not the provider's. If and
-      // when the register lists her, update the title here, in team.ts and
-      // in home.ts values[0] together, and revisit item 4 (DPO) at the same
-      // time. Her team.ts entry is still pending a bio and headshot.
+      // listed no Registered Manager for this location and did not mention
+      // her, and that title is CQC's to confer, not the provider's.
+      //
+      // Updated 2026-09-04: client confirmed the CQC register now lists her
+      // as Registered Manager, so the title below is updated to match — done
+      // together with team.ts and home.ts values[0].
       heading: "Who we are",
       paragraphs: [
         "Truth Care Group Ltd is the data controller for the personal information described in this notice. That means we decide why it is collected and what happens to it. We are a company registered in England and Wales, company number 15651211, with our registered office at 339 Two Mile Hill Road, Bristol, BS15 1AN.",
-        "You can reach us at Beaconsfield House, 11 Beaconsfield Rd, Weston-super-Mare, BS23 1YE, by email at info@truthcaregroup.co.uk, or by phone on 07483 483955. If you have a question about your information, use the same details and mark it for the attention of Joanne Bray, Manager at Beaconsfield House.",
+        "You can reach us at Beaconsfield House, 11 Beaconsfield Rd, Weston-super-Mare, BS23 1YE, by email at info@truthcaregroup.co.uk, or by phone on 07483 483955. If you have a question about your information, use the same details and mark it for the attention of Joanne Bray, Registered Manager at Beaconsfield House.",
       ],
     },
     {

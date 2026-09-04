@@ -31,14 +31,19 @@ export const HOME = {
   values: [
     {
       title: "WELL LED",
-      // "manager", NOT "registered manager". Joanne Bray was confirmed as the
-      // Manager on 2026-08-15, but the CQC register checked the same day lists
-      // no Registered Manager for this location — it still names Kumarasen
-      // Pillay as responsible for the regulated activity. "Registered Manager"
-      // is a CQC-registered role, so claiming it before the register shows it
-      // is a specific false claim about a CQC-significant role. Restore the
-      // word "registered" only once the register lists her.
-      body: "Experienced manager aligned to our Values – Integrity, Respect, Kindness and Optimism",
+      // Updated 2026-09-04: client confirmed the CQC register now lists
+      // Joanne Bray as Registered Manager for this location, superseding the
+      // 2026-08-15 note (kept below for the record) that the register did not
+      // yet show one. See the matching title updates in team.ts and legal.ts.
+      //
+      // Prior note, 2026-08-15: "manager", NOT "registered manager". Joanne
+      // Bray was confirmed as the Manager on 2026-08-15, but the CQC register
+      // checked the same day listed no Registered Manager for this location —
+      // it still named Kumarasen Pillay as responsible for the regulated
+      // activity. "Registered Manager" is a CQC-registered role, so claiming
+      // it before the register showed it would have been a specific false
+      // claim about a CQC-significant role.
+      body: "Experienced Registered Manager aligned to our Values – Integrity, Respect, Kindness and Optimism",
       icon: "icon-well-led",
     },
     {
