@@ -1,9 +1,17 @@
 # Truth Care Group rebuild — session resume
 
-**Last updated:** 15 August 2026
+**Last updated:** 4 September 2026
 **Repo:** `C:\Users\LAPTOP80\Projects\truthcare` (moved from `C:\Users\LAPTOP80\Desktop\_Apps_Code\ALL APPS\truthcare` — same git history, same GitHub remote, just a different local clone path. If working from yet another path, memory for this project lives per-path; check the local `docs/` files first regardless of where you're running from, they're the source of truth.)
 **Branch:** `main` (site code lives in `site/`)
 **GitHub:** https://github.com/mcfearless75/truthcare (public)
+
+## 2026-09-04 session — header breakpoint gap, team reorder
+
+**What shipped, live at truthcaregroup.co.uk (commit `d6d1ebc`, deployed via `vercel deploy --prod --yes`):**
+- **Header nav wrap bug at 1200-1290px CSS width, reported as "misaligned on Kuimi's laptop but fine on mine".** Reproduced directly against production at various widths (not a device-specific glitch): the desktop nav switches on at `min-[1200px]` but the full row (logo + nav + Aa/Motion controls + Brochure) didn't actually fit until ~1300px+, so anyone whose *effective* browser width landed in that gap (any laptop with Windows display scaling above 100%, even at a high physical resolution — not raw screen resolution as such) saw a messy 2-3 line wrap instead of the intended clean hamburger menu. Fixed by raising all three breakpoints in `SiteHeader.tsx` from 1200px to 1360px (empirically confirmed clean with margin). See the in-file comment for the full before/after measurements.
+- **Joanne Bray moved up to lead row 2 of the team grid, directly after Dr Kumi Pillay and before Dr Henk Swanepoel**, per client request. Role label left as "Manager" — see the unresolved item below.
+
+**⚠️ UNRESOLVED — asked, not yet actioned:** client asked for Joanne Bray's title on `/our-team` to read "Registered Manager". Flagged instead of applying directly: `home.ts`, `legal.ts` and `team.ts` all carry deliberate comments from 2026-08-15 saying the CQC register, checked that day, listed **no** Registered Manager for this location (still named Kumarasen Pillay for the regulated activity) — "Registered Manager" is itself a CQC-registered role, so using it before the register shows it would be a specific false claim about a CQC-significant title, not a cosmetic wording choice. Check the current CQC register for Beaconsfield House before changing this anywhere; if it now lists Joanne, update all three files (`team.ts` role, plus the two explanatory comments in `home.ts`/`legal.ts`) together.
 
 ## 2026-08-15 session — Reviews, header fixes, "sensitive/interactive" pass
 
