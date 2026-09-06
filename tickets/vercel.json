@@ -1,0 +1,33 @@
+{
+  "buildCommand": "",
+  "outputDirectory": "public",
+  "functions": {
+    "api/cron/index.js": { "maxDuration": 60 },
+    "api/phone/index.js": { "maxDuration": 15 },
+    "api/tickets/index.js": { "maxDuration": 15 },
+    "api/auth/index.js": { "maxDuration": 15 },
+    "api/staff/index.js": { "maxDuration": 15 }
+  },
+  "rewrites": [
+    { "source": "/t/:n", "destination": "/ticket.html" },
+    { "source": "/staff", "destination": "/staff.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://login.microsoftonline.com; object-src 'none'" }
+      ]
+    }
+  ],
+  "crons": [
+    { "path": "/api/cron?job=email", "schedule": "*/5 * * * *" },
+    { "path": "/api/cron?job=notifications", "schedule": "*/5 * * * *" },
+    { "path": "/api/cron?job=retention", "schedule": "0 3 * * 0" }
+  ]
+}
