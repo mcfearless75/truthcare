@@ -112,6 +112,30 @@ export async function dropShift({ shiftId, reason }, { client }) {
 }
 
 /**
+ * Current state of a previously-dropped shift, for the callback poller
+ * (lib/carerota-watch.js). `status` is one of carerota's own shift statuses
+ * ('open' while the cascade is still offering it; 'claimed'/'confirmed' once
+ * someone takes it; 'unfilled' once the cascade is exhausted; 'cancelled').
+ * Two queries rather than an embedded-relation select, matching every other
+ * lookup in this file — keeps the fake client in tests trivial and the real
+ * query obvious to read.
+ * @returns {Promise<{ status: string, assigneeName: string|null } | null>} null if the shift no longer exists
+ */
+export async function getShiftStatus(shiftId, { client }) {
+  const { data: shifts, error } = await client.from('shifts').select('id, status, assigned_staff_id').eq('id', shiftId);
+  if (error) throw new CareRotaError('lookup_failed', `Could not read carerota shift status: ${error.message}`);
+  const shift = shifts?.[0];
+  if (!shift) return null;
+  let assigneeName = null;
+  if (shift.assigned_staff_id) {
+    const { data: staff, error: staffErr } = await client.from('staff_records').select('full_name').eq('id', shift.assigned_staff_id);
+    if (staffErr) throw new CareRotaError('lookup_failed', `Could not read carerota staff: ${staffErr.message}`);
+    assigneeName = staff?.[0]?.full_name || null;
+  }
+  return { status: shift.status, assigneeName };
+}
+
+/**
  * Full flow for the `dropshift` command: find the candidate, drop the shift,
  * return a short human-readable outcome for the ticket note. Never throws
  * for an ordinary "couldn't match" case — those come back as `{ ok: false }`

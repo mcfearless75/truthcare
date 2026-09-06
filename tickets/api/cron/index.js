@@ -6,6 +6,7 @@
  *   GET /api/cron?job=notifications  retry queued emails, alert admins to failed calls (every 5 min)
  *   GET /api/cron?job=retention      anonymise tickets closed > 12 months ago (weekly)
  *   GET /api/cron?job=digest         daily ticket summary to the care leads (once a day)
+ *   GET /api/cron?job=carerota-shifts  check whether dropped shifts got covered (every 15 min)
  */
 import { requireCronAuth } from '../../lib/cron-auth.js';
 import { getAction, sendJson } from '../../lib/http.js';
@@ -13,6 +14,7 @@ import { processInbox } from '../../lib/inbound.js';
 import { deliverPending, alertFailedCalls } from '../../lib/notify.js';
 import { runRetention } from '../../lib/retention.js';
 import { sendDailyDigest } from '../../lib/digest.js';
+import { checkDroppedShifts } from '../../lib/carerota-watch.js';
 
 export const JOBS = {
   email: (deps) => processInbox(deps),
@@ -23,6 +25,7 @@ export const JOBS = {
   },
   retention: (deps) => runRetention(deps),
   digest: (deps) => sendDailyDigest(deps),
+  'carerota-shifts': (deps) => checkDroppedShifts(deps),
 };
 
 /** Testable core: `deps` are passed straight to the job (db, send, list, classifier, now). */

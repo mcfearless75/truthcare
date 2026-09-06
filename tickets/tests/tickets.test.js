@@ -142,6 +142,7 @@ test('dropshift: staff-only, needs CareRota configured, and writes a clear inter
     const ok = await applyCommand(staffTicket.id, { type: 'dropshift' }, PAUL, { via: 'email', db, send, getCareRotaClient: async () => okClient });
     assert.match(ok.notes[0].body, /Dropped Joanne Bray's shift on 2026-09-06 \(20:00:00\) in carerota/);
     assert.equal(okClient.rpcCalls.length, 1);
+    assert.equal(db.tables.tickets.find((t) => t.id === staffTicket.id).carerota_shift_id, 'cr-shift-1', 'recorded so the CareRota poller (lib/carerota-watch.js) knows which shift to follow up on');
 
     const ambiguousClient = fakeCareRota({ organisations: [org], staff_records: [staffRow, { ...staffRow, id: 'cr-staff-2' }], shifts: [] });
     const ambiguous = await applyCommand(staffTicket.id, { type: 'dropshift' }, PAUL, { via: 'email', db, send, getCareRotaClient: async () => ambiguousClient });

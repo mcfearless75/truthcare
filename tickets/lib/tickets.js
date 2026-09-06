@@ -258,6 +258,11 @@ export async function applyCommand(ticketId, command, actor, { via, db = sql, se
         try {
           const client = await getCareRotaClient();
           const outcome = await dropShiftForTicket({ callerName: ticket.callerName, shiftStartsAt: ticket.shiftStartsAt, reason: ticket.summary }, { client });
+          if (outcome.ok) {
+            // Recorded so lib/carerota-watch.js's poller knows which carerota
+            // shift to follow up on and can report back once it's resolved.
+            await db.query('UPDATE tickets SET carerota_shift_id = $1 WHERE id = $2', [outcome.shiftId, ticket.id]);
+          }
           body = outcome.ok ? outcome.message : `Could not drop the shift automatically: ${outcome.message} Please update CareRota directly.`;
         } catch (e) {
           body = `Could not reach CareRota: ${e?.message || e}. Please update CareRota directly.`;

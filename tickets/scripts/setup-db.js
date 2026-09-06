@@ -31,6 +31,8 @@ export const SCHEMA_STATEMENTS = [
      caller_org text,
      subject_person text,
      shift_starts_at timestamptz,
+     carerota_shift_id text,
+     carerota_shift_notified_at timestamptz,
      assigned_to uuid NULL REFERENCES staff(id),
      email_token text NOT NULL UNIQUE,
      graph_conversation_id text,
@@ -95,6 +97,12 @@ export const SCHEMA_STATEMENTS = [
   // needed on the already-live tickets table, not just fresh installs, since
   // CREATE TABLE IF NOT EXISTS above is a no-op once the table exists.
   `ALTER TABLE tickets ADD COLUMN IF NOT EXISTS shift_starts_at timestamptz`,
+  // Added 2026-09-06 for the CareRota callback loop (lib/carerota-watch.js):
+  // carerota_shift_id records which shift a dropshift succeeded against;
+  // carerota_shift_notified_at is set once the poller has told the ticket
+  // how it was resolved, so it is only ever checked and reported on once.
+  `ALTER TABLE tickets ADD COLUMN IF NOT EXISTS carerota_shift_id text`,
+  `ALTER TABLE tickets ADD COLUMN IF NOT EXISTS carerota_shift_notified_at timestamptz`,
   `CREATE INDEX IF NOT EXISTS tickets_email_token_idx ON tickets(email_token)`,
   `CREATE INDEX IF NOT EXISTS tickets_conversation_idx ON tickets(graph_conversation_id)`,
   `CREATE INDEX IF NOT EXISTS tickets_status_priority_created_idx ON tickets(status, priority, created_at)`,

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { matchByName, resolveShiftDate, findDropCandidate, dropShift, dropShiftForTicket, CareRotaError } from '../lib/carerota.js';
+import { matchByName, resolveShiftDate, findDropCandidate, dropShift, dropShiftForTicket, getShiftStatus, CareRotaError } from '../lib/carerota.js';
 import { fakeCareRota as fakeSupabase } from './helpers/fake-db.js';
 
 const ORG = { id: 'org-1', name: 'Truth Care Group' };
@@ -86,4 +86,20 @@ test('dropShiftForTicket: finds and drops on a clean match; returns the outcome 
   assert.equal(ambiguous.ok, false);
   assert.equal(ambiguous.code, 'ambiguous_staff');
   assert.equal(ambiguousClient.rpcCalls.length, 0, 'never calls request_drop when the match is not clean');
+});
+
+test("getShiftStatus: reports status and, once assigned, the covering staff member's name", async () => {
+  const openClient = fakeSupabase(tablesWith([shift({ status: 'open', assigned_staff_id: null })]));
+  assert.deepEqual(await getShiftStatus('shift-1', { client: openClient }), { status: 'open', assigneeName: null });
+
+  const claimedClient = fakeSupabase(tablesWith([shift({ status: 'claimed', assigned_staff_id: 'staff-2' })]));
+  assert.deepEqual(await getShiftStatus('shift-1', { client: claimedClient }), { status: 'claimed', assigneeName: 'Sam Quiet' });
+
+  const missingClient = fakeSupabase(tablesWith([]));
+  assert.equal(await getShiftStatus('shift-1', { client: missingClient }), null, 'a shift that no longer exists is null, not a thrown error');
+});
+
+test('getShiftStatus surfaces a lookup error as CareRotaError', async () => {
+  const client = { from: () => ({ select: function () { return this; }, eq: function () { return this; }, then: (resolve) => resolve({ data: null, error: { message: 'network down' } }) }) };
+  await assert.rejects(getShiftStatus('shift-1', { client }), (e) => e instanceof CareRotaError && e.code === 'lookup_failed' && /network down/.test(e.message));
 });

@@ -158,7 +158,7 @@ const fakeRes = () => { const o = { code: 0, body: null }; o.status = (c) => { o
 beforeEach(() => { process.env.CRON_SECRET = 'cron-secret'; });
 
 test('?job=notifications drains due rows and alerts admins to failed calls; ?job=retention runs the anonymisation; ?job=digest sends the daily summary', async () => {
-  assert.deepEqual(Object.keys(JOBS), ['email', 'notifications', 'retention', 'digest']);
+  assert.deepEqual(Object.keys(JOBS), ['email', 'notifications', 'retention', 'digest', 'carerota-shifts']);
   const db = fakeDb();
   db.seedStaff([{ name: 'Jo', email: 'jo@truthcaregroup.co.uk', role: 'admin' }]);
   const send = fakeSend();

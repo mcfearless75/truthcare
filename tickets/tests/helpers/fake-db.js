@@ -74,6 +74,11 @@ export function fakeDb() {
     if (/^UPDATE tickets SET updated_at = now\(\) WHERE id = \$1$/.test(q)) return [];
     if (/^UPDATE tickets SET graph_conversation_id = \$1 WHERE id = \$2/.test(q)) { const row = t.tickets.find((r) => r.id === p[1]); if (row) row.graph_conversation_id = p[0]; return []; }
     if (/^UPDATE tickets SET retell_call_id = \$1 WHERE id = \$2/.test(q)) { const row = t.tickets.find((r) => r.id === p[1]); if (row) row.retell_call_id = p[0]; return []; }
+    if (/^UPDATE tickets SET carerota_shift_id = \$1 WHERE id = \$2/.test(q)) { const row = t.tickets.find((r) => r.id === p[1]); if (row) row.carerota_shift_id = p[0]; return []; }
+    if (/^UPDATE tickets SET carerota_shift_notified_at = now\(\) WHERE id = \$1$/.test(q)) { const row = t.tickets.find((r) => r.id === p[0]); if (row) row.carerota_shift_notified_at = now(); return []; }
+    if (/^SELECT id, carerota_shift_id FROM tickets WHERE carerota_shift_id IS NOT NULL AND carerota_shift_notified_at IS NULL$/.test(q)) {
+      return t.tickets.filter((r) => r.carerota_shift_id && !r.carerota_shift_notified_at).map((r) => ({ id: r.id, carerota_shift_id: r.carerota_shift_id }));
+    }
     // ── notes / events ──
     if (/^INSERT INTO ticket_notes/.test(q)) {
       const row = { id: uuid(), ticket_id: p[0], body: p[1], author_type: p[2], author_name: p[3], author_email: p[4], is_internal: p[5], created_at: now() };
