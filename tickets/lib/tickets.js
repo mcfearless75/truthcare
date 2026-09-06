@@ -6,10 +6,12 @@
  * without Postgres or Graph.
  *
  * Notes are only ever built via addNote(), which always writes an explicit
- * boolean is_internal (default false) to the ticket_notes.is_internal
- * column (NOT NULL) — so every note object this module hands to
- * notify()/renderEmail already carries a real boolean, never undefined.
- * See lib/notify.js's isPublicNote() for the second line of defence.
+ * boolean is_internal (default TRUE — fail closed: a caller that forgets
+ * to pass isInternal gets an internal note, never one silently exposed to
+ * the caller) to the ticket_notes.is_internal column (NOT NULL) — so every
+ * note object this module hands to notify()/renderEmail already carries a
+ * real boolean, never undefined. See lib/notify.js's isPublicNote() for
+ * the second line of defence.
  */
 import sql, { toCamel, toCamelArray } from './db.js';
 import { generateToken } from './threading.js';
@@ -123,7 +125,7 @@ export async function getTicketDetail(number, { db = sql } = {}) {
 // ── writes ─────────────────────────────────────────────────────────────────
 
 /** Always writes an explicit boolean to is_internal (default false, coerced with !!) — never undefined. */
-export async function addNote(ticketId, { body, authorType = 'system', authorName = null, authorEmail = null, isInternal = false }, { db = sql } = {}) {
+export async function addNote(ticketId, { body, authorType = 'system', authorName = null, authorEmail = null, isInternal = true }, { db = sql } = {}) {
   const text = String(body || '').trim().slice(0, SUMMARY_MAX);
   if (!text) return null;
   const [row] = await db`

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createTicket, applyCommand, getTicketDetail, getTicketByNumber, getTicketByToken, listTickets, threadingLookup, CommandError } from '../lib/tickets.js';
+import { createTicket, applyCommand, addNote, getTicketDetail, getTicketByNumber, getTicketByToken, listTickets, threadingLookup, CommandError } from '../lib/tickets.js';
 import { deliverPending } from '../lib/notify.js';
 import { fakeDb, fakeSend } from './helpers/fake-db.js';
 
@@ -164,4 +164,13 @@ test('a failed send is kept in pending_notifications with backoff and retried by
   assert.deepEqual(await deliverPending({ db, send }), { sent: 1, failed: 0, exhausted: 0 });
   assert.ok(failed.sent_at);
   assert.equal(failed.attempts, 2);
+});
+
+test('addNote fails closed: a caller that omits isInternal gets an internal note, never a public one', async () => {
+  const { db, send } = setup();
+  const t = await createTicket(phoneInput, { via: 'phone', db, send });
+  const note = await addNote(t.id, { body: 'Note built without saying whether it is internal' }, { db });
+  assert.equal(note.isInternal, true, 'omitting isInternal must default to internal, not public');
+  const stored = db.tables.ticket_notes.find((n) => n.id === note.id);
+  assert.equal(stored.is_internal, true);
 });
