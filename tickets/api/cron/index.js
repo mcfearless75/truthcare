@@ -5,12 +5,14 @@
  *   GET /api/cron?job=email          poll infotech@ for tickets@ mail (every 5 min)
  *   GET /api/cron?job=notifications  retry queued emails, alert admins to failed calls (every 5 min)
  *   GET /api/cron?job=retention      anonymise tickets closed > 12 months ago (weekly)
+ *   GET /api/cron?job=digest         daily ticket summary to the care leads (once a day)
  */
 import { requireCronAuth } from '../../lib/cron-auth.js';
 import { getAction, sendJson } from '../../lib/http.js';
 import { processInbox } from '../../lib/inbound.js';
 import { deliverPending, alertFailedCalls } from '../../lib/notify.js';
 import { runRetention } from '../../lib/retention.js';
+import { sendDailyDigest } from '../../lib/digest.js';
 
 export const JOBS = {
   email: (deps) => processInbox(deps),
@@ -20,6 +22,7 @@ export const JOBS = {
     return { ...delivered, failedCallAlerts: alerts.alerted };
   },
   retention: (deps) => runRetention(deps),
+  digest: (deps) => sendDailyDigest(deps),
 };
 
 /** Testable core: `deps` are passed straight to the job (db, send, list, classifier, now). */

@@ -109,15 +109,17 @@ const recipient = (address) => ({ emailAddress: { address: String(address).trim(
  * that build it, but it is intentionally unused: nobody should reintroduce
  * a fake text/bodyPreview path believing it reaches Graph.
  */
-export async function sendMail({ to, cc = [], subject, html, text = '', replyTo }) {
+export async function sendMail({ to, cc = [], bcc = [], subject, html, text = '', replyTo }) {
   const toList = (Array.isArray(to) ? to : [to]).filter(Boolean).map(recipient);
   if (!toList.length) throw new Error('sendMail: no recipients');
   const ccList = (Array.isArray(cc) ? cc : [cc]).filter(Boolean).map(recipient);
+  const bccList = (Array.isArray(bcc) ? bcc : [bcc]).filter(Boolean).map(recipient);
   const message = {
     subject,
     from: { emailAddress: { address: ticketsAddress(), name: FROM_NAME } },
     toRecipients: toList,
     ...(ccList.length ? { ccRecipients: ccList } : {}),
+    ...(bccList.length ? { bccRecipients: bccList } : {}),
     body: { contentType: 'HTML', content: html },
     ...(replyTo ? { replyTo: [recipient(replyTo)] } : {}),
   };

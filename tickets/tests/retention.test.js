@@ -157,8 +157,8 @@ test('backoff schedule used by the notifications job: 5, 20, 45, 80 minutes then
 const fakeRes = () => { const o = { code: 0, body: null }; o.status = (c) => { o.code = c; return o; }; o.json = (b) => { o.body = b; return o; }; return o; };
 beforeEach(() => { process.env.CRON_SECRET = 'cron-secret'; });
 
-test('?job=notifications drains due rows and alerts admins to failed calls; ?job=retention runs the anonymisation', async () => {
-  assert.deepEqual(Object.keys(JOBS), ['email', 'notifications', 'retention']);
+test('?job=notifications drains due rows and alerts admins to failed calls; ?job=retention runs the anonymisation; ?job=digest sends the daily summary', async () => {
+  assert.deepEqual(Object.keys(JOBS), ['email', 'notifications', 'retention', 'digest']);
   const db = fakeDb();
   db.seedStaff([{ name: 'Jo', email: 'jo@truthcaregroup.co.uk', role: 'admin' }]);
   const send = fakeSend();
@@ -181,5 +181,13 @@ test('?job=notifications drains due rows and alerts admins to failed calls; ?job
     ['retention', '2025-09-06T03:00:00.000Z', 0, 0, 0, 0, 0],
   );
   assert.equal(queries.length, 5);
+
+  res = fakeRes();
+  await handleCron({ url: '/api/cron?job=digest', headers: { authorization: 'Bearer cron-secret' } }, res, { db, send });
+  assert.equal(res.code, 200);
+  assert.equal(res.body.job, 'digest');
+  assert.equal(res.body.sent, true);
+  assert.ok(send.sent.some((m) => m.subject?.startsWith('[Tickets] Daily summary')));
+
   delete process.env.CRON_SECRET;
 });

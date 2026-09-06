@@ -231,6 +231,45 @@ export function renderFailedCallsAlert({ rows = [] }) {
 }
 
 /**
+ * Daily digest (spec addendum 2026-09-06): sent once a day to the care-
+ * management leads, not queued through pending_notifications like the
+ * per-ticket emails — lib/digest.js sends it directly, so this renderer
+ * takes plain stats rather than a payload shape.
+ */
+export function renderDigestEmail({ createdLast24h = 0, closedLast24h = 0, open = [] } = {}) {
+  const heading = 'Daily ticket summary';
+  const dateLabel = formatDate(new Date().toISOString());
+  const hasUrgent = open.some((t) => t.priority === 'urgent');
+
+  const rowText = (t) => `TC-${t.number} · ${String(t.priority || 'normal').toUpperCase()} · ${categoryLabel(t.category)} · ${t.callerName || 'Unknown caller'} · ${statusLabel(t.status)} · ${t.assigneeName || 'Unassigned'}`;
+  const text = [
+    `${heading} — ${dateLabel}`,
+    '',
+    `New in the last 24h: ${createdLast24h}`,
+    `Closed in the last 24h: ${closedLast24h}`,
+    `Currently open: ${open.length}`,
+    '',
+    open.length ? 'Open tickets:' : 'No open tickets.',
+    ...open.map(rowText),
+    '',
+    `Board: ${appUrl()}`,
+  ].join('\n').trim();
+
+  const rowHtml = (t) => `<tr><td style="padding:6px 10px 6px 0;font-size:13px;white-space:nowrap"><a href="${escapeHtml(boardUrl(t))}" style="color:${NAVY};font-weight:600;text-decoration:none">TC-${t.number}</a></td><td style="padding:6px 6px 6px 0;white-space:nowrap">${badge(String(t.priority || 'normal').toUpperCase(), priorityColour(t.priority))}${badge(categoryLabel(t.category), MUTED)}</td><td style="padding:6px 6px 6px 0;font-size:13px">${escapeHtml(t.callerName || 'Unknown caller')}</td><td style="padding:6px 0;font-size:13px;color:${MUTED}">${escapeHtml(t.assigneeName || 'Unassigned')}</td></tr>`;
+  const bodyHtml = [
+    `<h2 style="margin:0 0 10px;font-size:20px;color:${NAVY}">${escapeHtml(heading)}</h2>`,
+    `<p style="margin:0 0 14px;color:${MUTED};font-size:13px">${escapeHtml(dateLabel)}</p>`,
+    `<p style="margin:0 0 14px">${badge(`${createdLast24h} new`, NAVY)}${badge(`${closedLast24h} closed`, MUTED)}${badge(`${open.length} open`, hasUrgent ? priorityColour('urgent') : MUTED)}</p>`,
+    open.length
+      ? `<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:100%">${open.map(rowHtml).join('')}</table>`
+      : `<p style="margin:0 0 14px;color:${MUTED}">No open tickets — nice and clear.</p>`,
+    `<p style="margin:14px 0 0"><a href="${escapeHtml(appUrl())}" style="display:inline-block;padding:10px 16px;background:${ORANGE};color:#fff;text-decoration:none;border-radius:6px;font-weight:600">Open the board</a></p>`,
+  ].join('');
+
+  return { subject: `[Tickets] Daily summary — ${createdLast24h} new, ${open.length} open`, html: wrapHtml({ title: 'Daily summary', bodyHtml, footerHtml: '' }), text };
+}
+
+/**
  * Single entry point used by lib/notify.js. `payload` is the JSON stored in
  * pending_notifications: { audience?, ticket, assignee?, note?, event?, unknown?, messages?, rows? }.
  */

@@ -2,7 +2,7 @@ import { test, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   ticketSubject, priorityTag, callerSubject, replyToFor, boardUrl, escapeHtml, renderEmail,
-  renderStaffEmail, renderCallerEmail, renderBounceEmail, renderFailedCallsAlert, commandFooterText, KINDS, SUBJECT_MAX,
+  renderStaffEmail, renderCallerEmail, renderBounceEmail, renderFailedCallsAlert, renderDigestEmail, commandFooterText, KINDS, SUBJECT_MAX,
 } from '../lib/templates.js';
 
 const ticket = (over = {}) => ({
@@ -91,6 +91,25 @@ test('bounce and failed-calls renderers', () => {
   assert.equal(f.subject, '[Tickets] 1 failed phone call needs attention');
   assert.ok(f.text.includes('call_1') && f.text.includes('db down') && f.text.includes('"caller_name":"A"'));
   assert.ok(f.html.includes('&quot;caller_name&quot;'));
+});
+
+test('renderDigestEmail: counts, an open-ticket table, empty state, and HTML-escaping', () => {
+  const open1 = { number: 7, priority: 'urgent', category: 'resident_concern', callerName: 'Jane <Smith>', status: 'open', assigneeName: null };
+  const open2 = { number: 8, priority: 'normal', category: 'general', callerName: 'A Coordinator', status: 'in_progress', assigneeName: 'Joanne Bray' };
+  const d = renderDigestEmail({ createdLast24h: 3, closedLast24h: 1, open: [open1, open2] });
+  assert.equal(d.subject, '[Tickets] Daily summary — 3 new, 2 open');
+  assert.ok(d.text.includes('New in the last 24h: 3'));
+  assert.ok(d.text.includes('Closed in the last 24h: 1'));
+  assert.ok(d.text.includes('Currently open: 2'));
+  assert.ok(d.text.includes('TC-7 · URGENT · Resident concern · Jane <Smith> · Open · Unassigned'));
+  assert.ok(d.text.includes('TC-8 · NORMAL · General · A Coordinator · In progress · Joanne Bray'));
+  assert.ok(d.html.includes('Jane &lt;Smith&gt;'), 'caller name is HTML-escaped');
+  assert.ok(d.html.includes('TC-7') && d.html.includes('TC-8'));
+
+  const empty = renderDigestEmail({ createdLast24h: 0, closedLast24h: 0, open: [] });
+  assert.equal(empty.subject, '[Tickets] Daily summary — 0 new, 0 open');
+  assert.ok(empty.text.includes('No open tickets.'));
+  assert.ok(empty.html.includes('No open tickets — nice and clear.'));
 });
 
 test('renderEmail dispatches by kind and audience; rejects unknown kinds', () => {

@@ -42,6 +42,8 @@ export function fakeDb() {
       t.tickets.push(row);
       return [row];
     }
+    if (/^SELECT count\(\*\)::int AS n FROM tickets WHERE created_at >= \$1$/.test(q)) return [{ n: t.tickets.filter((r) => r.created_at >= p[0]).length }];
+    if (/^SELECT count\(\*\)::int AS n FROM tickets WHERE closed_at >= \$1$/.test(q)) return [{ n: t.tickets.filter((r) => r.closed_at && r.closed_at >= p[0]).length }];
     if (/FROM tickets t LEFT JOIN staff s/.test(q)) {
       const rank = { urgent: 0, high: 1, normal: 2 };
       return [...t.tickets].sort((a, b) => rank[a.priority] - rank[b.priority] || b.created_at.localeCompare(a.created_at))

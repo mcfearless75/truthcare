@@ -80,7 +80,7 @@ test('listMessages reads MAILBOX_ADDRESS with the receivedDateTime cursor, selec
 
 test('sendMail posts to the mailbox sendMail endpoint as the tickets@ alias with saveToSentItems:false and replyTo', async () => {
   fakeFetch((url) => (url.includes('/token') ? tokenResponse() : { status: 202 }));
-  await sendMail({ to: 'jo@truthcaregroup.co.uk', cc: ['fam@example.com'], subject: '[TC-1] Hello', html: '<p>Hi</p>', text: 'Hi', replyTo: 'tickets+tc1-abcd2345@truthcaregroup.co.uk' });
+  await sendMail({ to: 'jo@truthcaregroup.co.uk', cc: ['fam@example.com'], bcc: ['infotech@truthcaregroup.co.uk'], subject: '[TC-1] Hello', html: '<p>Hi</p>', text: 'Hi', replyTo: 'tickets+tc1-abcd2345@truthcaregroup.co.uk' });
   const req = calls[1];
   assert.equal(req.url, 'https://graph.microsoft.com/v1.0/users/infotech%40truthcaregroup.co.uk/sendMail');
   assert.equal(req.method, 'POST');
@@ -89,6 +89,7 @@ test('sendMail posts to the mailbox sendMail endpoint as the tickets@ alias with
   assert.deepEqual(body.message.from, { emailAddress: { address: 'tickets@truthcaregroup.co.uk', name: 'Truth Care Tickets' } });
   assert.deepEqual(body.message.toRecipients, [{ emailAddress: { address: 'jo@truthcaregroup.co.uk' } }]);
   assert.deepEqual(body.message.ccRecipients, [{ emailAddress: { address: 'fam@example.com' } }]);
+  assert.deepEqual(body.message.bccRecipients, [{ emailAddress: { address: 'infotech@truthcaregroup.co.uk' } }]);
   assert.deepEqual(body.message.replyTo, [{ emailAddress: { address: 'tickets+tc1-abcd2345@truthcaregroup.co.uk' } }]);
   assert.equal(body.message.body.contentType, 'HTML');
   assert.equal(body.message.body.content, '<p>Hi</p>');

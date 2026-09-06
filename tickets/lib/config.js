@@ -40,3 +40,18 @@ export function ownAddresses() {
 export function appUrl() {
   return env('APP_URL', 'https://tickets.truthcaregroup.co.uk').replace(/\/+$/, '');
 }
+
+const splitList = (v) => String(v || '').split(',').map((s) => s.trim()).filter(Boolean);
+
+/**
+ * Recipients for the daily digest email (spec addendum 2026-09-06): the
+ * care-management leads get it as "to", the IT/system mailbox gets it as
+ * "bcc" so it doesn't look like a third addressee. Overridable via env so
+ * the list can change without a redeploy touching code.
+ */
+export function digestRecipients() {
+  return {
+    to: splitList(env('DIGEST_TO', 'kumi@truthcaregroup.co.uk,joanne@truthcaregroup.co.uk')),
+    bcc: splitList(env('DIGEST_BCC', 'infotech@truthcaregroup.co.uk')),
+  };
+}
