@@ -120,3 +120,40 @@ test('COMMAND_HELP lists every command family for footers and bounces', () => {
   const text = COMMAND_HELP.map(([cmd]) => cmd).join('\n');
   for (const needle of ['assign', 'mine', 'close', 'reopen', 'in progress', 'urgent', 'priority', 'category', 'internal:', '#']) assert.ok(text.includes(needle), needle);
 });
+
+test('prose that merely contains an inflected keyword is a note, not a failed command', () => {
+  const line = 'Closed for lunch, will call back at 2';
+  const r = parseCommands(line);
+  assert.deepEqual(r.commands, []);
+  assert.deepEqual(r.unknown, []);
+  assert.equal(r.note, line);
+
+  assert.equal(parseLine('Taken care of'), null);
+  assert.equal(parseLine('Opens at 9am'), null);
+});
+
+test('prose that merely starts with "category"/"priority" is a note, not a failed command', () => {
+  for (const line of ['Category error, please advise on the form', 'Priority list attached for review']) {
+    const r = parseCommands(line);
+    assert.equal(r.note, line, line);
+    assert.deepEqual(r.unknown, [], line);
+  }
+});
+
+test('short command-shaped lines still fail as unknown with a suggestion', () => {
+  assert.equal(parseLine('category nonsense').type, 'unknown');
+  assert.equal(parseLine('category nonsense').suggestion, 'category staff|referral|resident|general');
+  assert.deepEqual(parseLine('asign jo'), { type: 'unknown', raw: 'asign jo', suggestion: 'assign' });
+  assert.equal(parseLine('clsoe').type, 'unknown');
+  assert.equal(parseLine('clsoe').suggestion, 'close');
+});
+
+test('sign-off is only stripped when it actually closes the message', () => {
+  const r = parseCommands('close\nThanks\nWill call the family back tomorrow afternoon.');
+  assert.deepEqual(r.commands.map((c) => c.type), ['status']);
+  assert.equal(r.note, 'Will call the family back tomorrow afternoon.');
+
+  const r2 = parseCommands('Will call the family back tomorrow.\nThanks,\nJo');
+  assert.deepEqual(r2.commands, []);
+  assert.equal(r2.note, 'Will call the family back tomorrow.');
+});

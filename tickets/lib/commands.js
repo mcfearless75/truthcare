@@ -57,11 +57,32 @@ export function stripQuotedReply(text) {
   return s.slice(0, cut).trim();
 }
 
-/** Drop a sign-off line ("Kind regards") and everything after it (the signature). */
+/** A line reads as command-shaped (a name/title, or a would-be command) when it's short. */
+function isShortLine(line) {
+  const words = line.trim().replace(/[.!,;:]+$/, '').split(/\s+/).filter(Boolean);
+  return words.length > 0 && words.length <= 3;
+}
+
+/**
+ * Drop a sign-off line ("Kind regards") and everything after it (the signature) —
+ * but only when what follows actually looks like a signature (a handful of short
+ * lines: a name, a title). A "Thanks" that turns out to be followed by real prose
+ * wasn't closing the message, so only that one word is dropped and scanning
+ * continues — the real content after it is kept.
+ */
 export function stripSignOff(text) {
-  const lines = String(text || '').split('\n');
-  const i = lines.findIndex((l) => SIGN_OFF_RE.test(l.trim()));
-  return (i < 0 ? lines : lines.slice(0, i)).join('\n').trim();
+  let lines = String(text || '').split('\n');
+  for (;;) {
+    const i = lines.findIndex((l) => SIGN_OFF_RE.test(l.trim()));
+    if (i < 0) break;
+    const trailing = lines.slice(i + 1).filter((l) => l.trim());
+    if (trailing.length <= 3 && trailing.every(isShortLine)) {
+      lines = lines.slice(0, i);
+      break;
+    }
+    lines = lines.slice(0, i).concat(lines.slice(i + 1));
+  }
+  return lines.join('\n').trim();
 }
 
 /** Optimal string alignment distance — one adjacent transposition counts as a single edit. */
@@ -95,6 +116,12 @@ export function parseLine(rawLine) {
 
   const line = raw.replace(/[.!,;:]+$/, '').trim();
   const lower = line.toLowerCase().replace(/\s+/g, ' ');
+  const words = lower.split(' ').filter(Boolean);
+  // A line is only eligible to be reported as a *failed* command (a bad
+  // category/priority value, or a typo) when it is command-shaped: at most 3
+  // words. Longer lines are ordinary prose that merely starts with, or
+  // contains, a command-like word — they become note text instead.
+  const commandShaped = words.length <= 3;
 
   if (line.startsWith('@')) {
     const who = line.slice(1).trim();
@@ -111,22 +138,28 @@ export function parseLine(rawLine) {
   m = /^priority\b\s*:?\s*(.*)$/i.exec(line);
   if (m) {
     const p = m[1].trim().toLowerCase();
-    return PRIORITY_WORDS.includes(p) ? { type: 'priority', value: p, raw } : unknown(raw, 'priority normal|high|urgent');
+    if (PRIORITY_WORDS.includes(p)) return { type: 'priority', value: p, raw };
+    return commandShaped ? unknown(raw, 'priority normal|high|urgent') : null;
   }
   m = /^category\b\s*:?\s*(.*)$/i.exec(line);
   if (m) {
     const c = CATEGORY_WORDS[m[1].trim().toLowerCase().replace(/\s+/g, ' ')];
-    return c ? { type: 'category', value: c, raw } : unknown(raw, 'category staff|referral|resident|general');
+    if (c) return { type: 'category', value: c, raw };
+    return commandShaped ? unknown(raw, 'category staff|referral|resident|general') : null;
   }
 
-  // Typo detection: a short line whose first word is one edit away from a command keyword.
-  const words = lower.split(' ');
-  if (words.length <= 3) {
+  // Typo detection: a short line whose first word is one edit away from a
+  // command keyword. A word that already IS a keyword (or a real inflection
+  // of one, longer than the keyword itself — "closed"/"taken"/"opens") is
+  // never "corrected" to a different keyword.
+  if (commandShaped) {
     const first = words[0].replace(/[^a-z]/g, '');
-    if (first.length >= 4) {
+    if (first.length >= 4 && !KEYWORDS.includes(first)) {
       for (const kw of KEYWORDS) {
         const head = kw.split(' ')[0];
-        if (first !== head && editDistance(first, head) === 1) return unknown(raw, kw);
+        if (head.length >= 4 && first.length <= head.length && editDistance(first, head) === 1) {
+          return unknown(raw, kw);
+        }
       }
     }
   }
