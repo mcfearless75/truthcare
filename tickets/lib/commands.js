@@ -58,42 +58,23 @@ export function stripQuotedReply(text) {
 }
 
 /**
- * A trailing line reads as part of a signature block (a name, a job title, an
- * org) rather than as real note content. The discriminator is punctuation,
- * not length: a genuine sentence ends in '.', '!' or '?' ("Call back
- * please.", "Will do."), while a name or title normally doesn't ("Joanne
- * Bray", "Registered Manager of the Trust") — so terminal punctuation wins
- * over a word-count guess. A short word cap still excludes stray prose that
- * happens to lack punctuation.
- */
-function looksLikeSignatureLine(line) {
-  const trimmed = line.trim();
-  if (!trimmed) return true;
-  if (/[.!?]$/.test(trimmed)) return false;
-  const words = trimmed.split(/\s+/).filter(Boolean);
-  return words.length > 0 && words.length <= 6;
-}
-
-/**
- * Drop a sign-off line ("Kind regards") and everything after it (the signature) —
- * but only when what follows actually looks like a signature (a handful of
- * un-punctuated lines: a name, a title). A "Thanks" that turns out to be
- * followed by real prose ("Call back please.") wasn't closing the message,
- * so only that one word is dropped and scanning continues — the real
- * content after it is kept.
+ * Drop only the line that literally reads as a closing phrase ("Thanks",
+ * "Kind regards,") — never anything after it.
+ *
+ * Two earlier fix rounds tried to also swallow the name/title lines that
+ * typically follow a sign-off, using word-count and then punctuation
+ * heuristics to tell a signature from real content. Both let through a
+ * short trailing sentence that lacked the discriminator they relied on
+ * ("Thanks\nCalled her mum" silently lost "Called her mum"). There is no
+ * local, structural rule that reliably tells a two-word name from a
+ * two-word note — the two are genuinely indistinguishable without reading
+ * for meaning. Given the spec's "nothing silently dropped" principle, the
+ * failure mode that has to be impossible is losing real content, not
+ * leaving a stray "Joanne Bray" in a ticket note — so this only ever
+ * removes the sign-off phrase itself.
  */
 export function stripSignOff(text) {
-  let lines = String(text || '').split('\n');
-  for (;;) {
-    const i = lines.findIndex((l) => SIGN_OFF_RE.test(l.trim()));
-    if (i < 0) break;
-    const trailing = lines.slice(i + 1).filter((l) => l.trim());
-    if (trailing.length <= 4 && trailing.every(looksLikeSignatureLine)) {
-      lines = lines.slice(0, i);
-      break;
-    }
-    lines = lines.slice(0, i).concat(lines.slice(i + 1));
-  }
+  const lines = String(text || '').split('\n').filter((l) => !SIGN_OFF_RE.test(l.trim()));
   return lines.join('\n').trim();
 }
 

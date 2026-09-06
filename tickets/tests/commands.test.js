@@ -108,11 +108,17 @@ test('quoted reply is stripped at the first marker: From:, On … wrote:, Origin
   assert.equal(stripQuotedReply(null), '');
 });
 
-test('sign-off and signature are not note text', () => {
-  assert.equal(stripSignOff('Please call them.\n\nKind regards,\nJoanne Bray\nRegistered Manager'), 'Please call them.');
-  assert.equal(stripSignOff('Please call them.\nThanks\nJo'), 'Please call them.');
+test('a closing phrase on its own line is stripped; a following name/title is left as-is, never lost', () => {
+  // stripSignOff only ever removes the line that IS the closing phrase.
+  // Whatever a signature block usually contains after that (a name, a
+  // title) is genuinely indistinguishable from a short real note by
+  // structure alone, so it is deliberately left in — a stray name in a
+  // ticket note is harmless; losing real content is not (spec: nothing
+  // silently dropped).
+  assert.equal(stripSignOff('Please call them.\n\nKind regards,\nJoanne Bray\nRegistered Manager'), 'Please call them.\n\nJoanne Bray\nRegistered Manager');
+  assert.equal(stripSignOff('Please call them.\nThanks\nJo'), 'Please call them.\nJo');
   const r = parseCommands('close\nMany thanks\nJo Bray\nRegistered Manager');
-  assert.equal(r.note, null);
+  assert.equal(r.note, 'Jo Bray\nRegistered Manager');
   assert.equal(r.commands[0].value, 'closed');
 });
 
@@ -148,29 +154,29 @@ test('short command-shaped lines still fail as unknown with a suggestion', () =>
   assert.equal(parseLine('clsoe').suggestion, 'close');
 });
 
-test('sign-off is only stripped when it actually closes the message', () => {
+test('only the sign-off line itself is removed — a real trailing sentence is always kept', () => {
   const r = parseCommands('close\nThanks\nWill call the family back tomorrow afternoon.');
   assert.deepEqual(r.commands.map((c) => c.type), ['status']);
   assert.equal(r.note, 'Will call the family back tomorrow afternoon.');
 
   const r2 = parseCommands('Will call the family back tomorrow.\nThanks,\nJo');
   assert.deepEqual(r2.commands, []);
-  assert.equal(r2.note, 'Will call the family back tomorrow.');
+  assert.equal(r2.note, 'Will call the family back tomorrow.\nJo');
 });
 
-test('a short punctuated sentence after a sign-off word is real content, not part of the signature', () => {
-  assert.deepEqual(parseCommands('close\nThanks\nCall back please.'), {
+test('a short trailing sentence with no terminal punctuation is never mistaken for a signature', () => {
+  // Regression: two earlier heuristics (word-count, then punctuation) both
+  // misread a terse real note like this as part of the signature and
+  // silently dropped it. stripSignOff no longer tries to guess.
+  assert.deepEqual(parseCommands('close\nThanks\nCalled her mum'), {
     commands: [{ type: 'status', value: 'closed', raw: 'close' }],
-    note: 'Call back please.',
+    note: 'Called her mum',
     unknown: [],
   });
+  assert.equal(parseCommands('close\nThanks\nSorted').note, 'Sorted');
+  assert.equal(parseCommands('close\nThanks\nLeft a voicemail').note, 'Left a voicemail');
+  assert.equal(parseCommands('close\nThanks\nCall back please.').note, 'Call back please.');
   assert.equal(parseCommands('close\nThanks\nWill do.').note, 'Will do.');
-  assert.equal(parseCommands('close\nThanks\nCalled them.').note, 'Called them.');
-});
-
-test('a genuine signature with a longer, unpunctuated job title is still stripped in full', () => {
-  const note = stripSignOff('Please call them.\n\nKind regards,\nJoanne Bray\nRegistered Manager of the Trust');
-  assert.equal(note, 'Please call them.');
 });
 
 test('assign only accepts a short name, not ordinary prose that happens to start with "assign"', () => {
