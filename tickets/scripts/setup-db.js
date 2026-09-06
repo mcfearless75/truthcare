@@ -30,6 +30,7 @@ export const SCHEMA_STATEMENTS = [
      caller_email text,
      caller_org text,
      subject_person text,
+     shift_starts_at timestamptz,
      assigned_to uuid NULL REFERENCES staff(id),
      email_token text NOT NULL UNIQUE,
      graph_conversation_id text,
@@ -90,6 +91,10 @@ export const SCHEMA_STATEMENTS = [
      value text NOT NULL,
      updated_at timestamptz NOT NULL DEFAULT now()
    )`,
+  // Added 2026-09-06 for the CareRota `dropshift` command (lib/carerota.js) —
+  // needed on the already-live tickets table, not just fresh installs, since
+  // CREATE TABLE IF NOT EXISTS above is a no-op once the table exists.
+  `ALTER TABLE tickets ADD COLUMN IF NOT EXISTS shift_starts_at timestamptz`,
   `CREATE INDEX IF NOT EXISTS tickets_email_token_idx ON tickets(email_token)`,
   `CREATE INDEX IF NOT EXISTS tickets_conversation_idx ON tickets(graph_conversation_id)`,
   `CREATE INDEX IF NOT EXISTS tickets_status_priority_created_idx ON tickets(status, priority, created_at)`,

@@ -15,7 +15,7 @@ import { activeStaff } from '../../lib/staff.js';
 import { listTickets, getTicketDetail, getTicketByNumber, applyCommand, createTicket, CommandError } from '../../lib/tickets.js';
 import { sendMail } from '../../lib/graph.js';
 
-const COMMAND_TYPES = ['assign', 'take', 'status', 'priority', 'category', 'note', 'internal_note'];
+const COMMAND_TYPES = ['assign', 'take', 'status', 'priority', 'category', 'note', 'internal_note', 'dropshift'];
 
 export async function handleTickets(req, res, { db = sql, send = sendMail, now = Date.now() } = {}) {
   const user = await requireStaff(req, res, { db, now });

@@ -36,8 +36,8 @@ export function fakeDb() {
     if (/^INSERT INTO tickets/.test(q)) {
       const row = {
         id: uuid(), number: ++numbers, status: 'open', priority: p[0], category: p[1], source: p[2], subject: p[3], summary: p[4],
-        caller_name: p[5], caller_phone: p[6], caller_email: p[7], caller_org: p[8], subject_person: p[9], email_token: p[10],
-        graph_conversation_id: p[11], retell_call_id: p[12], assigned_to: null, created_at: now(), updated_at: now(), closed_at: null,
+        caller_name: p[5], caller_phone: p[6], caller_email: p[7], caller_org: p[8], subject_person: p[9], shift_starts_at: p[10], email_token: p[11],
+        graph_conversation_id: p[12], retell_call_id: p[13], assigned_to: null, created_at: now(), updated_at: now(), closed_at: null,
       };
       t.tickets.push(row);
       return [row];
@@ -190,4 +190,31 @@ export function fakeSend() {
   send.failFor = failFor;
   send.to = (address) => sent.filter((m) => m.to === address);
   return send;
+}
+
+/**
+ * Minimal fake of supabase-js's fluent query builder for lib/carerota.js
+ * tests: `.from(t).select().eq()...` is thenable, matching how carerota.js
+ * awaits it directly with no terminal call of its own. `.rpc()` is a plain
+ * async function since carerota.js never chains off it.
+ */
+export function fakeCareRota(tables, { rpcError = null } = {}) {
+  const rpcCalls = [];
+  function builder(table) {
+    const filters = [];
+    const b = {
+      select: () => b,
+      eq: (k, v) => { filters.push((r) => r[k] === v); return b; },
+      is: (k, v) => { filters.push((r) => (v === null ? r[k] == null : r[k] === v)); return b; },
+      in: (k, list) => { filters.push((r) => list.includes(r[k])); return b; },
+      ilike: (k, v) => { const re = new RegExp(`^${String(v).replace(/%/g, '.*')}$`, 'i'); filters.push((r) => re.test(r[k])); return b; },
+      then: (resolve) => resolve({ data: (tables[table] || []).filter((r) => filters.every((f) => f(r))), error: null }),
+    };
+    return b;
+  }
+  return {
+    from: builder,
+    rpc: async (name, params) => { rpcCalls.push({ name, params }); return { data: rpcError ? null : {}, error: rpcError }; },
+    rpcCalls,
+  };
 }

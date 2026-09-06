@@ -131,12 +131,15 @@
       var facts = [
         ['Caller', [t.callerName, t.callerOrg ? '(' + t.callerOrg + ')' : '', t.callerPhone, t.callerEmail].filter(Boolean).join(' · ') || 'Unknown'],
         ['About', t.subjectPerson || '—'],
+      ];
+      if (t.category === 'staff' && t.shiftStartsAt) facts.push(['Shift starts', when(t.shiftStartsAt)]);
+      facts.push(
         ['Assigned to', d.assignee ? d.assignee.name : 'Unassigned'],
         ['Logged', 'via ' + (LABELS.source[t.source] || t.source) + ' ' + when(t.createdAt)],
         ['Updated', when(t.updatedAt)],
         ['Closed', t.closedAt ? when(t.closedAt) : '—'],
         ['Reply-to', 'tickets+tc' + t.number + '-' + t.emailToken + '@' + (window.location.hostname.replace(/^tickets\./, '') || 'truthcaregroup.co.uk')],
-      ];
+      );
       $('[data-ticket-facts]').innerHTML = facts.map(function (f) { return '<dt>' + esc(f[0]) + '</dt><dd>' + esc(f[1]) + '</dd>'; }).join('');
 
       var thread = $('[data-thread]');
@@ -151,6 +154,9 @@
         var text = ev.event === 'created' ? 'Created (' + ev.toValue + ')' : ev.event === 'assigned' ? 'Assigned to ' + (ev.toValue || 'nobody') : ev.event + ': ' + (ev.fromValue || '—') + ' → ' + (ev.toValue || '—');
         return '<li>' + esc(when(ev.createdAt)) + ' · ' + esc(text) + (ev.actor ? ' by ' + esc(ev.actor) : '') + ' · via ' + esc(ev.via) + '</li>';
       }).join('') || '<li>No history.</li>';
+
+      var dropshiftRow = $('[data-dropshift-row]');
+      if (dropshiftRow) dropshiftRow.hidden = t.category !== 'staff';
 
       fillStaffSelects(d.staff, 1);
       $('[data-assign]').value = t.assignedTo || '';

@@ -19,6 +19,7 @@ export const COMMAND_HELP = [
   ['in progress  /  started', 'mark as in progress'],
   ['urgent  /  priority high  /  priority normal', 'change priority'],
   ['category staff|referral|resident|general', 'recategorise'],
+  ['dropshift', 'staff tickets only — drop the shift in CareRota and start its cover cascade'],
   ['internal: <text>  or  # <text>', 'internal note (never sent to the caller)'],
   ['anything else', 'public note — sent to the caller when we have their email'],
 ];
@@ -33,7 +34,7 @@ const CATEGORY_WORDS = {
   resident: 'resident_concern', 'resident concern': 'resident_concern', resident_concern: 'resident_concern', 'resident-concern': 'resident_concern',
 };
 const PRIORITY_WORDS = ['normal', 'high', 'urgent'];
-const KEYWORDS = ['assign', 'mine', 'take', 'close', 'closed', 'resolved', 'done', 'reopen', 'open', 'in progress', 'working on it', 'started', 'urgent', 'priority', 'category', 'internal'];
+const KEYWORDS = ['assign', 'mine', 'take', 'close', 'closed', 'resolved', 'done', 'reopen', 'open', 'in progress', 'working on it', 'started', 'urgent', 'priority', 'category', 'internal', 'dropshift'];
 
 const QUOTE_MARKERS = [
   /^From:\s/m,
@@ -131,6 +132,7 @@ export function parseLine(rawLine) {
     return { type: 'assign', value: who, raw };
   }
   if (lower === 'mine' || lower === 'take') return { type: 'take', raw };
+  if (lower === 'dropshift' || lower === 'drop shift') return { type: 'dropshift', raw };
   if (STATUS_WORDS[lower]) return { type: 'status', value: STATUS_WORDS[lower], raw };
   if (lower === 'urgent') return { type: 'priority', value: 'urgent', raw };
   m = /^priority\b\s*:?\s*(.*)$/i.exec(line);

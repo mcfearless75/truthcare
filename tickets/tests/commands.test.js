@@ -22,6 +22,12 @@ test('mine / take assign to the sender', () => {
   assert.deepEqual(one('Take!'), { type: 'take', raw: 'Take!' });
 });
 
+test('dropshift is recognised bare and as two words, case-insensitively', () => {
+  assert.deepEqual(one('dropshift'), { type: 'dropshift', raw: 'dropshift' });
+  assert.deepEqual(one('Drop Shift'), { type: 'dropshift', raw: 'Drop Shift' });
+  assert.equal(one('DROPSHIFT.').type, 'dropshift');
+});
+
 test('status words: close/closed/resolved/done → closed; reopen/open → open; in progress/working on it/started → in_progress', () => {
   for (const w of ['close', 'closed', 'resolved', 'done', 'Done.', 'CLOSE']) assert.equal(one(w).value, 'closed', w);
   for (const w of ['reopen', 'open', 'Reopen']) assert.equal(one(w).value, 'open', w);

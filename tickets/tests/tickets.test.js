@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createTicket, applyCommand, addNote, getTicketDetail, getTicketByNumber, getTicketByToken, listTickets, threadingLookup, CommandError } from '../lib/tickets.js';
 import { deliverPending } from '../lib/notify.js';
-import { fakeDb, fakeSend } from './helpers/fake-db.js';
+import { fakeDb, fakeSend, fakeCareRota } from './helpers/fake-db.js';
 
 function setup() {
   const db = fakeDb();
@@ -117,6 +117,42 @@ test('status/priority/category: events, closed_at, closure email to caller, no-o
   await assert.rejects(applyCommand(t.id, { type: 'priority', value: 'meh' }, PAUL, { via: 'email', db, send }), (e) => e.code === 'bad_value');
   await assert.rejects(applyCommand(t.id, { type: 'status', value: 'done' }, PAUL, { via: 'email', db, send }), (e) => e.code === 'bad_value');
   await assert.rejects(applyCommand(t.id, { type: 'dance' }, PAUL, { via: 'email', db, send }), (e) => e.code === 'unknown_command');
+});
+
+test('dropshift: staff-only, needs CareRota configured, and writes a clear internal note either way', async () => {
+  const { db, send, PAUL } = setup();
+  const CAREROTA_ENV = ['CAREROTA_URL', 'CAREROTA_ANON_KEY', 'CAREROTA_MANAGER_EMAIL', 'CAREROTA_MANAGER_PASSWORD'];
+  for (const k of CAREROTA_ENV) delete process.env[k];
+
+  const general = await createTicket({ ...phoneInput, category: 'general' }, { via: 'phone', db, send });
+  await assert.rejects(applyCommand(general.id, { type: 'dropshift' }, PAUL, { via: 'email', db, send }), (e) => e.code === 'wrong_category');
+
+  const staffTicket = await createTicket({ category: 'staff', source: 'phone', summary: 'Feeling unwell, cannot make shift', callerName: 'Joanne Bray', shiftStartsAt: '2026-09-06T20:00:00Z' }, { via: 'phone', db, send });
+
+  const notConfigured = await applyCommand(staffTicket.id, { type: 'dropshift' }, PAUL, { via: 'email', db, send });
+  assert.match(notConfigured.notes[0].body, /CareRota is not configured yet/);
+  assert.equal(notConfigured.notes[0].isInternal, true);
+
+  for (const k of CAREROTA_ENV) process.env[k] = 'set';
+  try {
+    const org = { id: 'org-1', name: 'Truth Care Group' };
+    const staffRow = { id: 'cr-staff-1', org_id: 'org-1', full_name: 'Joanne Bray' };
+    const shiftRow = { id: 'cr-shift-1', org_id: 'org-1', assigned_staff_id: 'cr-staff-1', shift_date: '2026-09-06', start_time: '20:00:00', status: 'confirmed' };
+    const okClient = fakeCareRota({ organisations: [org], staff_records: [staffRow], shifts: [shiftRow] });
+    const ok = await applyCommand(staffTicket.id, { type: 'dropshift' }, PAUL, { via: 'email', db, send, getCareRotaClient: async () => okClient });
+    assert.match(ok.notes[0].body, /Dropped Joanne Bray's shift on 2026-09-06 \(20:00:00\) in carerota/);
+    assert.equal(okClient.rpcCalls.length, 1);
+
+    const ambiguousClient = fakeCareRota({ organisations: [org], staff_records: [staffRow, { ...staffRow, id: 'cr-staff-2' }], shifts: [] });
+    const ambiguous = await applyCommand(staffTicket.id, { type: 'dropshift' }, PAUL, { via: 'email', db, send, getCareRotaClient: async () => ambiguousClient });
+    assert.match(ambiguous.notes[0].body, /Could not drop the shift automatically.*Please update CareRota directly/s);
+
+    const throwingClient = { from: () => { throw new Error('network down'); }, rpc: async () => ({ data: null, error: null }) };
+    const errored = await applyCommand(staffTicket.id, { type: 'dropshift' }, PAUL, { via: 'email', db, send, getCareRotaClient: async () => throwingClient });
+    assert.match(errored.notes[0].body, /Could not reach CareRota: network down/);
+  } finally {
+    for (const k of CAREROTA_ENV) delete process.env[k];
+  }
 });
 
 test('finders, detail, list ordering and the threading lookup', async () => {

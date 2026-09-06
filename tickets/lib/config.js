@@ -55,3 +55,38 @@ export function digestRecipients() {
     bcc: splitList(env('DIGEST_BCC', 'infotech@truthcaregroup.co.uk')),
   };
 }
+
+/**
+ * CareRota integration (added 2026-09-06): a `dropshift` email/board command
+ * on a staff-category ticket calls into the separate carerota app (its own
+ * product, own Supabase project) to drop the caller's shift and start its
+ * existing cover-cascade — see lib/carerota.js.
+ *
+ * Deliberately uses a named manager account's own email/password, not a
+ * service-role key: carerota is a multi-tenant platform serving other
+ * organisations too, and `request_drop` is written to run under a real
+ * authenticated session (it reads auth.uid() via current_staff_id()/
+ * is_manager()), so this reuses carerota's own tested permission model
+ * exactly as a human manager would, rather than a broader credential that
+ * could reach data outside Truth Care Group's organisation.
+ *
+ * CAREROTA_ORG_NAME must match the exact `organisations.name` row for the
+ * Truth Care Group / Beaconsfield House organisation in carerota — confirm
+ * this once real credentials are wired in; getting it wrong fails closed
+ * (staffLookup finds zero matches) rather than matching the wrong org.
+ */
+export function carerotaConfig() {
+  return {
+    url: env('CAREROTA_URL'),
+    anonKey: env('CAREROTA_ANON_KEY'),
+    managerEmail: env('CAREROTA_MANAGER_EMAIL'),
+    managerPassword: env('CAREROTA_MANAGER_PASSWORD'),
+    orgName: env('CAREROTA_ORG_NAME', 'Truth Care Group'),
+  };
+}
+
+/** True once every credential CareRota needs has been set. */
+export function carerotaConfigured() {
+  const c = carerotaConfig();
+  return !!(c.url && c.anonKey && c.managerEmail && c.managerPassword);
+}

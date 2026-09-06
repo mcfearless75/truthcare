@@ -18,6 +18,8 @@ import { generateToken } from './threading.js';
 import { computePriority, isCategory, isPriority } from './priority.js';
 import { resolveStaff, staffById, staffByEmail } from './staff.js';
 import { notify } from './notify.js';
+import { dropShiftForTicket, carerotaClient as defaultCareRotaClient } from './carerota.js';
+import { carerotaConfigured } from './config.js';
 
 export const STATUSES = ['open', 'in_progress', 'closed'];
 export const SUMMARY_MAX = 8000;
@@ -36,7 +38,14 @@ const clip = (v, max = FIELD_MAX) => {
   return s ? s.slice(0, max) : null;
 };
 
-const TICKET_COLUMNS = 'id, number, status, priority, category, source, subject, summary, caller_name, caller_phone, caller_email, caller_org, subject_person, assigned_to, email_token, graph_conversation_id, retell_call_id, created_at, updated_at, closed_at';
+const TICKET_COLUMNS = 'id, number, status, priority, category, source, subject, summary, caller_name, caller_phone, caller_email, caller_org, subject_person, shift_starts_at, assigned_to, email_token, graph_conversation_id, retell_call_id, created_at, updated_at, closed_at';
+
+/** A caller can say anything ("tonight", garbled text) — store it only when it actually parses, never a garbage string into a timestamptz column. */
+function parseShiftStartsAt(v) {
+  if (!v) return null;
+  const d = new Date(v);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString();
+}
 
 // ── finders ────────────────────────────────────────────────────────────────
 
@@ -157,11 +166,11 @@ export async function createTicket(input, { via, actor = null, db = sql, send, i
   const priority = computePriority({ category, summary: `${input.subject || ''} ${summary}`, shiftStartsAt: input.shiftStartsAt, explicit: input.priority });
   const emailToken = generateToken();
   const ticket = await one(db, `
-    INSERT INTO tickets (status, priority, category, source, subject, summary, caller_name, caller_phone, caller_email, caller_org, subject_person, email_token, graph_conversation_id, retell_call_id)
-    VALUES ('open', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+    INSERT INTO tickets (status, priority, category, source, subject, summary, caller_name, caller_phone, caller_email, caller_org, subject_person, shift_starts_at, email_token, graph_conversation_id, retell_call_id)
+    VALUES ('open', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
     RETURNING ${TICKET_COLUMNS}`, [
     priority, category, source, clip(input.subject, 300), summary || null, clip(input.callerName), clip(input.callerPhone, 40),
-    clip(input.callerEmail)?.toLowerCase() || null, clip(input.callerOrg), clip(input.subjectPerson), emailToken,
+    clip(input.callerEmail)?.toLowerCase() || null, clip(input.callerOrg), clip(input.subjectPerson), parseShiftStartsAt(input.shiftStartsAt), emailToken,
     clip(input.graphConversationId, 500), clip(input.retellCallId),
   ]);
   await addEvent(ticket.id, { event: 'created', actor: actor?.name || actor?.email || source, toValue: priority, via }, { db });
@@ -195,7 +204,7 @@ async function assignTo(ticket, staff, { via, actor, db }) {
  * email/board, or a system actor.
  * @returns {Promise<{ ticket, events: object[], notes: object[] }>}
  */
-export async function applyCommand(ticketId, command, actor, { via, db = sql, send, immediate = true } = {}) {
+export async function applyCommand(ticketId, command, actor, { via, db = sql, send, immediate = true, getCareRotaClient = defaultCareRotaClient } = {}) {
   const ticket = typeof ticketId === 'object' ? ticketId : await getTicketById(ticketId, { db });
   if (!ticket) throw new CommandError('no_ticket', 'Ticket not found');
   const actorLabel = actor?.name || actor?.email || via;
@@ -239,6 +248,26 @@ export async function applyCommand(ticketId, command, actor, { via, db = sql, se
         await notify('updated', r.ticket, { db, send, immediate, assignee: await staffById(r.ticket.assignedTo, { db }), event: r.event });
       }
       return { ticket: r.ticket, events, notes };
+    }
+    case 'dropshift': {
+      if (ticket.category !== 'staff') throw new CommandError('wrong_category', "'dropshift' only works on staff tickets");
+      let body;
+      if (!carerotaConfigured()) {
+        body = 'CareRota is not configured yet (missing credentials) — drop this shift in CareRota directly.';
+      } else {
+        try {
+          const client = await getCareRotaClient();
+          const outcome = await dropShiftForTicket({ callerName: ticket.callerName, shiftStartsAt: ticket.shiftStartsAt, reason: ticket.summary }, { client });
+          body = outcome.ok ? outcome.message : `Could not drop the shift automatically: ${outcome.message} Please update CareRota directly.`;
+        } catch (e) {
+          body = `Could not reach CareRota: ${e?.message || e}. Please update CareRota directly.`;
+        }
+      }
+      const note = await addNote(ticket.id, { body, authorType: 'system', authorName: 'CareRota', isInternal: true }, { db });
+      notes.push(note);
+      const assignee = await staffById(ticket.assignedTo, { db });
+      await notify('updated', ticket, { db, send, immediate, assignee, note });
+      return { ticket, events, notes };
     }
     case 'internal_note':
     case 'note': {
