@@ -70,10 +70,13 @@ export function digestRecipients() {
  * exactly as a human manager would, rather than a broader credential that
  * could reach data outside Truth Care Group's organisation.
  *
- * CAREROTA_ORG_NAME must match the exact `organisations.name` row for the
- * Truth Care Group / Beaconsfield House organisation in carerota — confirm
- * this once real credentials are wired in; getting it wrong fails closed
- * (staffLookup finds zero matches) rather than matching the wrong org.
+ * CAREROTA_ORG_NAME must match the exact `organisations.name` row for
+ * Beaconsfield House in carerota — checked directly against the live
+ * database 2026-09-06: the only row there is named "Beaconsfield", not
+ * "Truth Care Group" as first assumed. Getting this wrong fails closed
+ * (findDropCandidate finds zero matches) rather than matching the wrong
+ * org, but would have silently made `dropshift` never work at all —
+ * worth re-confirming here if carerota's data ever changes.
  */
 export function carerotaConfig() {
   return {
@@ -81,7 +84,7 @@ export function carerotaConfig() {
     anonKey: env('CAREROTA_ANON_KEY'),
     managerEmail: env('CAREROTA_MANAGER_EMAIL'),
     managerPassword: env('CAREROTA_MANAGER_PASSWORD'),
-    orgName: env('CAREROTA_ORG_NAME', 'Truth Care Group'),
+    orgName: env('CAREROTA_ORG_NAME', 'Beaconsfield'),
   };
 }
 

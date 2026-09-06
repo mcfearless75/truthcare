@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { matchByName, resolveShiftDate, findDropCandidate, dropShift, dropShiftForTicket, getShiftStatus, CareRotaError } from '../lib/carerota.js';
 import { fakeCareRota as fakeSupabase } from './helpers/fake-db.js';
 
-const ORG = { id: 'org-1', name: 'Truth Care Group' };
+const ORG = { id: 'org-1', name: 'Beaconsfield' };
 const STAFF = [
   { id: 'staff-1', org_id: 'org-1', full_name: 'Joanne Bray' },
   { id: 'staff-2', org_id: 'org-1', full_name: 'Sam Quiet' },
@@ -38,7 +38,7 @@ test('findDropCandidate: clean single match resolves staff + shift', async () =>
 
 test('findDropCandidate fails closed: no org, no staff, ambiguous staff, no shift, ambiguous shift', async () => {
   const noOrg = await findDropCandidate({ callerName: 'Joanne Bray' }, { client: fakeSupabase({ organisations: [], staff_records: STAFF, shifts: [] }) });
-  assert.deepEqual(noOrg, { ok: false, code: 'no_org', message: 'No carerota organisation matches "Truth Care Group" — check CAREROTA_ORG_NAME.' });
+  assert.deepEqual(noOrg, { ok: false, code: 'no_org', message: 'No carerota organisation matches "Beaconsfield" — check CAREROTA_ORG_NAME.' });
 
   const noStaff = await findDropCandidate({ callerName: 'Nobody Here' }, { client: fakeSupabase(tablesWith([])) });
   assert.equal(noStaff.ok, false);

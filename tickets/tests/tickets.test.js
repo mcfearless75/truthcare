@@ -135,7 +135,7 @@ test('dropshift: staff-only, needs CareRota configured, and writes a clear inter
 
   for (const k of CAREROTA_ENV) process.env[k] = 'set';
   try {
-    const org = { id: 'org-1', name: 'Truth Care Group' };
+    const org = { id: 'org-1', name: 'Beaconsfield' };
     const staffRow = { id: 'cr-staff-1', org_id: 'org-1', full_name: 'Joanne Bray' };
     const shiftRow = { id: 'cr-shift-1', org_id: 'org-1', assigned_staff_id: 'cr-staff-1', shift_date: '2026-09-06', start_time: '20:00:00', status: 'confirmed' };
     const okClient = fakeCareRota({ organisations: [org], staff_records: [staffRow], shifts: [shiftRow] });
