@@ -4,9 +4,9 @@
   "type": "module",
   "engines": { "node": ">=20" },
   "scripts": {
-    "test": "node --test tests/",
+    "test": "node --test",
     "test:unit": "node --test tests/*.test.js",
-    "test:integration": "node --test tests/integration/",
+    "test:integration": "node --test tests/integration/*.test.js",
     "setup-db": "node scripts/setup-db.js",
     "seed-staff": "node scripts/seed-staff.js",
     "simulate-call": "node scripts/simulate-call.js"
