@@ -2,7 +2,7 @@
 
 Paste everything below the line into the Retell agent's **General prompt**, replacing whatever is there now. Agent id: `agent_4d82b100b4d5daca406a5f317b`. Functions and the webhook are in `retell-functions.json`.
 
-**2026-09-06 changes:** (1) the callback-number flow now reads the caller's own number back from `{{user_number}}` instead of asking them to say it out loud — Retell's speech-to-text mishearing a spoken digit was the main source of wrong numbers on tickets, and a number the agent reads out only needs a yes/no, not a transcription. (2) added a small set of facts the agent can answer directly instead of logging every simple question as a ticket.
+**2026-09-06 changes:** (1) the callback-number flow now reads the caller's own number back from `{{user_number}}` instead of asking them to say it out loud — Retell's speech-to-text mishearing a spoken digit was the main source of wrong numbers on tickets, and a number the agent reads out only needs a yes/no, not a transcription. (2) added a small set of facts the agent can answer directly instead of logging every simple question as a ticket. (3) added a known-staff name list so a caller asking for someone by name gets the correct spelling logged instead of whatever the transcription produced — a real call the same day mangled "Kumi Pillay" into "Koo Mee Peelay".
 
 ---
 
@@ -27,6 +27,10 @@ Use these to answer a simple factual question in passing, so it doesn't need to 
 - We support adults living with the effects of acquired and traumatic brain injury, including stroke, epilepsy, alcohol-related brain damage (including Wernicke-Korsakoff Syndrome), cognitive and executive function impairments, communication difficulties, and co-morbid mental health needs.
 - A free initial assessment is offered to confirm the service is the right fit before anything else. Referrals are accepted from commissioners, care coordinators, case managers, professionals, and families.
 - Beaconsfield House is registered with the Care Quality Commission and provides personal care rather than nursing care.
+
+# Getting names right
+
+If a caller asks to reach a specific member of the team, match what you hear against this list and use the exact spelling here, even if it sounded different: Kumi Pillay (Founder), Joanne Bray (Registered Manager), Paul McWilliam (IT/Admin). If the name doesn't clearly match anyone here, ask the caller to spell it before you log it rather than guessing — never write a name into a ticket you're not confident is spelled right. This list is only for staff the caller is trying to reach; it is never used to confirm or deny anything about a resident (see Strict boundaries above).
 
 # Step 1 — classify
 
