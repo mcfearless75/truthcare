@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Staff — Truth Care Group Tickets</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body data-page="staff">
+  <header class="topbar">
+    <div class="inner">
+      <a class="brand" href="/">Truth Care Group <span>Tickets</span></a>
+      <nav>
+        <a href="/">Tickets</a>
+        <a href="/staff" data-admin-only hidden>Staff</a>
+        <span class="who" data-user-name></span>
+        <a href="/api/auth?action=logout">Sign out</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div data-notice></div>
+    <h1>Staff allowlist</h1>
+    <p class="muted">Only people on this list can sign in here or issue commands by email. Aliases are the short names staff type after <code>assign</code> — e.g. <code>jo</code>.</p>
+
+    <form class="card actions" data-staff-form>
+      <h2 data-form-title>Add a member of staff</h2>
+      <div class="row">
+        <label class="field">Name<input name="name" required maxlength="200"></label>
+        <label class="field">Email<input name="email" type="email" required maxlength="200"></label>
+        <label class="field">Role
+          <select name="role"><option value="agent">Agent</option><option value="admin">Admin</option></select>
+        </label>
+      </div>
+      <div class="row">
+        <label class="field">Aliases (comma separated)<input name="aliases" placeholder="jo, joanne"></label>
+        <label class="field check"><input type="checkbox" name="receivesNewTickets" checked> Emailed about new tickets</label>
+        <label class="field check"><input type="checkbox" name="active" checked> Active</label>
+        <button class="btn primary" type="submit">Save</button>
+        <button class="btn ghost" type="button" data-reset>Clear</button>
+      </div>
+    </form>
+
+    <table>
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Aliases</th><th>New tickets</th><th>Active</th><th></th></tr></thead>
+      <tbody data-staff-rows><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+    </table>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

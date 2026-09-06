@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Ticket — Truth Care Group</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body data-page="ticket">
+  <header class="topbar">
+    <div class="inner">
+      <a class="brand" href="/">Truth Care Group <span>Tickets</span></a>
+      <nav>
+        <a href="/">Tickets</a>
+        <a href="/staff" data-admin-only hidden>Staff</a>
+        <span class="who" data-user-name></span>
+        <a href="/api/auth?action=logout">Sign out</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div data-notice></div>
+    <h1 data-ticket-title>Loading…</h1>
+    <p data-ticket-badges></p>
+
+    <div class="detail-grid">
+      <section>
+        <div class="card">
+          <h2>Summary</h2>
+          <p class="summary" data-ticket-summary></p>
+          <dl class="facts" data-ticket-facts></dl>
+        </div>
+
+        <div class="card">
+          <h2>Thread</h2>
+          <ul class="thread" data-thread><li class="empty">No notes yet.</li></ul>
+          <form data-note class="actions">
+            <label class="field">Add a note<textarea name="body" required placeholder="Public notes are emailed to the caller when we have their address."></textarea></label>
+            <div class="row">
+              <label class="field check"><input type="checkbox" name="internal"> Internal (never sent to the caller)</label>
+              <button class="btn primary" type="submit">Add note</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>History</h2>
+          <ul class="events" data-events></ul>
+        </div>
+      </section>
+
+      <aside>
+        <div class="card actions">
+          <h2>Actions</h2>
+          <div data-failed-notifications hidden class="notice warn"></div>
+          <div class="row">
+            <label class="field">Assign to
+              <select data-assign data-staff-select><option value="">Unassigned</option></select>
+            </label>
+            <button class="btn small" type="button" data-command="take">Mine</button>
+          </div>
+          <div class="row">
+            <button class="btn small ghost" type="button" data-command="status" data-value="open">Reopen</button>
+            <button class="btn small ghost" type="button" data-command="status" data-value="in_progress">In progress</button>
+            <button class="btn small" type="button" data-command="status" data-value="closed">Close</button>
+          </div>
+          <div class="row">
+            <label class="field">Priority
+              <select data-command-select="priority">
+                <option value="normal">Normal</option>
+                <option value="high">High</option>
+                <option value="urgent">Urgent</option>
+              </select>
+            </label>
+            <label class="field">Category
+              <select data-command-select="category">
+                <option value="referral">Referral</option>
+                <option value="staff">Staff</option>
+                <option value="resident_concern">Resident concern</option>
+                <option value="general">General</option>
+              </select>
+            </label>
+          </div>
+          <p class="muted">Every action here does exactly what the matching email reply would do, including the notifications.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

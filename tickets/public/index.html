@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Tickets — Truth Care Group</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body data-page="list">
+  <header class="topbar">
+    <div class="inner">
+      <a class="brand" href="/">Truth Care Group <span>Tickets</span></a>
+      <nav>
+        <a href="/">Tickets</a>
+        <a href="/staff" data-admin-only hidden>Staff</a>
+        <span class="who" data-user-name></span>
+        <a href="/api/auth?action=logout">Sign out</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div data-notice></div>
+    <h1>Tickets</h1>
+
+    <form class="card row" data-filters>
+      <label class="field">Status
+        <select name="status">
+          <option value="active">Open + in progress</option>
+          <option value="open">Open</option>
+          <option value="in_progress">In progress</option>
+          <option value="closed">Closed</option>
+          <option value="">All</option>
+        </select>
+      </label>
+      <label class="field">Priority
+        <select name="priority">
+          <option value="">Any</option>
+          <option value="urgent">Urgent</option>
+          <option value="high">High</option>
+          <option value="normal">Normal</option>
+        </select>
+      </label>
+      <label class="field">Category
+        <select name="category">
+          <option value="">Any</option>
+          <option value="referral">Referral</option>
+          <option value="staff">Staff</option>
+          <option value="resident_concern">Resident concern</option>
+          <option value="general">General</option>
+        </select>
+      </label>
+      <label class="field">Assigned to
+        <select name="assignedTo" data-staff-select>
+          <option value="">Anyone</option>
+          <option value="unassigned">Unassigned</option>
+        </select>
+      </label>
+      <label class="field">Search
+        <input name="q" type="search" placeholder="Number, caller, subject…">
+      </label>
+      <button class="btn" type="submit">Filter</button>
+    </form>
+
+    <details class="card">
+      <summary>Log a ticket by hand</summary>
+      <form data-create class="actions">
+        <div class="row">
+          <label class="field">Category
+            <select name="category">
+              <option value="general">General</option>
+              <option value="referral">Referral</option>
+              <option value="staff">Staff</option>
+              <option value="resident_concern">Resident concern</option>
+            </select>
+          </label>
+          <label class="field">Priority
+            <select name="priority">
+              <option value="">Default for category</option>
+              <option value="normal">Normal</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </label>
+          <label class="field">Subject<input name="subject" maxlength="300"></label>
+        </div>
+        <div class="row">
+          <label class="field">Caller name<input name="callerName" maxlength="200"></label>
+          <label class="field">Caller phone<input name="callerPhone" maxlength="40"></label>
+          <label class="field">Caller email<input name="callerEmail" type="email" maxlength="200"></label>
+          <label class="field">Organisation<input name="callerOrg" maxlength="200"></label>
+          <label class="field">About (first name only)<input name="subjectPerson" maxlength="200"></label>
+        </div>
+        <label class="field">Summary<textarea name="summary" required></textarea></label>
+        <div class="row"><button class="btn primary" type="submit">Create ticket</button></div>
+      </form>
+    </details>
+
+    <table>
+      <thead><tr><th>#</th><th>Ticket</th><th>Caller</th><th>Status</th><th>Assigned</th><th>Logged</th></tr></thead>
+      <tbody data-ticket-rows><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+    </table>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
