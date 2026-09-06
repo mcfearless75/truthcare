@@ -9,3 +9,5 @@ ruvector.db
 # %USERPROFILE% paths, so this is per-machine, not shared. CLAUDE.md and
 # .mcp.json ARE committed: those are the shared, portable half of the config.
 .claude/
+
+.vercel
