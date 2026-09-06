@@ -1,0 +1,64 @@
+{
+  "agent_id": "agent_4d82b100b4d5daca406a5f317b",
+  "webhook_url": "https://tickets.truthcaregroup.co.uk/api/phone?action=webhook",
+  "webhook_events": ["call_analyzed"],
+  "notes": [
+    "Add each entry in `functions` as a Custom Function on the agent (Retell dashboard → Agent → Functions → Custom).",
+    "Set the agent webhook URL to `webhook_url` and enable the call_analyzed event.",
+    "Requests are signed with the account API key (X-Retell-Signature). RETELL_API_KEY on Vercel must be that key; RETELL_WEBHOOK_SECRET is an optional second key the webhook may be signed with.",
+    "Recording must be OFF and transcript retention set to the minimum (spec §2)."
+  ],
+  "functions": [
+    {
+      "type": "custom",
+      "name": "create_ticket",
+      "description": "Log the caller's message as a ticket for the Truth Care Group team. Call this once, after reading the details back to the caller and getting their confirmation. Returns a spoken result and, on success, the ticket_number to read back to the caller. If it returns a question instead, ask the caller and call again.",
+      "url": "https://tickets.truthcaregroup.co.uk/api/phone?action=create_ticket",
+      "speak_during_execution": true,
+      "execution_message_description": "Tell the caller you are logging their message now and to bear with you for a moment.",
+      "speak_after_execution": true,
+      "timeout_ms": 10000,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": ["referral", "staff", "resident_concern", "general"],
+            "description": "referral = new referral or enquiry; staff = a member of staff calling in (sick, late, cover); resident_concern = a concern about a person living at the service; general = anything else."
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["normal", "high", "urgent"],
+            "description": "Only set to urgent when the caller uses words like emergency, safeguarding, tonight, now, immediately, police or hospital, or a staff shift starts within four hours. Otherwise omit; the system applies the right default."
+          },
+          "caller_name": { "type": "string", "description": "The caller's name as they gave it." },
+          "caller_phone": { "type": "string", "description": "Best call-back number. Use the number the caller gave; otherwise the caller ID." },
+          "caller_email": { "type": "string", "description": "Only if the caller offered an email address." },
+          "caller_org": { "type": "string", "description": "Organisation the caller is from, if any (council, NHS trust, agency, supplier)." },
+          "subject_person": { "type": "string", "description": "First name only of the person the call is about, if the call is about someone." },
+          "summary": { "type": "string", "description": "Two or three plain sentences in the caller's words: what they want, anything time-sensitive, and for staff calls the shift affected and reason." },
+          "shift_starts_at": { "type": "string", "description": "Staff calls only: when the affected shift starts, as an ISO 8601 date-time if known (e.g. 2026-09-05T20:00:00+01:00)." }
+        },
+        "required": ["category", "caller_name", "summary"]
+      }
+    },
+    {
+      "type": "custom",
+      "name": "lookup_ticket",
+      "description": "Check the status of an existing ticket when the caller asks for an update. Only returns the status and the team's latest public note, and only if the caller's phone number matches the ticket. Read back exactly what it returns.",
+      "url": "https://tickets.truthcaregroup.co.uk/api/phone?action=lookup_ticket",
+      "speak_during_execution": true,
+      "execution_message_description": "Tell the caller you are checking that ticket now.",
+      "speak_after_execution": true,
+      "timeout_ms": 10000,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "ticket_number": { "type": "string", "description": "The ticket number the caller gives, digits only (e.g. 42)." },
+          "caller_phone": { "type": "string", "description": "The phone number the caller says the ticket was logged under, if different from the caller ID." }
+        },
+        "required": ["ticket_number"]
+      }
+    }
+  ]
+}
