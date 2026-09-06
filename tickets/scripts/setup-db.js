@@ -45,7 +45,7 @@ export const SCHEMA_STATEMENTS = [
      author_type text NOT NULL CHECK (author_type IN ('staff','caller','system','ai')),
      author_name text,
      author_email text,
-     is_internal boolean NOT NULL DEFAULT false,
+     is_internal boolean NOT NULL DEFAULT true, -- fail closed: an insert that omits the column is never accidentally public
      created_at timestamptz NOT NULL DEFAULT now()
    )`,
   `CREATE TABLE IF NOT EXISTS ticket_events (

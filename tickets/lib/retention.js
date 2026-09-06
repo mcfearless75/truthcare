@@ -73,7 +73,7 @@ export function retentionStatements(cutoffIso) {
                AND EXISTS (
                  SELECT 1 FROM tickets t2
                  WHERE t2.id = ticket_events.ticket_id
-                   AND (lower(actor) = lower(t2.caller_name) OR lower(actor) = lower(t2.caller_email))
+                   AND (lower(ticket_events.actor) = lower(t2.caller_name) OR lower(ticket_events.actor) = lower(t2.caller_email))
                )
              RETURNING id`,
       params: [cutoffIso, REDACTED],

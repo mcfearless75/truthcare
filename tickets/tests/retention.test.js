@@ -31,8 +31,9 @@ test('retention SQL: redact caller notes/events, anonymise closed tickets (incl.
   assert.ok(flat(callerEvents.text).startsWith('UPDATE ticket_events SET actor = $2 WHERE'));
   assert.ok(flat(callerEvents.text).includes('ticket_id IN (SELECT id FROM tickets WHERE closed_at IS NOT NULL AND closed_at < $1)'));
   assert.ok(flat(callerEvents.text).includes('actor <> $2'), 'idempotency guard');
-  assert.ok(flat(callerEvents.text).includes('lower(actor) = lower(t2.caller_name)') || flat(callerEvents.text).includes('lower(actor) = lower(caller_name)'), 'only actors matching the ticket caller are redacted');
-  assert.ok(flat(callerEvents.text).includes('lower(actor) = lower(t2.caller_email)') || flat(callerEvents.text).includes('lower(actor) = lower(caller_email)'));
+  assert.match(flat(callerEvents.text), /lower\((ticket_events\.)?actor\) = lower\((t2\.)?caller_name\)/, 'only actors matching the ticket caller are redacted');
+  assert.match(flat(callerEvents.text), /lower\((ticket_events\.)?actor\) = lower\((t2\.)?caller_email\)/);
+  assert.ok(flat(callerEvents.text).includes('ticket_events.actor'), 'actor is column-qualified in the correlated subquery so a future tickets.actor column could never shadow it');
 
   assert.deepEqual(anon.params, [cutoff, REDACTED]);
   for (const col of ['caller_name', 'caller_phone', 'caller_email', 'caller_org', 'subject_person', 'subject']) assert.ok(flat(anon.text).includes(`${col} = $2`), col);
