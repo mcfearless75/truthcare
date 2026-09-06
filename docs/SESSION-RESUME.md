@@ -173,3 +173,46 @@ Verified directly from `cqc.org.uk/location/1-26270675575` and its registration-
 ## Decisions made — do not relitigate
 
 Everything from the original build (Weston-super-Mare not Bristol, no cookie banner, Giraffe360 click-to-load, Formspree without postal address, no URL changes) still stands — see `docs/HANDOVER.md` for the full list with reasoning. Additionally as of this session: **Vercel is the production host** (not GitHub Pages, not Netlify), decided explicitly by the client when asked.
+
+## Tickets service — AI call answering + email ticketing (planned 2026-09-05, built from the plan)
+
+**What it is.** A separate deployable in `tickets/` (never touches `site/`): Retell AI answers overflow calls and creates tickets mid-call; staff work tickets by replying to email on the `tickets@truthcaregroup.co.uk` alias (commands like `assign jo`, `close`, `urgent`); a small Sign-in-with-Microsoft board at `tickets.truthcaregroup.co.uk` for oversight. Spec: `docs/superpowers/specs/2026-09-05-ai-call-ticketing-design.md`. Plan (16 TDD tasks, `node --test`, no framework): `docs/superpowers/plans/2026-09-05-ai-call-ticketing.md`. All 16 tasks implemented and code-reviewed on branch `feat/tickets` — not yet merged to `main` or deployed.
+
+**Hosting.** New Vercel project **`truthcare-tickets`**, root directory **`tickets`**, domain `tickets.truthcaregroup.co.uk` (DNS: `tickets` CNAME → Vercel — add it as a NEW record at GoDaddy; do not touch the SPF/MX/M365 records, see item 12 above). Neon Postgres, EU region. Crons in `tickets/vercel.json`: `/api/cron?job=email` and `?job=notifications` every 5 min, `?job=retention` weekly Sunday 03:00. **Do not deploy to production until every prerequisite below is ticked.**
+
+**Retell.** Agent id **`agent_4d82b100b4d5daca406a5f317b`**. Prompt: `tickets/docs/agent-prompt.md`. Custom functions (`create_ticket`, `lookup_ticket`) and the `call_analyzed` webhook URL: `tickets/docs/retell-functions.json`. **Transcript retention is already set to 7 days** in the Retell dashboard. Recording must stay **off** (special-category health data). A UK number is reserved on Twilio — `+441934914431` (Weston-super-Mare, matches the home's own area code) — but Twilio's regulatory compliance registration for it (business details + address proof) was not completed this session; it's a per-number step in Twilio's console (Numbers & Senders → the reserved number → "Create/Select registration") that needs a real person at Truth Care to fill in, not something to do unattended. Once approved, the number still needs a SIP trunk into Retell ("Connect to your number via SIP trunking" in Retell's Phone Numbers page) — Retell cannot buy UK numbers directly, only US/Canada.
+
+**Environment variables (Vercel project settings, spec §10):**
+```
+DATABASE_URL
+MICROSOFT_TENANT_ID, MICROSOFT_CLIENT_ID, MICROSOFT_CLIENT_SECRET
+MAILBOX_ADDRESS=infotech@truthcaregroup.co.uk      # the real mailbox Graph reads and sends through
+TICKETS_ADDRESS=tickets@truthcaregroup.co.uk       # the alias we send as and match recipients against
+RETELL_API_KEY                                     # signs custom-function calls and the webhook
+RETELL_WEBHOOK_SECRET                              # optional second accepted signing key
+ANTHROPIC_API_KEY                                  # claude-haiku-4-5-20251001 email classification (regex fallback if unset)
+JWT_SECRET                                         # >= 32 chars
+CRON_SECRET
+APP_URL=https://tickets.truthcaregroup.co.uk
+```
+
+**Prerequisites — client side, none are code:**
+- [ ] Twilio: finish the regulatory compliance registration for `+441934914431` (business details + address proof — Numbers & Senders → reserved number → Create/Select registration), then connect it to Retell via SIP trunking.
+- [ ] Entra app registration (can be the TrakNet-style one for this tenant): application permissions `Mail.Read` + `Mail.Send`, admin-consented; web redirect URI `https://tickets.truthcaregroup.co.uk/api/auth?action=callback`; a client secret. Exchange: `New-ApplicationAccessPolicy -AppId <app-id> -PolicyScopeGroupId infotech@truthcaregroup.co.uk -AccessRight RestrictAccess` so the app can only touch `infotech@`.
+- [ ] `Set-OrganizationConfig -SendFromAliasEnabled $true` — without it, sending as the `tickets@` alias is rejected (`SendAsDenied`).
+- [ ] Retell: SIP-trunked UK number on the agent (see above), DPA signed, recording off, retention 7 days (done), prompt pasted, both custom functions added with `speak_during_execution` + `speak_after_execution`, webhook URL set with `call_analyzed` enabled, `RETELL_API_KEY` copied to Vercel.
+- [ ] Telephony: landline forward-on-no-answer (~20 s) and out-of-hours forward → the Retell number.
+- [ ] Neon project (EU) → `DATABASE_URL`; Vercel project `truthcare-tickets` with root `tickets` and all env vars; DNS CNAME.
+- [ ] `cd tickets && npm run setup-db`, then `npm run seed-staff "<Name>" <email> admin <aliases>` for each manager (Joanne Bray first, as admin).
+- [ ] Manual acceptance (spec §9): ring from a mobile, let it overflow, complete one referral call and one staff-sickness call; confirm both emails arrive, `assign` and `close` replies work, the ticket shows on the board, the caller receives the closure email.
+
+**Design facts worth remembering (all in the spec/plan, repeated here because they are easy to get wrong later):**
+- Graph polling **never PATCHes `isRead`** — humans reading `infotech@` see no side effects. Cursor = `settings.last_poll` − 10 min plus `processed_messages` dedupe, 20 messages per run.
+- Cron overlap guard is a 4-minute lease row `lock:4201` in `settings`, **not** `pg_try_advisory_lock` — the Neon HTTP driver cannot hold a session lock. Intentional deviation from spec §6.5 wording.
+- Every failure path answers Retell with **200** and a speakable line; failures land in `failed_calls` and admins get one email on the next cron.
+- Retention: 12 months after closure, caller fields → `[redacted]`, AI transcript notes deleted, summary cut to 80 chars.
+- Only email addresses on the `staff` table can issue commands or sign in; deactivating someone locks them out at once.
+- `addNote()` defaults `isInternal` to `true` (fail closed) — a note built without saying whether it's internal is never accidentally exposed to a caller.
+- Two documented, deliberately deferred hardening items (not blockers, not silent gaps): no DB transactions across the multi-statement write path (`createTicket`/`applyCommand` could theoretically leave a ticket written but its notification unqueued on a mid-sequence DB failure — same root cause as the advisory-lock deviation, Neon's HTTP driver), and `addCallerReply`'s reopen-a-closed-ticket path uses a direct SQL update rather than `applyCommand` (would need a notification-composition redesign to switch without duplicating staff emails). See `.superpowers/sdd/progress.md` on the `feat/tickets` branch for full detail on both.
+
+**Testing.** `cd tickets && npm test` — 116 tests, 115 pass, 1 skipped unless `DATABASE_URL` points at a **scratch** Neon branch (the integration test truncates every table). Phone door without a call: `node scripts/simulate-call.js --url https://<preview>.vercel.app/api/phone --key $RETELL_API_KEY` (or `--dry` to print the signed requests).
