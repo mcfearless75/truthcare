@@ -35,7 +35,7 @@ export function maxPriority(a, b) {
 }
 
 export function defaultPriority(category) {
-  return DEFAULTS[category] || 'normal';
+  return Object.prototype.hasOwnProperty.call(DEFAULTS, category) ? DEFAULTS[category] : 'normal';
 }
 
 export function hasEscalationWord(text) {
@@ -45,7 +45,9 @@ export function hasEscalationWord(text) {
 /** True when the shift starts less than 4h from `now` — including shifts that already started. */
 export function shiftIsImminent(shiftStartsAt, now = Date.now()) {
   if (!shiftStartsAt) return false;
-  const t = shiftStartsAt instanceof Date ? shiftStartsAt.getTime() : Date.parse(String(shiftStartsAt));
+  const t = shiftStartsAt instanceof Date ? shiftStartsAt.getTime()
+    : typeof shiftStartsAt === 'number' ? shiftStartsAt
+    : Date.parse(String(shiftStartsAt));
   if (!Number.isFinite(t)) return false;
   return t - now < SHIFT_URGENT_WINDOW_MS;
 }

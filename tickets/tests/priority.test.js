@@ -16,6 +16,8 @@ test('category defaults match spec §4.2', () => {
   assert.equal(defaultPriority('resident_concern'), 'urgent');
   assert.equal(defaultPriority('general'), 'normal');
   assert.equal(defaultPriority('nonsense'), 'normal');
+  assert.equal(defaultPriority('constructor'), 'normal');
+  assert.equal(defaultPriority('toString'), 'normal');
   for (const c of CATEGORIES) assert.equal(computePriority({ category: c, summary: 'plain call' }), defaultPriority(c));
 });
 
@@ -34,6 +36,7 @@ test('every escalation word raises any category to urgent, as a whole word, case
 test('staff shift starting within 4h is urgent; later is normal; already started is urgent', () => {
   assert.equal(shiftIsImminent(hours(3.5), NOW), true);
   assert.equal(shiftIsImminent(hours(4), NOW), false);
+  assert.equal(shiftIsImminent(NOW + 2 * 3600 * 1000, NOW), true, 'epoch-ms number');
   assert.equal(shiftIsImminent(hours(5), NOW), false);
   assert.equal(shiftIsImminent(hours(-1), NOW), true);
   assert.equal(shiftIsImminent('not a date', NOW), false);
