@@ -87,7 +87,18 @@ export async function handlePhone(req, res, { db = sql, send = sendMail, now = D
   const action = getAction(req);
   if (!ACTIONS.includes(action)) return sendJson(res, 404, { error: 'Unknown action' });
 
-  const raw = await readRawBody(req, MAX_BODY_BYTES);
+  let raw;
+  try {
+    raw = await readRawBody(req, MAX_BODY_BYTES);
+  } catch (e) {
+    // A request-stream error (client aborted, malformed transfer-encoding,
+    // body over MAX_BODY_BYTES) must never escape as an unhandled rejection —
+    // same never-500 guarantee as every other failure path below, and still
+    // recorded so a dropped call isn't invisible to the failed_calls alert.
+    console.error(`[phone] ${action} raw body read failed:`, e);
+    await recordFailure(db, { callId: null, action, args: { note: 'raw body read failed' }, error: e });
+    return sendJson(res, 200, action === 'webhook' ? { ok: false, error: 'recorded' } : speak(FALLBACK_RESULT));
+  }
   const keys = signingKeys();
   const signature = req.headers?.['x-retell-signature'];
   if (!keys.length || !keys.some((k) => verifyRetellSignature(raw, signature, k, now))) {

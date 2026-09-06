@@ -190,3 +190,30 @@ test('handler never 500s: a thrown error answers the fallback line and lands in 
   assert.deepEqual([res.code, res.body], [200, { ok: false, error: 'recorded' }]);
   assert.equal(db.tables.failed_calls[1].action, 'webhook');
 });
+
+test('handler never 500s on a request-stream error while reading the body', async () => {
+  // No `body` string, so readRawBody falls into the streaming branch and
+  // relies on the 'error' listener — a client abort or bad transfer-encoding
+  // rejects that promise before the body (and so the signature) can ever be
+  // checked.
+  const db = fakeDb();
+  const brokenReq = {
+    method: 'POST',
+    url: '/api/phone?action=create_ticket',
+    headers: {},
+    on(event, cb) { if (event === 'error') queueMicrotask(() => cb(new Error('ECONNRESET'))); },
+  };
+  const res = fakeRes();
+  await handlePhone(brokenReq, res, { db, send: fakeSend() });
+  assert.deepEqual([res.code, res.body], [200, { result: FALLBACK_RESULT }]);
+  const f = db.tables.failed_calls[0];
+  assert.equal(f.action, 'create_ticket');
+  assert.equal(f.retell_call_id, null);
+  assert.match(f.error, /ECONNRESET/);
+
+  const db2 = fakeDb();
+  const brokenWebhookReq = { ...brokenReq, url: '/api/phone?action=webhook' };
+  const res2 = fakeRes();
+  await handlePhone(brokenWebhookReq, res2, { db: db2, send: fakeSend() });
+  assert.deepEqual([res2.code, res2.body], [200, { ok: false, error: 'recorded' }]);
+});
