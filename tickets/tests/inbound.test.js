@@ -103,6 +103,30 @@ test('staff reply via the reply-to token applies commands and a note; a later ca
   assert.equal(db.tables.processed_messages.at(-1).outcome, 'caller_reply:conversation');
 });
 
+test('I4: a caller reply on an assigned ticket tells the assignee their own name, not "Unassigned"', async () => {
+  const { db, send, inbox, run, jo } = setup();
+  inbox.push(msg({ subject: 'Placement' }));
+  await run();
+  const t = db.tables.tickets[0];
+  inbox.push(msg({
+    subject: `Re: [TC-${t.number}] Placement`, from: r('paul@truthcaregroup.co.uk', 'Paul M'),
+    toRecipients: [r(`tickets+tc${t.number}-${t.email_token}@truthcaregroup.co.uk`)], conversationId: 'conv-assign',
+    body: { contentType: 'text', content: 'assign jo' },
+  }));
+  await run();
+  assert.equal(t.assigned_to, jo.id, 'ticket is assigned before the caller replies');
+  inbox.push(msg({
+    subject: `Re: [TC-${t.number}] Placement`, from: r('fam@example.com', 'Family Member'), conversationId: 'conv-assign',
+    body: { contentType: 'text', content: 'Any update?' },
+  }));
+  send.sent.length = 0;
+  await run();
+  const toJo = send.to('joanne@truthcaregroup.co.uk');
+  assert.equal(toJo.length, 1, 'the assignee is notified of the caller reply');
+  assert.ok(toJo[0].text.includes('Assigned to: Joanne Bray'), `expected the assignee's name in the notification body, got: ${toJo[0].text}`);
+  assert.ok(!toJo[0].text.includes('Assigned to: Unassigned'), 'must not render as unassigned when someone IS assigned');
+});
+
 test('staff typo bounces, records a system note and applies nothing; tier-3 subject match works for the caller', async () => {
   const { db, send, inbox, run } = setup();
   inbox.push(msg({ subject: 'Placement' }));
@@ -125,6 +149,48 @@ test('staff typo bounces, records a system note and applies nothing; tier-3 subj
   inbox.push(msg({ subject: `RE: [TC-${t.number}] anything`, from: r('stranger@example.com'), conversationId: 'other', body: { contentType: 'text', content: 'I am not the caller' } }));
   const s3 = await run();
   assert.deepEqual(s3.outcomes, { new_ticket: 1 }, 'subject alone never matches — a stranger gets a fresh ticket');
+});
+
+test('C1: an NDR that threads to a ticket gets an internal note + staff alert instead of a silent skip; an unthreadable NDR is still silently skipped', async () => {
+  const { db, send, inbox, run } = setup();
+  inbox.push(msg({ subject: 'Placement' }));
+  await run();
+  const t = db.tables.tickets[0];
+  send.sent.length = 0;
+
+  // The bounce comes back addressed to the ticket's own tokenised Reply-To —
+  // that's what threads it, even though the "sender" is a mail daemon.
+  inbox.push(msg({
+    subject: `Undeliverable: Re: [TC-${t.number}] Referral`,
+    from: r('mailer-daemon@example.com', 'Mail Delivery Subsystem'),
+    toRecipients: [r(`tickets+tc${t.number}-${t.email_token}@truthcaregroup.co.uk`)],
+    conversationId: `bounce-conv-${t.number}`,
+    body: { contentType: 'text', content: 'Your message could not be delivered to the recipient.' },
+  }));
+  const stats = await run();
+  assert.deepEqual(stats.outcomes, { bounce_alert: 1 });
+  assert.equal(db.tables.processed_messages.at(-1).outcome, 'bounce_alert:token');
+  const note = db.tables.ticket_notes.at(-1);
+  assert.equal(note.ticket_id, t.id);
+  assert.equal(note.is_internal, true, 'the bounce note must never go to the caller');
+  assert.ok(note.body.includes("Delivery failed for the caller's email address"));
+  assert.deepEqual(send.sent.map((m) => m.to).sort(), ['joanne@truthcaregroup.co.uk', 'paul@truthcaregroup.co.uk'], 'staff are alerted, never the bounce sender');
+  assert.equal(send.sent.some((m) => m.to === 'mailer-daemon@example.com'), false);
+
+  // An NDR that matches no ticket at all is unchanged: silently skipped, nothing written but the skip row.
+  send.sent.length = 0;
+  const notesBefore = db.tables.ticket_notes.length;
+  inbox.push(msg({
+    subject: 'Undeliverable: totally unrelated',
+    from: r('mailer-daemon@example.com'),
+    toRecipients: [r(TICKETS)],
+    conversationId: 'no-match-conv',
+  }));
+  const stats2 = await run();
+  assert.deepEqual(stats2.outcomes, { skip: 1 });
+  assert.equal(db.tables.processed_messages.at(-1).outcome, 'skip:auto_reply');
+  assert.equal(db.tables.ticket_notes.length, notesBefore, 'no note is created for an unthreadable NDR');
+  assert.equal(send.sent.length, 0);
 });
 
 test('guards: own mail, auto-replies and mail not addressed to tickets@ are recorded as skips; dedupe by internetMessageId', async () => {

@@ -91,8 +91,9 @@ test('sendMail posts to the mailbox sendMail endpoint as the tickets@ alias with
   assert.deepEqual(body.message.ccRecipients, [{ emailAddress: { address: 'fam@example.com' } }]);
   assert.deepEqual(body.message.replyTo, [{ emailAddress: { address: 'tickets+tc1-abcd2345@truthcaregroup.co.uk' } }]);
   assert.equal(body.message.body.contentType, 'HTML');
+  assert.equal(body.message.body.content, '<p>Hi</p>');
   assert.equal(body.message.subject, '[TC-1] Hello');
-  assert.equal(body.message.bodyPreview, 'Hi');
+  assert.equal('bodyPreview' in body.message, false, 'bodyPreview is read-only on sendMail and Graph ignores/overwrites it — we must not send it');
   await assert.rejects(sendMail({ to: [], subject: 'x', html: 'x' }), /no recipients/);
   fakeFetch((url) => (url.includes('/token') ? tokenResponse() : { status: 403, json: { error: { message: 'SendAsDenied' } } }));
   resetTokenCache();

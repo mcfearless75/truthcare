@@ -115,9 +115,26 @@ export function fakeDb() {
     if (/FROM failed_calls WHERE alerted_at IS NULL/.test(q)) return t.failed_calls.filter((r) => !r.alerted_at);
     if (/^UPDATE failed_calls SET alerted_at = now\(\) WHERE id = ANY\(\$1/.test(q)) { for (const r of t.failed_calls) if (p[0].includes(r.id)) r.alerted_at = now(); return []; }
     // ── retention (lib/retention.js) ──
+    if (/^UPDATE ticket_notes SET author_name = \$2, author_email = \$2 WHERE author_type = 'caller'/.test(q)) {
+      const ids = new Set(t.tickets.filter((r) => r.closed_at && r.closed_at < p[0]).map((r) => r.id));
+      const hit = t.ticket_notes.filter((n) => n.author_type === 'caller' && ids.has(n.ticket_id) && (n.author_name !== p[1] || n.author_email !== p[1]));
+      for (const n of hit) Object.assign(n, { author_name: p[1], author_email: p[1] });
+      return hit.map((n) => ({ id: n.id }));
+    }
+    if (/^UPDATE ticket_events SET actor = \$2 WHERE ticket_id IN \(SELECT id FROM tickets WHERE closed_at IS NOT NULL AND closed_at < \$1\) AND actor IS NOT NULL/.test(q)) {
+      const closed = new Map(t.tickets.filter((r) => r.closed_at && r.closed_at < p[0]).map((r) => [r.id, r]));
+      const hit = t.ticket_events.filter((e) => {
+        const ticket = closed.get(e.ticket_id);
+        if (!ticket || !e.actor || e.actor === p[1]) return false;
+        const actor = e.actor.toLowerCase();
+        return (ticket.caller_name && actor === ticket.caller_name.toLowerCase()) || (ticket.caller_email && actor === ticket.caller_email.toLowerCase());
+      });
+      for (const e of hit) e.actor = p[1];
+      return hit.map((e) => ({ id: e.id }));
+    }
     if (/^UPDATE tickets SET caller_name = \$2, caller_phone = \$2/.test(q)) {
-      const hit = t.tickets.filter((r) => r.closed_at && r.closed_at < p[0] && [r.caller_name, r.caller_phone, r.caller_email, r.caller_org, r.subject_person].some((v) => v !== p[1]));
-      for (const r of hit) Object.assign(r, { caller_name: p[1], caller_phone: p[1], caller_email: p[1], caller_org: p[1], subject_person: p[1], summary: String(r.summary || '').slice(0, 80), updated_at: now() });
+      const hit = t.tickets.filter((r) => r.closed_at && r.closed_at < p[0] && [r.caller_name, r.caller_phone, r.caller_email, r.caller_org, r.subject_person, r.subject].some((v) => v !== p[1]));
+      for (const r of hit) Object.assign(r, { caller_name: p[1], caller_phone: p[1], caller_email: p[1], caller_org: p[1], subject_person: p[1], subject: p[1], summary: String(r.summary || '').slice(0, 80), updated_at: now() });
       return hit.map((r) => ({ id: r.id }));
     }
     if (/^DELETE FROM ticket_notes WHERE author_type = 'ai' AND ticket_id IN \(SELECT id FROM tickets WHERE closed_at IS NOT NULL AND closed_at < \$1\)/.test(q)) {

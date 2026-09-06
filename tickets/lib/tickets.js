@@ -124,7 +124,7 @@ export async function getTicketDetail(number, { db = sql } = {}) {
 
 // ── writes ─────────────────────────────────────────────────────────────────
 
-/** Always writes an explicit boolean to is_internal (default false, coerced with !!) — never undefined. */
+/** Always writes an explicit boolean to is_internal (default TRUE — fail closed) — never undefined. */
 export async function addNote(ticketId, { body, authorType = 'system', authorName = null, authorEmail = null, isInternal = true }, { db = sql } = {}) {
   const text = String(body || '').trim().slice(0, SUMMARY_MAX);
   if (!text) return null;

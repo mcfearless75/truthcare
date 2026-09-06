@@ -16,7 +16,7 @@ import { env } from '../../lib/config.js';
 import { readRawBody, getAction, sendJson } from '../../lib/http.js';
 import { verifyRetellSignature } from '../../lib/retell.js';
 import { sendMail } from '../../lib/graph.js';
-import { createTicket, addNote, getTicketByNumber, getTicketByRetellCallId } from '../../lib/tickets.js';
+import { createTicket, addNote, applyCommand, getTicketByNumber, getTicketByRetellCallId } from '../../lib/tickets.js';
 import {
   FALLBACK_RESULT, NOT_FOUND_RESULT, UNREADABLE_RESULT, unwrapRetellBody, validateCreateArgs, createdResult,
   lookupResult, phoneMatchesTicket, speak, summariseCallAnalysis, normalizePhone,
@@ -62,7 +62,18 @@ async function webhookAction(body, { db, send }) {
   const existing = callId ? await getTicketByRetellCallId(callId, { db }) : null;
   if (existing) {
     await addNote(existing.id, { body: note, authorType: 'ai', authorName: 'Retell', isInternal: true }, { db });
-    return { ok: true, ticket_number: existing.number, attached: true };
+    // I2: webhook-level defense-in-depth (spec §4.1) must hold even when the
+    // call already produced a ticket — an emergency-matching transcript
+    // raises priority (and fires the 'updated' notification) rather than
+    // sitting silently in an internal note nobody is told about.
+    let ticket = existing;
+    let raisedToUrgent = false;
+    if (emergency && existing.priority !== 'urgent') {
+      const r = await applyCommand(existing, { type: 'priority', value: 'urgent' }, { name: 'Retell webhook' }, { via: 'phone', db, send });
+      ticket = r.ticket;
+      raisedToUrgent = true;
+    }
+    return { ok: true, ticket_number: ticket.number, attached: true, ...(raisedToUrgent ? { raised_to_urgent: true } : {}) };
   }
   // Spec §4.1: the scripted 999 guard ends the call without create_ticket, so the
   // emergency is logged here as an urgent resident_concern; any other no-ticket call

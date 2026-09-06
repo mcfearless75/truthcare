@@ -97,6 +97,17 @@ const recipient = (address) => ({ emailAddress: { address: String(address).trim(
 /**
  * Send as the tickets@ alias through the infotech@ mailbox. Requires the
  * tenant setting Set-OrganizationConfig -SendFromAliasEnabled $true (spec §10).
+ *
+ * Graph's sendMail only accepts one body content type per message — either
+ * `HTML` or `Text` via `body.contentType`/`body.content` — there is no way
+ * to express a true multipart/alternative through that shape. We send HTML
+ * only. `bodyPreview` is a read-only, Graph-computed summary field on a real
+ * message and is silently ignored (then overwritten) on outbound sendMail,
+ * so it is never set here — writing it gave the false impression that a
+ * plain-text alternative was being sent. `text` is still accepted for
+ * interface compatibility with callers (lib/notify.js) and the templates
+ * that build it, but it is intentionally unused: nobody should reintroduce
+ * a fake text/bodyPreview path believing it reaches Graph.
  */
 export async function sendMail({ to, cc = [], subject, html, text = '', replyTo }) {
   const toList = (Array.isArray(to) ? to : [to]).filter(Boolean).map(recipient);
@@ -108,7 +119,6 @@ export async function sendMail({ to, cc = [], subject, html, text = '', replyTo 
     toRecipients: toList,
     ...(ccList.length ? { ccRecipients: ccList } : {}),
     body: { contentType: 'HTML', content: html },
-    ...(text ? { bodyPreview: text.slice(0, 255) } : {}),
     ...(replyTo ? { replyTo: [recipient(replyTo)] } : {}),
   };
   await graphRequest(`${userPath()}/sendMail`, { method: 'POST', body: { message, saveToSentItems: false } });

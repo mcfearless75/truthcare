@@ -59,6 +59,9 @@ export function headerValue(message, name) {
 
 const AUTO_SUBJECT_RE = /^(automatic reply|auto[- ]?reply|out of office|undeliverable|delivery status|delivery has failed|mail delivery failed)/i;
 
+/** The delivery-failure subset of AUTO_SUBJECT_RE — an NDR/bounce specifically, not any auto-reply. */
+const DELIVERY_FAILURE_RE = /^(undeliverable|delivery status|delivery has failed|mail delivery failed)/i;
+
 export function isAutoReply(message) {
   if (AUTO_SUBJECT_RE.test(String(message?.subject || '').trim())) return true;
   const autoSubmitted = headerValue(message, 'Auto-Submitted');
@@ -66,6 +69,17 @@ export function isAutoReply(message) {
   if (headerValue(message, 'X-Autoreply') || headerValue(message, 'X-Autorespond')) return true;
   if (/^(bulk|junk|list|auto_reply)$/i.test(headerValue(message, 'Precedence'))) return true;
   return false;
+}
+
+/**
+ * True when the message's subject reads as a non-delivery report (a bounce),
+ * as opposed to an out-of-office or other auto-reply. Used by lib/inbound.js
+ * to decide whether a message shouldProcess() is skipping as an "auto_reply"
+ * deserves an internal-note escalation instead of a silent skip (spec §2 /
+ * C1: an undeliverable caller email must not vanish without a trace).
+ */
+export function isDeliveryFailure(message) {
+  return DELIVERY_FAILURE_RE.test(String(message?.subject || '').trim());
 }
 
 export function shouldProcess(message, { ticketsAddress, ownAddresses }) {

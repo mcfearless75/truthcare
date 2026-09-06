@@ -14,13 +14,13 @@
 import sql from './db.js';
 import { ticketsAddress, ownAddresses, ticketsLocalPart, ticketsDomain } from './config.js';
 import { listMessages, sendMail, messageBodyText } from './graph.js';
-import { shouldProcess, addressOf, recipientsOf } from './mailguard.js';
+import { shouldProcess, addressOf, recipientsOf, isDeliveryFailure } from './mailguard.js';
 import { matchTicket, normaliseSubject } from './threading.js';
 import { parseCommands, unknownMessage } from './commands.js';
 import { classify } from './classify.js';
-import { staffByEmail } from './staff.js';
+import { staffByEmail, staffById } from './staff.js';
 import { createTicket, applyCommand, addNote, addEvent, getTicketById, threadingLookup, CommandError } from './tickets.js';
-import { recipientsFor, notifyRecipients, queueBounce } from './notify.js';
+import { recipientsFor, notifyRecipients, queueBounce, notify } from './notify.js';
 
 export const LOCK_KEY = 'lock:4201';
 export const LEASE_MS = 4 * 60 * 1000;
@@ -126,7 +126,7 @@ export async function addCallerReply(ticket, { body, name, email }, { db = sql, 
     await addEvent(ticket.id, { event: 'status', actor: name || email, fromValue: 'closed', toValue: 'open', via: 'email' }, { db });
     current = await getTicketById(ticket.id, { db });
   }
-  const assignee = current.assignedTo ? { email: (await db`SELECT email FROM staff WHERE id = ${current.assignedTo} LIMIT 1`)[0]?.email } : null;
+  const assignee = current.assignedTo ? await staffById(current.assignedTo, { db }) : null;
   const { staff } = await recipientsFor('updated', current, { db, assignee, note: { ...note, isInternal: true } });
   if (staff.length) await notifyRecipients('updated', current, staff, { audience: 'staff', ticket: current, note, assignee }, { db, send });
   return note;
@@ -155,9 +155,42 @@ export async function createTicketFromEmail(message, { db = sql, send = sendMail
 /**
  * @returns {Promise<{ outcome: string, ticketId: string|null, ticketNumber: number|null }>}
  */
+/**
+ * C1: a non-delivery report (NDR) that reads as an "auto_reply" skip is not
+ * always safe to drop silently — if it threads back to one of our own
+ * tickets, it means an outbound email to that ticket's caller bounced, and
+ * the caller believes they've been contacted when they haven't. Attach an
+ * internal note and alert staff instead of leaving only a `skip:auto_reply`
+ * row in processed_messages. An NDR that matches no ticket is still a bare
+ * skip, unchanged.
+ */
+async function handleUndeliverableBounce(message, { db, send }) {
+  if (!isDeliveryFailure(message)) return null;
+  const match = await matchTicket(
+    { recipients: recipientsOf(message), conversationId: message.conversationId || null, fromEmail: '', subject: message.subject },
+    threadingLookup({ db }),
+    { localPart: ticketsLocalPart(), domain: ticketsDomain() },
+  );
+  if (!match) return null;
+  const { ticket, tier } = match;
+  const note = await addNote(ticket.id, {
+    body: "Delivery failed for the caller's email address — a message to them did not arrive. Check the caller's contact number instead.",
+    authorType: 'system', authorName: 'Tickets', isInternal: true,
+  }, { db });
+  const assignee = ticket.assignedTo ? await staffById(ticket.assignedTo, { db }) : null;
+  await notify('updated', ticket, { db, send, assignee, note });
+  return { outcome: `bounce_alert:${tier}`, ticketId: ticket.id, ticketNumber: ticket.number };
+}
+
 export async function processMessage(message, { db = sql, send = sendMail, classifier = classify } = {}) {
   const guard = shouldProcess(message, { ticketsAddress: ticketsAddress(), ownAddresses: ownAddresses() });
-  if (!guard.ok) return { outcome: `skip:${guard.reason}`, ticketId: null, ticketNumber: null };
+  if (!guard.ok) {
+    if (guard.reason === 'auto_reply') {
+      const bounced = await handleUndeliverableBounce(message, { db, send });
+      if (bounced) return bounced;
+    }
+    return { outcome: `skip:${guard.reason}`, ticketId: null, ticketNumber: null };
+  }
 
   const from = senderOf(message);
   const match = await matchTicket(

@@ -173,6 +173,39 @@ test('handler webhook call_analyzed: attaches an ai note to the matching ticket,
   assert.ok(send.sent.at(-1).subject.startsWith('[TC-3] [URGENT] Resident concern'));
 });
 
+test('I2: webhook call_analyzed on an EXISTING ticket raises priority to urgent and notifies when the transcript matches the emergency pattern', async () => {
+  const db = fakeDb();
+  db.seedStaff([{ name: 'Jo', email: 'jo@truthcaregroup.co.uk' }]);
+  const send = fakeSend();
+  await handlePhone(signed('create_ticket', { args: { category: 'general', caller_name: 'Jane', summary: 'General enquiry' }, call: { call_id: 'c9' } }), fakeRes(), { db, send });
+  const ticket = db.tables.tickets[0];
+  assert.equal(ticket.priority, 'normal', 'starts out normal — not classified as an emergency by the agent');
+  send.sent.length = 0;
+
+  let res = fakeRes();
+  await handlePhone(signed('webhook', {
+    event: 'call_analyzed',
+    call: { call_id: 'c9', transcript: 'User: my dad has collapsed and is not breathing', call_analysis: { call_summary: 'Caller reported an emergency.' } },
+  }), res, { db, send });
+  assert.deepEqual(res.body, { ok: true, ticket_number: ticket.number, attached: true, raised_to_urgent: true });
+  assert.equal(ticket.priority, 'urgent');
+  const raiseEvent = db.tables.ticket_events.find((e) => e.ticket_id === ticket.id && e.event === 'priority');
+  assert.equal(raiseEvent.to_value, 'urgent');
+  assert.ok(send.sent.some((m) => m.to === 'jo@truthcaregroup.co.uk'), 'a real notification fired — not just an internal note nobody sees');
+  const note = db.tables.ticket_notes.at(-1);
+  assert.equal(note.author_type, 'ai');
+
+  // A follow-up webhook on the same (already-urgent) ticket attaches its note but does not re-raise or re-notify.
+  send.sent.length = 0;
+  res = fakeRes();
+  await handlePhone(signed('webhook', {
+    event: 'call_analyzed',
+    call: { call_id: 'c9', transcript: 'User: still not breathing', call_analysis: { call_summary: 'Follow-up.' } },
+  }), res, { db, send });
+  assert.deepEqual(res.body, { ok: true, ticket_number: ticket.number, attached: true });
+  assert.equal(send.sent.length, 0, 'no duplicate priority-raise notification once the ticket is already urgent');
+});
+
 test('handler never 500s: a thrown error answers the fallback line and lands in failed_calls', async () => {
   const db = fakeDb();
   const broken = Object.assign((strings, ...values) => db(strings, ...values), { query: async () => { throw new Error('connection refused'); }, tables: db.tables });
