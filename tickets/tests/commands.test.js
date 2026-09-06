@@ -157,3 +157,29 @@ test('sign-off is only stripped when it actually closes the message', () => {
   assert.deepEqual(r2.commands, []);
   assert.equal(r2.note, 'Will call the family back tomorrow.');
 });
+
+test('a short punctuated sentence after a sign-off word is real content, not part of the signature', () => {
+  assert.deepEqual(parseCommands('close\nThanks\nCall back please.'), {
+    commands: [{ type: 'status', value: 'closed', raw: 'close' }],
+    note: 'Call back please.',
+    unknown: [],
+  });
+  assert.equal(parseCommands('close\nThanks\nWill do.').note, 'Will do.');
+  assert.equal(parseCommands('close\nThanks\nCalled them.').note, 'Called them.');
+});
+
+test('a genuine signature with a longer, unpunctuated job title is still stripped in full', () => {
+  const note = stripSignOff('Please call them.\n\nKind regards,\nJoanne Bray\nRegistered Manager of the Trust');
+  assert.equal(note, 'Please call them.');
+});
+
+test('assign only accepts a short name, not ordinary prose that happens to start with "assign"', () => {
+  assert.equal(parseLine('Assign a mentor to help her settle in properly, thanks.'), null);
+  assert.equal(parseCommands('Assign a mentor to help her settle in properly, thanks.').commands.length, 0);
+  assert.equal(
+    parseCommands('Assign a mentor to help her settle in properly, thanks.').note,
+    'Assign a mentor to help her settle in properly, thanks.'
+  );
+  // still works for real short assign targets, including a two-word name
+  assert.deepEqual(parseLine('assign to Joanne Bray'), { type: 'assign', value: 'Joanne Bray', raw: 'assign to Joanne Bray' });
+});

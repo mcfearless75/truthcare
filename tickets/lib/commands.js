@@ -57,18 +57,30 @@ export function stripQuotedReply(text) {
   return s.slice(0, cut).trim();
 }
 
-/** A line reads as command-shaped (a name/title, or a would-be command) when it's short. */
-function isShortLine(line) {
-  const words = line.trim().replace(/[.!,;:]+$/, '').split(/\s+/).filter(Boolean);
-  return words.length > 0 && words.length <= 3;
+/**
+ * A trailing line reads as part of a signature block (a name, a job title, an
+ * org) rather than as real note content. The discriminator is punctuation,
+ * not length: a genuine sentence ends in '.', '!' or '?' ("Call back
+ * please.", "Will do."), while a name or title normally doesn't ("Joanne
+ * Bray", "Registered Manager of the Trust") — so terminal punctuation wins
+ * over a word-count guess. A short word cap still excludes stray prose that
+ * happens to lack punctuation.
+ */
+function looksLikeSignatureLine(line) {
+  const trimmed = line.trim();
+  if (!trimmed) return true;
+  if (/[.!?]$/.test(trimmed)) return false;
+  const words = trimmed.split(/\s+/).filter(Boolean);
+  return words.length > 0 && words.length <= 6;
 }
 
 /**
  * Drop a sign-off line ("Kind regards") and everything after it (the signature) —
- * but only when what follows actually looks like a signature (a handful of short
- * lines: a name, a title). A "Thanks" that turns out to be followed by real prose
- * wasn't closing the message, so only that one word is dropped and scanning
- * continues — the real content after it is kept.
+ * but only when what follows actually looks like a signature (a handful of
+ * un-punctuated lines: a name, a title). A "Thanks" that turns out to be
+ * followed by real prose ("Call back please.") wasn't closing the message,
+ * so only that one word is dropped and scanning continues — the real
+ * content after it is kept.
  */
 export function stripSignOff(text) {
   let lines = String(text || '').split('\n');
@@ -76,7 +88,7 @@ export function stripSignOff(text) {
     const i = lines.findIndex((l) => SIGN_OFF_RE.test(l.trim()));
     if (i < 0) break;
     const trailing = lines.slice(i + 1).filter((l) => l.trim());
-    if (trailing.length <= 3 && trailing.every(isShortLine)) {
+    if (trailing.length <= 4 && trailing.every(looksLikeSignatureLine)) {
       lines = lines.slice(0, i);
       break;
     }
@@ -130,7 +142,12 @@ export function parseLine(rawLine) {
   m = /^assign\b(?:\s*:|\s+to\b)?\s*(.*)$/i.exec(line);
   if (m) {
     const who = m[1].trim();
-    return who ? { type: 'assign', value: who, raw } : unknown(raw, 'assign <name>');
+    if (!who) return unknown(raw, 'assign <name>');
+    // "Assign a mentor to help her settle in properly" is prose that starts
+    // with the verb "assign", not a command — a real assign target is a
+    // short name, never a long sentence. Fall through to note text.
+    if (words.length > 5) return null;
+    return { type: 'assign', value: who, raw };
   }
   if (lower === 'mine' || lower === 'take') return { type: 'take', raw };
   if (STATUS_WORDS[lower]) return { type: 'status', value: STATUS_WORDS[lower], raw };
