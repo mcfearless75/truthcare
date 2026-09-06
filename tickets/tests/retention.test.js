@@ -46,6 +46,59 @@ test('runRetention executes the statements in order and reports counts', async (
   assert.equal(calls[0].params[0], '2025-09-05T03:00:00.000Z');
 });
 
+test('runRetention against per-ticket data: 13mo-closed is anonymised, 11mo and exactly-12mo-closed are not, open tickets never touched', async () => {
+  const db = fakeDb();
+  const now = Date.parse('2026-09-05T12:00:00Z');
+  const cutoffIso = retentionCutoff(now).toISOString(); // 2025-09-05T12:00:00.000Z
+  const ticket = (id, overrides) => ({
+    id, number: id, status: 'closed', priority: 'normal', category: 'general', source: 'email',
+    subject: 's', summary: 'A'.repeat(200), caller_name: 'Jane Smith', caller_phone: '+447700900123',
+    caller_email: 'jane@example.com', caller_org: 'NHS', subject_person: 'Michael', email_token: `tok${id}`,
+    graph_conversation_id: null, retell_call_id: null, assigned_to: null,
+    created_at: new Date(0).toISOString(), updated_at: new Date(0).toISOString(), closed_at: null,
+    ...overrides,
+  });
+  const closed13mo = ticket('t13', { closed_at: '2025-08-01T00:00:00.000Z' }); // strictly before cutoff
+  const closedExactly12mo = ticket('t12', { closed_at: cutoffIso }); // == cutoff, must NOT be touched (strict <)
+  const closed11mo = ticket('t11', { closed_at: '2025-10-01T00:00:00.000Z' }); // after cutoff
+  const stillOpen = ticket('topen', { status: 'open', closed_at: null });
+  db.tables.tickets.push(closed13mo, closedExactly12mo, closed11mo, stillOpen);
+  db.tables.ticket_notes.push(
+    { id: 'n13', ticket_id: 't13', author_type: 'ai', body: 'transcript', is_internal: true, created_at: now, author_name: null, author_email: null },
+    { id: 'n11', ticket_id: 't11', author_type: 'ai', body: 'transcript', is_internal: true, created_at: now, author_name: null, author_email: null },
+  );
+  db.tables.pending_notifications.push(
+    { id: 'pn13', ticket_id: 't13', kind: 'closed', recipient: 'x@example.com', payload: {}, attempts: 0, last_error: null, next_attempt_at: new Date(0).toISOString(), created_at: new Date(0).toISOString(), sent_at: null },
+    { id: 'pn11', ticket_id: 't11', kind: 'closed', recipient: 'x@example.com', payload: {}, attempts: 0, last_error: null, next_attempt_at: new Date(0).toISOString(), created_at: new Date(0).toISOString(), sent_at: null },
+  );
+
+  const r = await runRetention({ db, now });
+  assert.deepEqual(r, { cutoff: cutoffIso, anonymised: 1, aiNotesDeleted: 1, notificationsDeleted: 1 });
+
+  assert.deepEqual(
+    [closed13mo.caller_name, closed13mo.caller_phone, closed13mo.caller_email, closed13mo.caller_org, closed13mo.subject_person],
+    [REDACTED, REDACTED, REDACTED, REDACTED, REDACTED],
+  );
+  assert.equal(closed13mo.summary, 'A'.repeat(80));
+  assert.equal(closed13mo.number, 't13', 'number is untouched');
+  assert.equal(closed13mo.category, 'general', 'category is untouched');
+  assert.equal(closed13mo.created_at, new Date(0).toISOString(), 'created_at is untouched');
+  assert.equal(closed13mo.closed_at, '2025-08-01T00:00:00.000Z', 'closed_at is untouched');
+
+  for (const untouched of [closedExactly12mo, closed11mo, stillOpen]) {
+    assert.equal(untouched.caller_name, 'Jane Smith', `${untouched.id} must not be anonymised`);
+    assert.equal(untouched.summary, 'A'.repeat(200), `${untouched.id} summary must not be truncated`);
+  }
+
+  assert.equal(db.tables.ticket_notes.find((n) => n.id === 'n13'), undefined, 'ai note on the anonymised ticket is deleted');
+  assert.ok(db.tables.ticket_notes.find((n) => n.id === 'n11'), 'ai note on an untouched ticket survives');
+  assert.equal(db.tables.pending_notifications.find((n) => n.id === 'pn13'), undefined, 'queued payload for the anonymised ticket is cleared');
+  assert.ok(db.tables.pending_notifications.find((n) => n.id === 'pn11'), 'queued payload for an untouched ticket survives');
+
+  const r2 = await runRetention({ db, now });
+  assert.deepEqual(r2, { cutoff: cutoffIso, anonymised: 0, aiNotesDeleted: 0, notificationsDeleted: 0 }, 'a second run is a no-op — already-redacted rows are skipped');
+});
+
 test('backoff schedule used by the notifications job: 5, 20, 45, 80 minutes then stop at 5 attempts', () => {
   assert.deepEqual([1, 2, 3, 4].map((n) => backoffMs(n) / 60000), [5, 20, 45, 80]);
   assert.equal(MAX_ATTEMPTS, 5);
