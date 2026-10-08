@@ -1,0 +1,16 @@
+{
+  "fetchedAt": "2026-10-08T15:15:00Z",
+  "placeId": "ChIJt3X9muj5cUgRMtA9ShQ_S4w",
+  "rating": 5,
+  "userRatingCount": 2,
+  "mapsUrl": "https://www.google.com/maps/place/?q=place_id:ChIJt3X9muj5cUgRMtA9ShQ_S4w",
+  "reviews": [
+    {
+      "author": "Trish tweddle",
+      "rating": 5,
+      "relativeTime": "2 months ago",
+      "publishTime": null,
+      "text": "A family member in under the care of Truth Care. She has complex needs and is currently being assessed here. The staff are kind, considerate and importantly experienced with brain injured patients. My relative is very happy there and making progress. It is a relief to the family that she is in such a brilliant and appropriate place."
+    }
+  ]
+}
