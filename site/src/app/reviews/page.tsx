@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { REVIEWS } from "@/content/reviews";
+import { GOOGLE_REVIEWS, REVIEWS } from "@/content/reviews";
 import { SITE } from "@/lib/site";
 import { Reveal } from "@/components/Reveal";
 import { PageHeader } from "@/components/PageHeader";
@@ -18,10 +18,6 @@ export const metadata: Metadata = {
 export default function ReviewsPage() {
   return (
     <>
-      {/* ------------------------------------------------------------- Header */}
-      {/* Copy + CTA left, the scannable QR right — mirrors virtual-tour's
-          text/photo split so the page reads as part of the same site, with
-          the QR card standing in for the photograph. */}
       <PageHeader
         eyebrow={REVIEWS.eyebrow}
         title={REVIEWS.heading}
@@ -29,6 +25,20 @@ export default function ReviewsPage() {
         leftExtra={
           <div className="mt-9">
             <ButtonPrimary href={SITE.googleReviewUrl} label={REVIEWS.ctaLabel} external />
+            {GOOGLE_REVIEWS.rating != null && (
+              <p className="mt-4 text-sm text-muted">
+                Google rating {GOOGLE_REVIEWS.rating.toFixed(1)} from{" "}
+                {GOOGLE_REVIEWS.count} {GOOGLE_REVIEWS.count === 1 ? "review" : "reviews"}.{" "}
+                <a
+                  href={GOOGLE_REVIEWS.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-navy underline decoration-orange decoration-2 underline-offset-4"
+                >
+                  See them on Google
+                </a>
+              </p>
+            )}
           </div>
         }
       >
@@ -37,24 +47,17 @@ export default function ReviewsPage() {
         </div>
       </PageHeader>
 
-      {/* --------------------------------------------------------- Testimonials */}
       {REVIEWS.testimonials.length > 0 && (
         <section className="pb-[var(--space-section)]">
           <Reveal>
             <div className="mx-auto max-w-6xl px-5">
-              {/* A real <h2>, not a <p> — heading structure stays intact for
-                  screen readers — but styled at eyebrow scale rather than
-                  SectionHeading's large display size, so the testimonials'
-                  own opening lines (rendered inside TestimonialQuote) are
-                  the dominant visual heading, not this label. See
-                  docs/superpowers/specs/2026-08-14-...-design.md §3. */}
               <h2 className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-orange-text">
                 {REVIEWS.testimonialsHeading}
               </h2>
               <div className="mx-auto mt-12 max-w-3xl space-y-8">
                 {REVIEWS.testimonials.map((testimonial) => (
                   <TestimonialQuote
-                    key={testimonial.attribution}
+                    key={`${testimonial.attribution}-${testimonial.excerpt}`}
                     excerpt={testimonial.excerpt}
                     quote={testimonial.quote}
                     attribution={testimonial.attribution}
@@ -69,7 +72,6 @@ export default function ReviewsPage() {
         </section>
       )}
 
-      {/* -------------------------------------------------------------- Steps */}
       <section className="bg-navy text-paper">
         <Reveal>
           <div className="mx-auto max-w-6xl px-5 py-[var(--space-section)]">
@@ -95,7 +97,6 @@ export default function ReviewsPage() {
         </Reveal>
       </section>
 
-      {/* ------------------------------------------------------------ Closing */}
       <section className="py-[var(--space-section)]">
         <Reveal>
           <div className="mx-auto max-w-6xl px-5">
