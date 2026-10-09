@@ -1,15 +1,29 @@
 {
-  "fetchedAt": "2026-10-08T15:15:00Z",
+  "fetchedAt": "2026-10-09T13:58:56.904Z",
   "placeId": "ChIJt3X9muj5cUgRMtA9ShQ_S4w",
   "rating": 5,
-  "userRatingCount": 2,
-  "mapsUrl": "https://www.google.com/maps/place/?q=place_id:ChIJt3X9muj5cUgRMtA9ShQ_S4w",
+  "userRatingCount": 3,
+  "mapsUrl": "https://maps.google.com/?cid=10109243144940671026&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
   "reviews": [
+    {
+      "author": "W A",
+      "rating": 5,
+      "relativeTime": "in the last week",
+      "publishTime": "2026-10-08T18:01:12.210244320Z",
+      "text": "Can’t speak highly enough of the team at Beaconsfield, the results we’ve seen over the past month with Paul has been amazing. Hes very happy always smiling, relearning day to day tasks from one to one learning which is now giveing him a level of his independence back. It gives me and the family great relief he’s now receiving the level of care he deserves. Thank you all at Beaconsfield"
+    },
+    {
+      "author": "David Croucher",
+      "rating": 5,
+      "relativeTime": "in the last week",
+      "publishTime": "2026-10-08T14:30:33.532068324Z",
+      "text": "Sadly, my brother suffered two strokes back in April 2025. During that time, he was under the care of the wonderful NHS. Following an operation to remove blood clots from his brain, he slowly began to make progress.\nAfter leaving NHS care, he spent a further 15 months in a specialist hospital in Bristol. The care he received during that time was excellent and played a huge part in helping him progress and prepare for the next stage of his journey.\nHowever, during the final eight months, his progress appeared to slow and it became clear that he needed to move to a care provider with the specialist skills, support and facilities to help him continue his recovery.\nAlthough it took longer than expected to gain approval from the local authority, there is no doubt that the move has been one of the best things that could have happened.\nHe was relocated to Beaconsfield House, where he was warmly welcomed by the team at Truth Care Group.\nHe has only been there for around six weeks, but the improvement in both his physical and mental wellbeing has been tremendous. The changes we have seen in such a short period of time have been incredibly reassuring.\nHis spirit, willingness to overcome challenges and motivation have all improved beyond our expectations. It is wonderful to see him becoming more engaged, more positive and willing to push himself again.\nThe facilities are excellent and the staff have all been fantastic. Each and every one of them seems willing to go that extra mile to support and help him achieve his potential.\nThis journey has certainly had its challenges, but seeing the progress he is now making makes it all worthwhile.\nA huge thank you to everyone at Beaconsfield House and Truth Care Group for everything you are doing.\nWe really appreciate it."
+    },
     {
       "author": "Trish tweddle",
       "rating": 5,
       "relativeTime": "2 months ago",
-      "publishTime": null,
+      "publishTime": "2026-08-03T08:00:55.265926325Z",
       "text": "A family member in under the care of Truth Care. She has complex needs and is currently being assessed here. The staff are kind, considerate and importantly experienced with brain injured patients. My relative is very happy there and making progress. It is a relief to the family that she is in such a brilliant and appropriate place."
     }
   ]
