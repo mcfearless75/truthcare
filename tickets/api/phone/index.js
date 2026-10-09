@@ -16,6 +16,7 @@ import { env } from '../../lib/config.js';
 import { readRawBody, getAction, sendJson } from '../../lib/http.js';
 import { verifyRetellSignature } from '../../lib/retell.js';
 import { sendMail } from '../../lib/graph.js';
+import { regexClassify } from '../../lib/classify.js';
 import { createTicket, addNote, applyCommand, getTicketByNumber, getTicketByRetellCallId } from '../../lib/tickets.js';
 import {
   FALLBACK_RESULT, NOT_FOUND_RESULT, UNREADABLE_RESULT, unwrapRetellBody, validateCreateArgs, createdResult,
@@ -76,10 +77,11 @@ async function webhookAction(body, { db, send }) {
     return { ok: true, ticket_number: ticket.number, attached: true, ...(raisedToUrgent ? { raised_to_urgent: true } : {}) };
   }
   // Spec §4.1: the scripted 999 guard ends the call without create_ticket, so the
-  // emergency is logged here as an urgent resident_concern; any other no-ticket call
-  // becomes a general ticket so the missed call is still visible.
+  // emergency is logged here as an urgent resident_concern. Any other no-ticket call
+  // (usually a hang-up mid-call) is categorised from Retell's summary only — the
+  // transcript contains the agent's own category menu, which would match everything.
   const ticket = await createTicket({
-    category: emergency ? 'resident_concern' : 'general',
+    category: emergency ? 'resident_concern' : regexClassify('', summary).category,
     priority: emergency ? 'urgent' : undefined,
     source: 'phone',
     subject: emergency ? 'Emergency call — caller told to dial 999' : 'Missed call — no ticket taken during the call',

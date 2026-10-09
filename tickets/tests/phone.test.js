@@ -173,6 +173,26 @@ test('handler webhook call_analyzed: attaches an ai note to the matching ticket,
   assert.ok(send.sent.at(-1).subject.startsWith('[TC-3] [URGENT] Resident concern'));
 });
 
+test('webhook missed call: category comes from the Retell summary, not the transcript (real 2026-09 hang-ups)', async () => {
+  const db = fakeDb();
+  db.seedStaff([{ name: 'Jo', email: 'jo@truthcaregroup.co.uk' }]);
+  const send = fakeSend();
+  // The agent's own opening menu lists every category, so the transcript must not drive the match.
+  const menu = 'Agent: is this a referral or enquiry, a staff matter, a concern about a resident, or a general message?';
+  const cases = [
+    ['m1', "The user called Truth Care Group to report being sick. The call ended before the process was completed.", 'staff', 'normal'],
+    ['m2', 'The user called Truth Care Group to log a new concern about a resident named Bob. The call ended early.', 'resident_concern', 'urgent'],
+    ['m3', 'The user called in but did not complete their statement before hanging up.', 'general', 'normal'],
+  ];
+  for (const [callId, summary, category, priority] of cases) {
+    await handlePhone(signed('webhook', { event: 'call_analyzed', call: { call_id: callId, transcript: menu, call_analysis: { call_summary: summary } } }), fakeRes(), { db, send });
+    const t = db.tables.tickets.find((x) => x.retell_call_id === callId);
+    assert.equal(t.category, category, callId);
+    assert.equal(t.priority, priority, callId);
+    assert.equal(t.subject, 'Missed call — no ticket taken during the call');
+  }
+});
+
 test('I2: webhook call_analyzed on an EXISTING ticket raises priority to urgent and notifies when the transcript matches the emergency pattern', async () => {
   const db = fakeDb();
   db.seedStaff([{ name: 'Jo', email: 'jo@truthcaregroup.co.uk' }]);
