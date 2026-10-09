@@ -26,14 +26,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Fetch reviews
-        if: ${{ secrets.GOOGLE_PLACES_API_KEY != '' }}
         env:
           GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
-        run: node scripts/fetch-google-reviews.mjs
-
-      - name: Skip until the API key exists
-        if: ${{ secrets.GOOGLE_PLACES_API_KEY == '' }}
-        run: echo "GOOGLE_PLACES_API_KEY is not set — leaving the checked-in reviews file as-is."
+        run: |
+          if [ -z "$GOOGLE_PLACES_API_KEY" ]; then
+            echo "GOOGLE_PLACES_API_KEY is not set — leaving the checked-in reviews file as-is."
+            exit 0
+          fi
+          node scripts/fetch-google-reviews.mjs
 
       - name: Commit if reviews changed
         id: commit
